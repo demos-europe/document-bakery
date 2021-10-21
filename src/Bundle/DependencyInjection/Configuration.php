@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Bundle\DependencyInjection;
+namespace DemosEurope\DocumentCompiler\Bundle\DependencyInjection;
 
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

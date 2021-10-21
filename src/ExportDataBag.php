@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler;
+namespace DemosEurope\DocumentCompiler;
 
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler;
+namespace DemosEurope\DocumentCompiler;
 
-use DemosInternational\DocumentCompiler\Config\ExportConfigTreeBuilder;
-use DemosInternational\DocumentCompiler\Exceptions\ExportConfigException;
-use DemosInternational\DocumentCompiler\Exceptions\ExportGenerationException;
-use DemosInternational\DocumentCompiler\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentCompiler\Config\ExportConfigTreeBuilder;
+use DemosEurope\DocumentCompiler\Exceptions\ExportConfigException;
+use DemosEurope\DocumentCompiler\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
 use Doctrine\ORM\Mapping\Entity;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;

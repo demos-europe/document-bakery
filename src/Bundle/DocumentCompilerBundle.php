@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Bundle;
+namespace DemosEurope\DocumentCompiler\Bundle;
 
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;

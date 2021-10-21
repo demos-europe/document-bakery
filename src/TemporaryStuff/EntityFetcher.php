@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\TemporaryStuff;
+namespace DemosEurope\DocumentCompiler\TemporaryStuff;
 
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory;

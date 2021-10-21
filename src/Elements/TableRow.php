@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Elements;
+namespace DemosEurope\DocumentCompiler\Elements;
 
-use DemosInternational\DocumentCompiler\StructuralElementInterface;
+use DemosEurope\DocumentCompiler\StructuralElementInterface;
 
 class TableRow extends AbstractElement implements StructuralElementInterface
 {

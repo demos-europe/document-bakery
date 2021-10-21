@@ -1,5 +1,5 @@
 {
-  "name": "demos-international/document-compiler",
+  "name": "demos-europe/document-compiler",
   "description": "Compile documents (PDF, Word, Excel) from YAML descriptions.",
   "type": "symfony-bundle",
   "license": "proprietary",
@@ -15,7 +15,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "DemosInternational\\DocumentCompiler\\": "src/"
+      "DemosEurope\\DocumentCompiler\\": "src/"
     }
   },
   "repositories": [

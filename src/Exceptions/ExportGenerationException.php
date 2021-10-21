@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Exceptions;
+namespace DemosEurope\DocumentCompiler\Exceptions;
 
 class ExportGenerationException extends \Exception
 {

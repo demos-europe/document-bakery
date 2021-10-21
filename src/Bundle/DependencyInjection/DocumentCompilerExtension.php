@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Bundle\DependencyInjection;
+namespace DemosEurope\DocumentCompiler\Bundle\DependencyInjection;
 
 
-use DemosInternational\DocumentCompiler\ElementFactory;
-use DemosInternational\DocumentCompiler\Elements\ElementInterface;
-use DemosInternational\DocumentCompiler\Exporter;
-use DemosInternational\DocumentCompiler\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentCompiler\ElementFactory;
+use DemosEurope\DocumentCompiler\Elements\ElementInterface;
+use DemosEurope\DocumentCompiler\Exporter;
+use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

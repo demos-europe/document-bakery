@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler;
+namespace DemosEurope\DocumentCompiler;
 
-use DemosInternational\DocumentCompiler\Elements\AbstractElement;
-use DemosInternational\DocumentCompiler\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentCompiler\Elements\AbstractElement;
+use DemosEurope\DocumentCompiler\Exceptions\ExportGenerationException;
 
 class ElementFactory
 {

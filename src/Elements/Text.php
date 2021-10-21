@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosInternational\DocumentCompiler\Elements;
+namespace DemosEurope\DocumentCompiler\Elements;
 
 class Text extends AbstractElement
 {
