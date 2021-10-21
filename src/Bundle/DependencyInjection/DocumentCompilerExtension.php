@@ -10,7 +10,6 @@ use DemosInternational\DocumentCompiler\Elements\ElementInterface;
 use DemosInternational\DocumentCompiler\Exporter;
 use DemosInternational\DocumentCompiler\TemporaryStuff\EntityFetcher;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
