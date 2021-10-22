@@ -12,7 +12,7 @@ class ElementFactory
     /**
      * @var array<string, AbstractElement>
      */
-    private $elements;
+    private $elements = [];
 
     /**
      * ElementFactory constructor.
