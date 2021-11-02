@@ -4,22 +4,22 @@ services:
     autoconfigure: true
 
   EightDashThree\Apization\:
-    resource: '../../../vendor/8-3/eight-dash-three/src/Apization/*'
+    resource: '../vendor/8-3/eight-dash-three/src/Apization/*'
 
   EightDashThree\Parsing\:
-    resource: '../../../vendor/8-3/eight-dash-three/src/Parsing/*'
+    resource: '../vendor/8-3/eight-dash-three/src/Parsing/*'
 
   EightDashThree\PathBuilding\:
-    resource: '../../../vendor/8-3/eight-dash-three/src/PathBuilding/*'
+    resource: '../vendor/8-3/eight-dash-three/src/PathBuilding/*'
 
   EightDashThree\Querying\:
-    resource: '../../../vendor/8-3/eight-dash-three/src/Querying/*'
+    resource: '../vendor/8-3/eight-dash-three/src/Querying/*'
 
   EightDashThree\Wrapping\:
-    resource: '../../../vendor/8-3/eight-dash-three/src/Wrapping/*'
+    resource: '../vendor/8-3/eight-dash-three/src/Wrapping/*'
 
   EightDashThree\DqlQuerying\:
-    resource: '../../../vendor/8-3/eight-dash-three-dql/src/DqlQuerying/*'
+    resource: '../vendor/8-3/eight-dash-three-dql/src/DqlQuerying/*'
 
   EightDashThree\Querying\Contracts\ConditionFactoryInterface: '@EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory'
   EightDashThree\Querying\Contracts\ConditionParserInterface: '@EightDashThree\Querying\ConditionParsers\Drupal\PredefinedConditionParser'
