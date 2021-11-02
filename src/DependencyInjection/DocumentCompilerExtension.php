@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Bundle\DependencyInjection;
+namespace DemosEurope\DocumentCompiler\DependencyInjection;
 
 
 use DemosEurope\DocumentCompiler\ElementFactory;
@@ -65,7 +65,7 @@ class DocumentCompilerExtension extends Extension
 
     private function registerEdt(ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
 
         $loader->load('services_edt.yml');
     }
