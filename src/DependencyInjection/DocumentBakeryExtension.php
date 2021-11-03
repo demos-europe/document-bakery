@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
-use DemosEurope\DocumentBakery\ElementFactory;
+use DemosEurope\DocumentBakery\Elements\ElementFactory;
 use DemosEurope\DocumentBakery\Elements\ElementInterface;
 use DemosEurope\DocumentBakery\Exporter;
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
