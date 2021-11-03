@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class DocumentCompilerExtension extends Extension
 {
+    private $yamlFileLoader;
+
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -25,6 +27,11 @@ class DocumentCompilerExtension extends Extension
         // TODO: use configuration if there are actual things to configure
         //       see: $this->processedConfigurations
 
+        $this->yamlFileLoader = new YamlFileLoader(
+            $container,
+            new FileLocator(__DIR__.'/../../config')
+        );
+
         $this->registerEdt($container);
 
         $this->registerDefinitions($container);
@@ -32,15 +39,23 @@ class DocumentCompilerExtension extends Extension
 
     private function registerDefinitions(ContainerBuilder $containerBuilder): void
     {
-        $definitions = [];
-
         $exporterDefinition = new Definition(Exporter::class);
         $exporterDefinition->setAutowired(true);
         $exporterDefinition->setAutoconfigured(true);
 
-        $definitions[Exporter::class] = $exporterDefinition;
+        $containerBuilder->addDefinitions([Exporter::class => $exporterDefinition]);
 
         // document_compiler.element
+        $elementsDefaults = new Definition();
+        $elementsDefaults->setAutoconfigured(true);
+        $elementsDefaults->setAutowired(true);
+
+        $this->yamlFileLoader->registerClasses(
+            $elementsDefaults,
+            'DemosEurope\\DocumentCompiler\\Elements\\',
+            __DIR__.'/../Elements'
+        );
+
         $containerBuilder->registerForAutoconfiguration(ElementInterface::class)
             ->addTag('document_compiler.element');
 
@@ -51,22 +66,18 @@ class DocumentCompilerExtension extends Extension
         $elementFactoryDefinition->setAutoconfigured(true);
         $elementFactoryDefinition->setArgument('$elements', $elements);
 
-        $definitions[ElementFactory::class] = $elementFactoryDefinition;
+        $containerBuilder->addDefinitions([ElementFactory::class => $elementFactoryDefinition]);
 
         // FIXME: This doesn't want to stay here, it's just a house "guest"
         $entityFetcherDefinition = new Definition(EntityFetcher::class);
         $entityFetcherDefinition->setAutowired(true);
         $entityFetcherDefinition->setAutoconfigured(true);
 
-        $definitions[EntityFetcher::class] = $entityFetcherDefinition;
-
-        $containerBuilder->addDefinitions($definitions);
+        $containerBuilder->addDefinitions([EntityFetcher::class => $entityFetcherDefinition]);
     }
 
     private function registerEdt(ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-
-        $loader->load('services_edt.yml');
+        $this->yamlFileLoader->load('services_edt.yml');
     }
 }
