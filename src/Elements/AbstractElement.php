@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Elements;
 
-use DemosEurope\DocumentBakery\ExportDataBag;
-use DemosEurope\DocumentBakery\StructuralElementInterface;
+use DemosEurope\DocumentBakery\Data\ExportDataBag;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
 

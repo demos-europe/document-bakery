@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery;
+namespace DemosEurope\DocumentBakery\Data;
 
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
-use EightDashThree\Wrapping\Utilities\GenericEntityFetcher;
 
 class DatapoolManager
 {

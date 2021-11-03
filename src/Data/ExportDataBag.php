@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery;
+namespace DemosEurope\DocumentBakery\Data;
 
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;

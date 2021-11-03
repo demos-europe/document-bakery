@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery;
 
 use DemosEurope\DocumentBakery\Config\ExportConfigTreeBuilder;
+use DemosEurope\DocumentBakery\Data\Datapool;
+use DemosEurope\DocumentBakery\Data\DatapoolManager;
+use DemosEurope\DocumentBakery\Data\ExportDataBag;
+use DemosEurope\DocumentBakery\Elements\ElementFactory;
+use DemosEurope\DocumentBakery\Elements\StructuralElementInterface;
 use DemosEurope\DocumentBakery\Exceptions\ExportConfigException;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
-use Doctrine\ORM\Mapping\Entity;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
-use EightDashThree\Wrapping\Utilities\GenericEntityFetcher;
 use Exception;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\IOFactory;

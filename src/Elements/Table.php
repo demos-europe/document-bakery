@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Elements;
 
-use DemosEurope\DocumentBakery\StructuralElementInterface;
-
 class Table extends AbstractElement implements StructuralElementInterface
 {
     public function render(): void

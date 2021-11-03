@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery;
+namespace DemosEurope\DocumentBakery\Data;
 
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
