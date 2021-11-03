@@ -16,14 +16,12 @@ class ElementFactory
 
     /**
      * ElementFactory constructor.
-     * @param iterable  $elements !tagged_iterator document_compiler.element
+     * @param \Traversable|iterable  $elements !tagged_iterator document_compiler.element
      *
      */
     public function __construct(iterable $elements)
     {
-        foreach ($elements as $element) {
-            $this->elements[$element->getName()] = $element;
-        }
+        $this->elements = iterator_to_array($elements);
     }
 
     /**

@@ -9,7 +9,9 @@ use DemosEurope\DocumentCompiler\ElementFactory;
 use DemosEurope\DocumentCompiler\Elements\ElementInterface;
 use DemosEurope\DocumentCompiler\Exporter;
 use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentCompiler\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -49,6 +51,9 @@ class DocumentCompilerExtension extends Extension
         $elementsDefaults = new Definition();
         $elementsDefaults->setAutoconfigured(true);
         $elementsDefaults->setAutowired(true);
+        $elementsDefaults->addTag('document_compiler.element');
+
+        $containerBuilder->registerForAutoconfiguration(ElementInterface::class);
 
         $this->yamlFileLoader->registerClasses(
             $elementsDefaults,
@@ -56,15 +61,16 @@ class DocumentCompilerExtension extends Extension
             __DIR__.'/../Elements'
         );
 
-        $containerBuilder->registerForAutoconfiguration(ElementInterface::class)
-            ->addTag('document_compiler.element');
-
-        $elements = $containerBuilder->findTaggedServiceIds('document_compiler.element');
-
         $elementFactoryDefinition = new Definition(ElementFactory::class);
         $elementFactoryDefinition->setAutowired(true);
         $elementFactoryDefinition->setAutoconfigured(true);
-        $elementFactoryDefinition->setArgument('$elements', $elements);
+        $elementFactoryDefinition->setArgument(
+            '$elements',
+            new TaggedIteratorArgument(
+                'document_compiler.element',
+            null,
+            'getName')
+        );
 
         $containerBuilder->addDefinitions([ElementFactory::class => $elementFactoryDefinition]);
 
@@ -74,6 +80,12 @@ class DocumentCompilerExtension extends Extension
         $entityFetcherDefinition->setAutoconfigured(true);
 
         $containerBuilder->addDefinitions([EntityFetcher::class => $entityFetcherDefinition]);
+
+        $twigRendererDefinition = new Definition(TwigRenderer::class);
+        $twigRendererDefinition->setAutowired(true);
+        $twigRendererDefinition->setAutoconfigured(true);
+
+        $containerBuilder->addDefinitions([TwigRenderer::class => $twigRendererDefinition]);
     }
 
     private function registerEdt(ContainerBuilder $container)

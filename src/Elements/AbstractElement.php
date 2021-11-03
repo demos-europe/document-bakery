@@ -55,10 +55,9 @@ abstract class AbstractElement implements ElementInterface
         $this->renderContent = $this->getRenderContent($exportDataBag);
     }
 
-    public function getName(): string
+    public static function getName(): string
     {
-        $className = get_class($this);
-        $explodedName = explode('\\', $className);
+        $explodedName = explode('\\', static::class);
 
         // return only element name, not full class name incl. namespace
         return array_pop($explodedName);

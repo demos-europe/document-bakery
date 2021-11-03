@@ -8,5 +8,5 @@ interface ElementInterface
 {
     public function render(): void;
 
-    public function getName(): string;
+    public static function getName(): string;
 }
