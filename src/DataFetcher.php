@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler;
+namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;

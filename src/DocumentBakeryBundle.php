@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler;
+namespace DemosEurope\DocumentBakery;
 
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DocumentCompilerBundle extends Bundle
+class DocumentBakeryBundle extends Bundle
 {
     public function getPath(): string
     {

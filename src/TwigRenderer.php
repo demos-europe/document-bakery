@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler;
+namespace DemosEurope\DocumentBakery;
 
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;

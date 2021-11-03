@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Elements;
+namespace DemosEurope\DocumentBakery\Elements;
 
 class TableHeader extends AbstractElement
 {

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\DependencyInjection;
+namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
-use DemosEurope\DocumentCompiler\ElementFactory;
-use DemosEurope\DocumentCompiler\Elements\ElementInterface;
-use DemosEurope\DocumentCompiler\Exporter;
-use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
-use DemosEurope\DocumentCompiler\TwigRenderer;
+use DemosEurope\DocumentBakery\ElementFactory;
+use DemosEurope\DocumentBakery\Elements\ElementInterface;
+use DemosEurope\DocumentBakery\Exporter;
+use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentBakery\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-class DocumentCompilerExtension extends Extension
+class DocumentBakeryExtension extends Extension
 {
     private $yamlFileLoader;
 
@@ -57,7 +57,7 @@ class DocumentCompilerExtension extends Extension
 
         $this->yamlFileLoader->registerClasses(
             $elementsDefaults,
-            'DemosEurope\\DocumentCompiler\\Elements\\',
+            'DemosEurope\\DocumentBakery\\Elements\\',
             __DIR__.'/../Elements'
         );
 

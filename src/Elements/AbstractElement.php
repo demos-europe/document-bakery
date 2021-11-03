@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Elements;
+namespace DemosEurope\DocumentBakery\Elements;
 
-use DemosEurope\DocumentCompiler\ExportDataBag;
-use DemosEurope\DocumentCompiler\StructuralElementInterface;
-use DemosEurope\DocumentCompiler\TwigRenderer;
+use DemosEurope\DocumentBakery\ExportDataBag;
+use DemosEurope\DocumentBakery\StructuralElementInterface;
+use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
 
 abstract class AbstractElement implements ElementInterface

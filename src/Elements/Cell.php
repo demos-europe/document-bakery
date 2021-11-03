@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Elements;
+namespace DemosEurope\DocumentBakery\Elements;
 
-use DemosEurope\DocumentCompiler\StructuralElementInterface;
+use DemosEurope\DocumentBakery\StructuralElementInterface;
 
 class Cell extends AbstractElement implements StructuralElementInterface
 {

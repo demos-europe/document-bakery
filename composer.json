@@ -1,5 +1,5 @@
 {
-  "name": "demos-europe/document-compiler",
+  "name": "demos-europe/document-bakery",
   "description": "Compile documents (PDF, Word, Excel) from YAML descriptions.",
   "type": "symfony-bundle",
   "license": "proprietary",
@@ -15,7 +15,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "DemosEurope\\DocumentCompiler\\": "src/"
+      "DemosEurope\\DocumentBakery\\": "src/"
     }
   },
   "repositories": [

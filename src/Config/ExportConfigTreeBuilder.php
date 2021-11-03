@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Config;
+namespace DemosEurope\DocumentBakery\Config;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

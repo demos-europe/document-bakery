@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler;
+namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentCompiler\Exceptions\ExportGenerationException;
-use DemosEurope\DocumentCompiler\TemporaryStuff\EntityFetcher;
+use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Utilities\GenericEntityFetcher;
 

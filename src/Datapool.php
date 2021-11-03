@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler;
+namespace DemosEurope\DocumentBakery;
 
 use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;

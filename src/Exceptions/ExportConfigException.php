@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentCompiler\Exceptions;
+namespace DemosEurope\DocumentBakery\Exceptions;
 
 class ExportConfigException extends \Exception
 {
