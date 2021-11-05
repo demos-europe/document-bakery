@@ -13,69 +13,54 @@ use DemosEurope\DocumentBakery\Elements\StructuralElementInterface;
 use DemosEurope\DocumentBakery\Exceptions\ExportConfigException;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
-use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
+use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
+use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 use Exception;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class Exporter
 {
-    /**
-     * @var ElementFactory
-     */
+    /** @var ElementFactory */
     private $elementFactory;
 
-    /**
-     * @var AbstractElement
-     */
+    /** @var AbstractElement */
     public $currentStructureElement;
 
-    /**
-     * @var ExportDataBag
-     */
+    /** @var ExportDataBag */
     private $exportDataBag;
 
-    /**
-     * @var DatapoolManager
-     */
+    /** @var DatapoolManager */
     private $datapoolManager;
 
-    /**
-     * @var EntityFetcher
-     */
-    private $entityFetcher;
-    /**
-     * @var DrupalFilterParser
-     */
+    /** @var DrupalFilterParser */
     private $drupalFilterParser;
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
 
-    private RecipeRepository $recipeRepository;
+    /** @var RecipeRepository  */
+    private $recipeRepository;
+    /** @var EntityManagerInterface  */
+    private $entityManager;
+    /** @var PrefilledTypeProvider  */
+    private $prefilledTypeProvider;
 
     public function __construct(
         ElementFactory $elementFactory,
-        EntityFetcher $entityFetcher,
+        EntityManagerInterface $entityManager,
         DrupalFilterParser $drupalFilterParser,
         RecipeRepository $recipeRepository,
-        ParameterBagInterface $parameterBag
+        PrefilledTypeProvider $prefilledTypeProvider
     )
     {
         $this->elementFactory = $elementFactory;
         $this->exportDataBag = new ExportDataBag();
-        $this->entityFetcher = $entityFetcher;
         $this->drupalFilterParser = $drupalFilterParser;
-        $this->parameterBag = $parameterBag;
         $this->recipeRepository = $recipeRepository;
+        $this->entityManager = $entityManager;
+        $this->prefilledTypeProvider = $prefilledTypeProvider;
     }
 
     /**
@@ -90,8 +75,9 @@ class Exporter
         $this->datapoolManager = new DatapoolManager(
             $exportConfig['queries'],
             $queryVariables,
-            $this->entityFetcher,
-            $this->drupalFilterParser
+            $this->entityManager,
+            $this->drupalFilterParser,
+            $this->prefilledTypeProvider
         );
         if (isset($exportConfig['format'])) {
             $this->exportDataBag->setFormat($exportConfig['format']);

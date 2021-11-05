@@ -12,7 +12,6 @@ use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Recipes\RecipeLoaderInterface;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
-use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -88,13 +87,6 @@ class DocumentBakeryExtension extends Extension
 
         $configRecipeLoader = $this->addSimpleDefinition($containerBuilder, ConfigRecipeLoader::class);
         $configRecipeLoader->setArgument('$recipes', $configuration['recipes']);
-
-        // FIXME: This doesn't want to stay here, it's just a house "guest"
-        $entityFetcherDefinition = new Definition(EntityFetcher::class);
-        $entityFetcherDefinition->setAutowired(true);
-        $entityFetcherDefinition->setAutoconfigured(true);
-
-        $containerBuilder->addDefinitions([EntityFetcher::class => $entityFetcherDefinition]);
     }
 
     private function registerEdt(ContainerBuilder $container)

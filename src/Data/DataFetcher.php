@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
+use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
+use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
 
 class DataFetcher
@@ -27,14 +28,13 @@ class DataFetcher
 
     private $resourceType;
 
-    /**
-     * @var EntityFetcher
-     */
-    private $entityFetcher;
+    /** @var WrapperFactoryInterface  */
+    private $wrapperFactory;
 
     public function __construct(
         array $query,
-        EntityFetcher $entityFetcher,
+        TypeRestrictedEntityProvider $objectProvider,
+        WrapperFactoryInterface $wrapperFactory,
         DrupalFilterParser $drupalFilterParser
     ) {
         try {
@@ -43,17 +43,17 @@ class DataFetcher
             $this->conditions = [];
         }
         $this->resourceType = $query['resource_type'];
-        $this->entityFetcher = $entityFetcher;
-        $this->resourceProvider = $entityFetcher->getResourceProvider($query['resource_type']);
+        $this->resourceProvider = $objectProvider;
         $this->loadNextChunkOfItems();
         if (array_key_exists('iterable', $query) && true === $query['iterable']) {
             $this->setContinueLoading(true);
         }
+        $this->wrapperFactory = $wrapperFactory;
     }
 
     public function getNextItem(): WrapperObject
     {
-        $currentEntity = $this->entityFetcher->wrapEntity(array_shift($this->items), $this->resourceType);
+        $currentEntity = $this->wrapperFactory->createWrapper(array_shift($this->items), $this->resourceType);
         if ($this->continueLoading && 0 === count($this->items)) {
             $this->loadNextChunkOfItems();
         }
