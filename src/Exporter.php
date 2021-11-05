@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Config\ExportConfigTreeBuilder;
+use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\ExportDataBag;
@@ -12,6 +12,7 @@ use DemosEurope\DocumentBakery\Elements\ElementFactory;
 use DemosEurope\DocumentBakery\Elements\StructuralElementInterface;
 use DemosEurope\DocumentBakery\Exceptions\ExportConfigException;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
@@ -59,10 +60,13 @@ class Exporter
      */
     private $parameterBag;
 
+    private RecipeRepository $recipeRepository;
+
     public function __construct(
         ElementFactory $elementFactory,
         EntityFetcher $entityFetcher,
         DrupalFilterParser $drupalFilterParser,
+        RecipeRepository $recipeRepository,
         ParameterBagInterface $parameterBag
     )
     {
@@ -71,6 +75,7 @@ class Exporter
         $this->entityFetcher = $entityFetcher;
         $this->drupalFilterParser = $drupalFilterParser;
         $this->parameterBag = $parameterBag;
+        $this->recipeRepository = $recipeRepository;
     }
 
     /**
@@ -80,7 +85,7 @@ class Exporter
      */
     public function create(string $exportName, array $queryVariables): ?WriterInterface
     {
-        $exportConfig = $this->getExportConfig($exportName);
+        $exportConfig = $this->recipeRepository->get($exportName);
 
         $this->datapoolManager = new DatapoolManager(
             $exportConfig['queries'],
@@ -145,23 +150,6 @@ class Exporter
     }
 
     /**
-     * @param string $exportName
-     * @return array
-     * @throws ExportConfigException|Exception
-     */
-    private function getExportConfig(string $exportName): array
-    {
-        $exportPath = $this->parameterBag->get('kernel.project_dir'). '/config/exports';
-        $fileLocator = new FileLocator($exportPath);
-        $exportFiles = $fileLocator->locate('exports.yml', null, false);
-
-        $exportConfig = file_get_contents($exportFiles[0]);
-        $parsedConfig = Yaml::parse($exportConfig);
-
-        return $this->processConfiguration($parsedConfig['Exports'], $exportName);
-    }
-
-    /**
      * @param array $parsedConfig
      * @param string $exportName
      * @return array
@@ -174,7 +162,7 @@ class Exporter
         }
 
         $processor= new Processor();
-        $exportConfigTreeBuilder = new ExportConfigTreeBuilder();
+        $exportConfigTreeBuilder = new RecipeConfigTreeBuilder();
 
         $processedConfig = $processor->processConfiguration(
             $exportConfigTreeBuilder,

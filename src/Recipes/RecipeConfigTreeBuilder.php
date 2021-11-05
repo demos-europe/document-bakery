@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Config;
+namespace DemosEurope\DocumentBakery\Recipes;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class ExportConfigTreeBuilder implements ConfigurationInterface
+class RecipeConfigTreeBuilder implements ConfigurationInterface
 {
-
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('Exports');
+        $treeBuilder = new TreeBuilder('recipes');
 
         $treeBuilder->getRootNode()
             ->arrayPrototype()

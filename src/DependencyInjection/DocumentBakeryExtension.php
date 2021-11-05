@@ -8,6 +8,10 @@ namespace DemosEurope\DocumentBakery\DependencyInjection;
 use DemosEurope\DocumentBakery\Elements\ElementFactory;
 use DemosEurope\DocumentBakery\Elements\ElementInterface;
 use DemosEurope\DocumentBakery\Exporter;
+use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
+use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
+use DemosEurope\DocumentBakery\Recipes\RecipeLoaderInterface;
+use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use DemosEurope\DocumentBakery\TemporaryStuff\EntityFetcher;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
@@ -24,10 +28,7 @@ class DocumentBakeryExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
-
-        // TODO: use configuration if there are actual things to configure
-        //       see: $this->processedConfigurations
+        $processedConfiguration = $this->processConfiguration($configuration, $configs);
 
         $this->yamlFileLoader = new YamlFileLoader(
             $container,
@@ -36,16 +37,18 @@ class DocumentBakeryExtension extends Extension
 
         $this->registerEdt($container);
 
-        $this->registerDefinitions($container);
+        $this->registerDefinitions($container, $processedConfiguration);
     }
 
-    private function registerDefinitions(ContainerBuilder $containerBuilder): void
+    private function registerDefinitions(ContainerBuilder $containerBuilder, array $configuration): void
     {
-        $exporterDefinition = new Definition(Exporter::class);
-        $exporterDefinition->setAutowired(true);
-        $exporterDefinition->setAutoconfigured(true);
-
-        $containerBuilder->addDefinitions([Exporter::class => $exporterDefinition]);
+        \array_map(function (string $className) use ($containerBuilder) {
+            $this->addSimpleDefinition($containerBuilder, $className);
+        }, [
+            Exporter::class,
+            RecipeConfigTreeBuilder::class,
+            TwigRenderer::class
+        ]);
 
         // document_compiler.element
         $elementsDefaults = new Definition();
@@ -61,9 +64,7 @@ class DocumentBakeryExtension extends Extension
             __DIR__.'/../Elements'
         );
 
-        $elementFactoryDefinition = new Definition(ElementFactory::class);
-        $elementFactoryDefinition->setAutowired(true);
-        $elementFactoryDefinition->setAutoconfigured(true);
+        $elementFactoryDefinition = $this->addSimpleDefinition($containerBuilder, ElementFactory::class);
         $elementFactoryDefinition->setArgument(
             '$elements',
             new TaggedIteratorArgument(
@@ -72,7 +73,21 @@ class DocumentBakeryExtension extends Extension
             'getName')
         );
 
-        $containerBuilder->addDefinitions([ElementFactory::class => $elementFactoryDefinition]);
+        $containerBuilder->registerForAutoconfiguration(RecipeLoaderInterface::class)
+            ->addTag('document_compiler.recipe_loader');
+
+        $recipeRepositoryConfig = $this->addSimpleDefinition($containerBuilder, RecipeRepository::class);
+        $recipeRepositoryConfig->setArgument(
+            '$loaders',
+            new TaggedIteratorArgument(
+                'document_compiler.recipe_loader',
+                null,
+                'getName'
+            )
+        );
+
+        $configRecipeLoader = $this->addSimpleDefinition($containerBuilder, ConfigRecipeLoader::class);
+        $configRecipeLoader->setArgument('$recipes', $configuration['recipes']);
 
         // FIXME: This doesn't want to stay here, it's just a house "guest"
         $entityFetcherDefinition = new Definition(EntityFetcher::class);
@@ -80,16 +95,21 @@ class DocumentBakeryExtension extends Extension
         $entityFetcherDefinition->setAutoconfigured(true);
 
         $containerBuilder->addDefinitions([EntityFetcher::class => $entityFetcherDefinition]);
-
-        $twigRendererDefinition = new Definition(TwigRenderer::class);
-        $twigRendererDefinition->setAutowired(true);
-        $twigRendererDefinition->setAutoconfigured(true);
-
-        $containerBuilder->addDefinitions([TwigRenderer::class => $twigRendererDefinition]);
     }
 
     private function registerEdt(ContainerBuilder $container)
     {
         $this->yamlFileLoader->load('services_edt.yml');
+    }
+
+    private function addSimpleDefinition(ContainerBuilder $containerBuilder, string $className): Definition
+    {
+        $definition = new Definition($className);
+        $definition->setAutowired(true);
+        $definition->setAutoconfigured(true);
+
+        $containerBuilder->addDefinitions([$className => $definition]);
+
+        return $definition;
     }
 }
