@@ -39,6 +39,7 @@
   },
   "require-dev": {
     "repman-io/composer-plugin": "^1.1",
-    "phpstan/phpstan": "^0.12.99"
+    "phpstan/phpstan": "^0.12.99",
+    "friendsofphp/php-cs-fixer": "^3.0"
   }
 }
