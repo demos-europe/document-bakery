@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\ExportDataBag;
 use DemosEurope\DocumentBakery\Elements\ElementFactory;
 use DemosEurope\DocumentBakery\Elements\StructuralElementInterface;
-use DemosEurope\DocumentBakery\Exceptions\ExportConfigException;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
-use Exception;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
-use Symfony\Component\Config\Definition\Processor;
 
 class Exporter
 {
@@ -133,29 +129,6 @@ class Exporter
                 }
             }
         }
-    }
-
-    /**
-     * @param array $parsedConfig
-     * @param string $exportName
-     * @return array
-     * @throws ExportConfigException|Exception
-     */
-    private function processConfiguration(array $parsedConfig, string $exportName): array
-    {
-        if (!isset($parsedConfig[$exportName])) {
-            throw ExportConfigException::exportDefinitionNotFound($exportName);
-        }
-
-        $processor= new Processor();
-        $exportConfigTreeBuilder = new RecipeConfigTreeBuilder();
-
-        $processedConfig = $processor->processConfiguration(
-            $exportConfigTreeBuilder,
-            [$parsedConfig]
-        );
-
-        return $processedConfig[$exportName];
     }
 
     /**
