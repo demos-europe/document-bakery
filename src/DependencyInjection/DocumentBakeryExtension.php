@@ -7,7 +7,7 @@ namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\ElementInterface;
-use DemosEurope\DocumentBakery\Exporter;
+use DemosEurope\DocumentBakery\Bakery;
 use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Recipes\RecipeLoaderInterface;
@@ -44,7 +44,7 @@ class DocumentBakeryExtension extends Extension
         \array_map(function (string $className) use ($containerBuilder) {
             $this->addSimpleDefinition($containerBuilder, $className);
         }, [
-            Exporter::class,
+            Bakery::class,
             RecipeConfigTreeBuilder::class,
             TwigRenderer::class
         ]);

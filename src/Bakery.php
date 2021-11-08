@@ -19,7 +19,7 @@ use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 
-class Exporter
+class Bakery
 {
     /** @var InstructionFactory */
     private $elementFactory;
