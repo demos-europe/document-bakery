@@ -9,6 +9,6 @@ class TableRow extends AbstractInstruction implements StructuralInstructionInter
     public function render(): void
     {
         $row = $this->currentParentElement->addRow();
-        $this->exportDataBag->addToWorkingPath($row);
+        $this->recipeDataBag->addToWorkingPath($row);
     }
 }

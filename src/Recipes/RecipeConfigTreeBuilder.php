@@ -17,7 +17,7 @@ class RecipeConfigTreeBuilder implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->arrayPrototype()
                 ->performNoDeepMerging()
-                ->info('There can and will be multiple export definitions. All need to follow this schema.')
+                ->info('There can and will be multiple recipes. All need to follow this schema.')
                 ->children()
                     ->arrayNode('queries')
                         ->isRequired()

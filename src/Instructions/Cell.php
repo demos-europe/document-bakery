@@ -9,6 +9,6 @@ class Cell extends AbstractInstruction implements StructuralInstructionInterface
     public function render(): void
     {
         $cell = $this->currentParentElement->addCell();
-        $this->exportDataBag->addToWorkingPath($cell);
+        $this->recipeDataBag->addToWorkingPath($cell);
     }
 }

@@ -28,7 +28,7 @@ class Bakery
     public $currentStructureElement;
 
     /** @var RecipeDataBag */
-    private $exportDataBag;
+    private $recipeDataBag;
 
     /** @var DatapoolManager */
     private $datapoolManager;
@@ -52,7 +52,7 @@ class Bakery
     )
     {
         $this->elementFactory = $elementFactory;
-        $this->exportDataBag = new RecipeDataBag();
+        $this->recipeDataBag = new RecipeDataBag();
         $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
@@ -64,23 +64,23 @@ class Bakery
      * @throws \PhpOffice\PhpWord\Exception\Exception
      * @throws AccessException
      */
-    public function create(string $exportName, array $queryVariables): ?WriterInterface
+    public function create(string $recipeName, array $queryVariables): ?WriterInterface
     {
-        $exportConfig = $this->recipeRepository->get($exportName);
+        $recipeConfig = $this->recipeRepository->get($recipeName);
 
         $this->datapoolManager = new DatapoolManager(
-            $exportConfig['queries'],
+            $recipeConfig['queries'],
             $queryVariables,
             $this->entityManager,
             $this->drupalFilterParser,
             $this->prefilledTypeProvider
         );
-        if (isset($exportConfig['format'])) {
-            $this->exportDataBag->setFormat($exportConfig['format']);
+        if (isset($recipeConfig['format'])) {
+            $this->recipeDataBag->setFormat($recipeConfig['format']);
         }
-        $this->processElements($exportConfig['elements']);
+        $this->processElements($recipeConfig['elements']);
 
-        $writerObject = IOFactory::createWriter($this->exportDataBag->getPhpWordObject(), 'Word2007');
+        $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
         if (null === $writerObject) {
             throw DocumentGenerationException::writerObjectGenerationFailed();
         }
@@ -107,7 +107,7 @@ class Bakery
             }
 
             $elementClass->setCurrentConfigElement($element);
-            $elementClass->setDataFromExportDataBag($this->exportDataBag);
+            $elementClass->setDataFromRecipeDataBag($this->recipeDataBag);
             $elementClass->render();
 
             // Iterate over children elements
@@ -117,7 +117,7 @@ class Bakery
 
             // Now that all children have been processed, we can remove the structural element from the working path
             if ($elementClass instanceof StructuralInstructionInterface) {
-                $this->exportDataBag->removeFromWorkingPath();
+                $this->recipeDataBag->removeFromWorkingPath();
             }
 
             // recall yourself if iterate is true and there are still entities left in the used datapool
@@ -140,7 +140,7 @@ class Bakery
     {
         if (0 !== count($pathArray)) {
             $currentElementData = $datapool->getDataFromPath($pathArray);
-            $this->exportDataBag->setCurrentElementData($currentElementData);
+            $this->recipeDataBag->setCurrentElementData($currentElementData);
         }
     }
 }

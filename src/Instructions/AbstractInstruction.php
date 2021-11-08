@@ -25,7 +25,7 @@ abstract class AbstractInstruction implements ElementInterface
      */
     protected $renderContent;
 
-    protected $exportDataBag;
+    protected $recipeDataBag;
 
     /**
      * @var TwigRenderer
@@ -47,11 +47,11 @@ abstract class AbstractInstruction implements ElementInterface
         $this->currentConfigElement = $currentConfigElement;
     }
 
-    public function setDataFromExportDataBag(RecipeDataBag $exportDataBag): void
+    public function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
     {
-        $this->exportDataBag = $exportDataBag;
-        $this->currentParentElement = $exportDataBag->getCurrentParentElement();
-        $this->renderContent = $this->getRenderContent($exportDataBag);
+        $this->recipeDataBag = $recipeDataBag;
+        $this->currentParentElement = $recipeDataBag->getCurrentParentElement();
+        $this->renderContent = $this->getRenderContent($recipeDataBag);
     }
 
     public static function getName(): string
@@ -65,7 +65,7 @@ abstract class AbstractInstruction implements ElementInterface
     /**
      * @return mixed
      */
-    protected function getRenderContent(RecipeDataBag $exportDataBag)
+    protected function getRenderContent(RecipeDataBag $recipeDataBag)
     {
         // Only get renderContent for non-structural elements as structural elements do not render anything
         if ($this instanceof StructuralInstructionInterface) {
@@ -73,7 +73,7 @@ abstract class AbstractInstruction implements ElementInterface
         }
 
         if (isset($this->currentConfigElement['path'])) {
-            $renderContent = $exportDataBag->getCurrentElementData();
+            $renderContent = $recipeDataBag->getCurrentElementData();
         } else {
             $renderContent = $this->currentConfigElement['content'];
         }

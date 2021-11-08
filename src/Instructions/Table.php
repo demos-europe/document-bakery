@@ -14,6 +14,6 @@ class Table extends AbstractInstruction implements StructuralInstructionInterfac
             'cellMargin'  => 50
         );
         $table = $this->currentParentElement->addTable($tableStyle);
-        $this->exportDataBag->addToWorkingPath($table);
+        $this->recipeDataBag->addToWorkingPath($table);
     }
 }
