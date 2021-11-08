@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-use DemosEurope\DocumentBakery\Data\ExportDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
 
@@ -47,7 +47,7 @@ abstract class AbstractInstruction implements ElementInterface
         $this->currentConfigElement = $currentConfigElement;
     }
 
-    public function setDataFromExportDataBag(ExportDataBag $exportDataBag): void
+    public function setDataFromExportDataBag(RecipeDataBag $exportDataBag): void
     {
         $this->exportDataBag = $exportDataBag;
         $this->currentParentElement = $exportDataBag->getCurrentParentElement();
@@ -65,7 +65,7 @@ abstract class AbstractInstruction implements ElementInterface
     /**
      * @return mixed
      */
-    protected function getRenderContent(ExportDataBag $exportDataBag)
+    protected function getRenderContent(RecipeDataBag $exportDataBag)
     {
         // Only get renderContent for non-structural elements as structural elements do not render anything
         if ($this instanceof StructuralInstructionInterface) {

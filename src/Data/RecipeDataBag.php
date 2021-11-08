@@ -8,7 +8,7 @@ use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
-class ExportDataBag
+class RecipeDataBag
 {
     /**
      * @var array

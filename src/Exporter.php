@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery;
 
 use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
-use DemosEurope\DocumentBakery\Data\ExportDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
@@ -27,7 +27,7 @@ class Exporter
     /** @var AbstractElement */
     public $currentStructureElement;
 
-    /** @var ExportDataBag */
+    /** @var RecipeDataBag */
     private $exportDataBag;
 
     /** @var DatapoolManager */
@@ -52,7 +52,7 @@ class Exporter
     )
     {
         $this->elementFactory = $elementFactory;
-        $this->exportDataBag = new ExportDataBag();
+        $this->exportDataBag = new RecipeDataBag();
         $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
