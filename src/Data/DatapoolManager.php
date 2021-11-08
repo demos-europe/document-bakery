@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\DqlQuerying\ObjectProviders\DoctrineOrmEntityProvider;
 use EightDashThree\DqlQuerying\PropertyAccessors\ProxyPropertyAccessor;
@@ -56,7 +56,7 @@ class DatapoolManager
 
     /**
      * @param string $name
-     * @throws ExportGenerationException
+     * @throws DocumentGenerationException
      */
     public function create(string $name): void
     {
@@ -75,7 +75,7 @@ class DatapoolManager
     /**
      * @param string $path
      * @return array
-     * @throws ExportGenerationException
+     * @throws DocumentGenerationException
      */
     public function parsePath(string $path): array
     {
@@ -122,7 +122,7 @@ class DatapoolManager
     /**
      * @param array $query
      * @return array
-     * @throws ExportGenerationException
+     * @throws DocumentGenerationException
      */
     private function parseQuery(array $query): array
     {
@@ -133,7 +133,7 @@ class DatapoolManager
                 // check if placeholder is present and replace it
                 $trimmedPlaceholder = trim($value, '{}');
                 if (!array_key_exists($trimmedPlaceholder, $this->queryVariables)) {
-                    throw ExportGenerationException::noValueForPlaceholder($trimmedPlaceholder);
+                    throw DocumentGenerationException::noValueForPlaceholder($trimmedPlaceholder);
                 }
                 $query[$key] = $this->queryVariables[$trimmedPlaceholder];
             }

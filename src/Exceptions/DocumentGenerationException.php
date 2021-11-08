@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Exceptions;
 
-class ExportGenerationException extends \Exception
+class DocumentGenerationException extends \Exception
 {
     public static function elementNotFound($elementName): self
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 
 class InstructionFactory
 {
@@ -24,7 +24,7 @@ class InstructionFactory
     }
 
     /**
-     * @throws ExportGenerationException
+     * @throws DocumentGenerationException
      */
     public function lookupForName(string $name): AbstractInstruction
     {
@@ -32,6 +32,6 @@ class InstructionFactory
             return $this->elements[$name];
         }
 
-        throw ExportGenerationException::elementNotFound($name);
+        throw DocumentGenerationException::elementNotFound($name);
     }
 }

@@ -9,7 +9,7 @@ use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
-use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
+use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
@@ -60,7 +60,7 @@ class Exporter
     }
 
     /**
-     * @throws ExportGenerationException
+     * @throws DocumentGenerationException
      * @throws \PhpOffice\PhpWord\Exception\Exception
      * @throws AccessException
      */
@@ -82,14 +82,14 @@ class Exporter
 
         $writerObject = IOFactory::createWriter($this->exportDataBag->getPhpWordObject(), 'Word2007');
         if (null === $writerObject) {
-            throw ExportGenerationException::writerObjectGenerationFailed();
+            throw DocumentGenerationException::writerObjectGenerationFailed();
         }
         return $writerObject;
     }
 
     /**
      * @param array $elements
-     * @throws ExportGenerationException|AccessException
+     * @throws DocumentGenerationException|AccessException
      */
     private function processElements(array $elements): void
     {

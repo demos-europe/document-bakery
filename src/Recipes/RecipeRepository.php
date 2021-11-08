@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Recipes;
 
 
-use LogicException;
+use DemosEurope\DocumentBakery\Exceptions\RecipeException;
 use Traversable;
 use function array_key_exists;
 use function iterator_to_array;
@@ -41,8 +41,7 @@ class RecipeRepository
     public function get(string $recipeName): array
     {
         if (!$this->has($recipeName)) {
-            // fixme: use better exception
-            throw new LogicException('Recipe not found');
+            RecipeException::recipeNotFound($recipeName);
         }
 
         return $this->loaders[$this->recipeNameCache[$recipeName]]->load($recipeName);
@@ -62,8 +61,7 @@ class RecipeRepository
 
             foreach ($availableRecipes as $recipeName) {
                 if (array_key_exists($recipeName, $this->recipeNameCache)) {
-                    // fixme: use better exception
-                    throw new LogicException('Duplicate recipe name');
+                    RecipeException::duplicateRecipeFound($recipeName);
                 }
 
                 $this->recipeNameCache[$recipeName] = $loaderName;
