@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
-class StaticText extends AbstractElement
+class StaticText extends AbstractInstruction
 {
     public function render(): void
     {

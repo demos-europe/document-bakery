@@ -7,8 +7,8 @@ namespace DemosEurope\DocumentBakery;
 use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\ExportDataBag;
-use DemosEurope\DocumentBakery\Elements\ElementFactory;
-use DemosEurope\DocumentBakery\Elements\StructuralElementInterface;
+use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
+use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +21,7 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Exporter
 {
-    /** @var ElementFactory */
+    /** @var InstructionFactory */
     private $elementFactory;
 
     /** @var AbstractElement */
@@ -44,11 +44,11 @@ class Exporter
     private $prefilledTypeProvider;
 
     public function __construct(
-        ElementFactory $elementFactory,
+        InstructionFactory     $elementFactory,
         EntityManagerInterface $entityManager,
-        DrupalFilterParser $drupalFilterParser,
-        RecipeRepository $recipeRepository,
-        PrefilledTypeProvider $prefilledTypeProvider
+        DrupalFilterParser     $drupalFilterParser,
+        RecipeRepository       $recipeRepository,
+        PrefilledTypeProvider  $prefilledTypeProvider
     )
     {
         $this->elementFactory = $elementFactory;
@@ -116,7 +116,7 @@ class Exporter
             }
 
             // Now that all children have been processed, we can remove the structural element from the working path
-            if ($elementClass instanceof StructuralElementInterface) {
+            if ($elementClass instanceof StructuralInstructionInterface) {
                 $this->exportDataBag->removeFromWorkingPath();
             }
 

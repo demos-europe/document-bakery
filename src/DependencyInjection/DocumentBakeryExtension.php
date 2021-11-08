@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
-use DemosEurope\DocumentBakery\Elements\ElementFactory;
-use DemosEurope\DocumentBakery\Elements\ElementInterface;
+use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
+use DemosEurope\DocumentBakery\Instructions\ElementInterface;
 use DemosEurope\DocumentBakery\Exporter;
 use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
@@ -59,11 +59,11 @@ class DocumentBakeryExtension extends Extension
 
         $this->yamlFileLoader->registerClasses(
             $elementsDefaults,
-            'DemosEurope\\DocumentBakery\\Elements\\',
-            __DIR__.'/../Elements'
+            'DemosEurope\\DocumentBakery\\Instructions\\',
+            __DIR__ . '/../Instructions'
         );
 
-        $elementFactoryDefinition = $this->addSimpleDefinition($containerBuilder, ElementFactory::class);
+        $elementFactoryDefinition = $this->addSimpleDefinition($containerBuilder, InstructionFactory::class);
         $elementFactoryDefinition->setArgument(
             '$elements',
             new TaggedIteratorArgument(

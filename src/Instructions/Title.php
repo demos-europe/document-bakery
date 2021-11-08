@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
-class Title extends AbstractElement
+class Title extends AbstractInstruction
 {
     public function render(): void
     {

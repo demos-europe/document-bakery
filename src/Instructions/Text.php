@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Exporter;
 use DemosEurope\DocumentBakery\TwigRenderer;
 
-class Text extends AbstractElement
+class Text extends AbstractInstruction
 {
     public function render(): void
     {

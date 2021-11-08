@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Exceptions\ExportGenerationException;
 
-class ElementFactory
+class InstructionFactory
 {
     /**
-     * @var array<string, AbstractElement>
+     * @var array<string, AbstractInstruction>
      */
     private $elements = [];
 
     /**
-     * ElementFactory constructor.
+     * InstructionFactory constructor.
      * @param \Traversable|iterable  $elements !tagged_iterator document_compiler.element
      *
      */
@@ -26,7 +26,7 @@ class ElementFactory
     /**
      * @throws ExportGenerationException
      */
-    public function lookupForName(string $name): AbstractElement
+    public function lookupForName(string $name): AbstractInstruction
     {
         if (array_key_exists($name, $this->elements)) {
             return $this->elements[$name];

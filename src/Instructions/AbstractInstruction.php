@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\ExportDataBag;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
 
-abstract class AbstractElement implements ElementInterface
+abstract class AbstractInstruction implements ElementInterface
 {
     /**
      * @var array
@@ -68,7 +68,7 @@ abstract class AbstractElement implements ElementInterface
     protected function getRenderContent(ExportDataBag $exportDataBag)
     {
         // Only get renderContent for non-structural elements as structural elements do not render anything
-        if ($this instanceof StructuralElementInterface) {
+        if ($this instanceof StructuralInstructionInterface) {
             return null;
         }
 

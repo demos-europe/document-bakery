@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Elements;
+namespace DemosEurope\DocumentBakery\Instructions;
 
-class Table extends AbstractElement implements StructuralElementInterface
+class Table extends AbstractInstruction implements StructuralInstructionInterface
 {
     public function render(): void
     {
