@@ -72,6 +72,11 @@ class DocumentBakeryExtension extends Extension
             'getName')
         );
 
+        $this->registerRecipes($containerBuilder, $configuration);
+    }
+
+    private function registerRecipes(ContainerBuilder $containerBuilder, array $configuration): void
+    {
         $containerBuilder->registerForAutoconfiguration(RecipeLoaderInterface::class)
             ->addTag('document_compiler.recipe_loader');
 
@@ -89,7 +94,7 @@ class DocumentBakeryExtension extends Extension
         $configRecipeLoader->setArgument('$recipes', $configuration['recipes']);
     }
 
-    private function registerEdt(ContainerBuilder $container)
+    private function registerEdt(ContainerBuilder $container): void
     {
         $this->yamlFileLoader->load('services_edt.yml');
     }
