@@ -8,7 +8,7 @@ use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
 
-abstract class AbstractInstruction implements ElementInterface
+abstract class AbstractInstruction implements InstructionInterface
 {
     /**
      * @var array

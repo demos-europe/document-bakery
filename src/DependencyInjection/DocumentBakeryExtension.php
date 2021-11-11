@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
-use DemosEurope\DocumentBakery\Instructions\ElementInterface;
+use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
 use DemosEurope\DocumentBakery\Bakery;
 use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
@@ -55,7 +55,7 @@ class DocumentBakeryExtension extends Extension
         $elementsDefaults->setAutowired(true);
         $elementsDefaults->addTag('document_compiler.element');
 
-        $containerBuilder->registerForAutoconfiguration(ElementInterface::class);
+        $containerBuilder->registerForAutoconfiguration(InstructionInterface::class);
 
         $this->yamlFileLoader->registerClasses(
             $elementsDefaults,
