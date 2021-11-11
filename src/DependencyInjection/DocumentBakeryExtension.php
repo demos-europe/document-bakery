@@ -12,6 +12,9 @@ use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Recipes\RecipeLoaderInterface;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
+use DemosEurope\DocumentBakery\Styles\ConfigStylesLoader;
+use DemosEurope\DocumentBakery\Styles\StylesLoaderInterface;
+use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -73,6 +76,7 @@ class DocumentBakeryExtension extends Extension
         );
 
         $this->registerRecipes($containerBuilder, $configuration);
+        $this->registerStyles($containerBuilder, $configuration);
     }
 
     private function registerRecipes(ContainerBuilder $containerBuilder, array $configuration): void
@@ -92,6 +96,25 @@ class DocumentBakeryExtension extends Extension
 
         $configRecipeLoader = $this->addSimpleDefinition($containerBuilder, ConfigRecipeLoader::class);
         $configRecipeLoader->setArgument('$recipes', $configuration['recipes']);
+    }
+
+    private function registerStyles(ContainerBuilder $containerBuilder, array $configuration): void
+    {
+        $containerBuilder->registerForAutoconfiguration(StylesLoaderInterface::class)
+            ->addTag('document_compiler.style_loader');
+
+        $stylesRepositoryConfig = $this->addSimpleDefinition($containerBuilder, StylesRepository::class);
+        $stylesRepositoryConfig->setArgument(
+            '$loaders',
+            new TaggedIteratorArgument(
+                'document_compiler.style_loader',
+                null,
+                'getName'
+            )
+        );
+
+        $configStylesLoader = $this->addSimpleDefinition($containerBuilder, ConfigStylesLoader::class);
+        $configStylesLoader->setArgument('$styles', $configuration['styles']);
     }
 
     private function registerEdt(ContainerBuilder $container): void
