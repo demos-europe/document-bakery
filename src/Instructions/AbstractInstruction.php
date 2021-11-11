@@ -25,6 +25,7 @@ abstract class AbstractInstruction implements InstructionInterface
      */
     protected $renderContent;
 
+    /** @var RecipeDataBag */
     protected $recipeDataBag;
 
     /**
