@@ -11,6 +11,7 @@ use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
+use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
@@ -42,13 +43,15 @@ class Bakery
     private $entityManager;
     /** @var PrefilledTypeProvider  */
     private $prefilledTypeProvider;
+    private StylesRepository $stylesRepository;
 
     public function __construct(
         InstructionFactory     $elementFactory,
         EntityManagerInterface $entityManager,
         DrupalFilterParser     $drupalFilterParser,
         RecipeRepository       $recipeRepository,
-        PrefilledTypeProvider  $prefilledTypeProvider
+        PrefilledTypeProvider  $prefilledTypeProvider,
+        StylesRepository        $stylesRepository
     )
     {
         $this->elementFactory = $elementFactory;
@@ -57,6 +60,7 @@ class Bakery
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
         $this->prefilledTypeProvider = $prefilledTypeProvider;
+        $this->stylesRepository = $stylesRepository;
     }
 
     /**
@@ -67,6 +71,7 @@ class Bakery
     public function create(string $recipeName, array $queryVariables): ?WriterInterface
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
+        $globalStylesConfig = $this->stylesRepository->getAll();
 
         $this->datapoolManager = new DatapoolManager(
             $recipeConfig['queries'],

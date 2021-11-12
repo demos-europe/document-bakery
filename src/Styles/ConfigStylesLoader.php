@@ -32,6 +32,6 @@ class ConfigStylesLoader implements StylesLoaderInterface
 
     public function availableStyles(): array
     {
-        return array_keys($this->styles);
+        return $this->styles;
     }
 }

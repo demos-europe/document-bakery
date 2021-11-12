@@ -44,6 +44,13 @@ class StylesRepository
         return $this->loaders[$this->styleNameCache[$styleName]]->load($styleName);
     }
 
+    public function getAll(): array
+    {
+        $this->buildStyleNameCacheIfRequired();
+
+        return $this->styleNameCache;
+    }
+
     private function buildStyleNameCacheIfRequired(): void
     {
         if (0 === count($this->styleNameCache)) {
@@ -53,15 +60,15 @@ class StylesRepository
 
     private function buildStyleNameCache(): void
     {
-        foreach ($this->loaders as $loaderName => $loader) {
+        foreach ($this->loaders as $loader) {
             $availableStyles = $loader->availableStyles();
 
-            foreach ($availableStyles as $styleName) {
+            foreach ($availableStyles as $styleName => $style) {
                 if (array_key_exists($styleName, $this->styleNameCache)) {
                     StyleException::duplicateStyleFound($styleName);
                 }
 
-                $this->styleNameCache[$styleName] = $loaderName;
+                $this->styleNameCache[$styleName] = $style;
             }
         }
     }

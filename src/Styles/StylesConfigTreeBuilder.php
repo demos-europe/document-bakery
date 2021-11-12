@@ -12,6 +12,19 @@ class StylesConfigTreeBuilder implements ConfigurationInterface
 
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        return new TreeBuilder('styles');
+        $treeBuilder = new TreeBuilder('styles');
+        $treeBuilder->getRootNode()
+            ->arrayPrototype()
+                ->performNoDeepMerging()
+                ->info('There can and will be multiple recipes. All need to follow this schema.')
+                ->children()
+                    ->scalarNode('instruction_type')
+                    ->end()
+                    ->arrayNode('attributes')
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end()
+            ->end();
+        return $treeBuilder;
     }
 }
