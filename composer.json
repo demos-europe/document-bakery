@@ -18,6 +18,11 @@
       "DemosEurope\\DocumentBakery\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "DemosEurope\\DocumentBakery\\Tests\\": "tests/"
+    }
+  },
   "repositories": [
     {
       "type": "composer",
@@ -40,6 +45,9 @@
   "require-dev": {
     "repman-io/composer-plugin": "^1.1",
     "phpstan/phpstan": "^0.12.99",
-    "friendsofphp/php-cs-fixer": "^3.0"
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "phpunit/phpunit": "^9.5",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.3",
+    "nyholm/symfony-bundle-test": "^1.8"
   }
 }
