@@ -15,7 +15,7 @@ class StylesRepository
     private iterable $loaders;
 
     /**
-     * @var array<string, string>
+     * @var array<string, array>
      */
     private $styleNameCache;
 
@@ -41,14 +41,16 @@ class StylesRepository
             StyleException::styleNotFound($styleName);
         }
 
-        return $this->loaders[$this->styleNameCache[$styleName]]->load($styleName);
+        return $this->styleNameCache[$styleName];
     }
 
-    public function getAll(): array
+    public function addRecipeStyles(array $recipeStyles): void
     {
         $this->buildStyleNameCacheIfRequired();
 
-        return $this->styleNameCache;
+        foreach ($recipeStyles as $styleName => $style) {
+            $this->styleNameCache[$styleName] = $style;
+        }
     }
 
     private function buildStyleNameCacheIfRequired(): void

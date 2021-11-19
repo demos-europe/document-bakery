@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
+use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
@@ -24,6 +25,9 @@ class RecipeDataBag
      * @var mixed
      */
     private $currentInstructionData;
+
+    /** @var StylesRepository */
+    private $stylesRepository;
 
     public function __construct()
     {
@@ -46,6 +50,16 @@ class RecipeDataBag
     public function setFormat(array $format): void
     {
         $this->format = $format;
+    }
+
+    public function setStylesRepository(StylesRepository $stylesRepository): void
+    {
+        $this->stylesRepository = $stylesRepository;
+    }
+
+    public function getStyle(string $styleName): array
+    {
+        return $this->stylesRepository->get($styleName);
     }
 
     public function getCurrentParentElement(): AbstractElement

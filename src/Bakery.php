@@ -67,7 +67,6 @@ class Bakery
     public function create(string $recipeName, array $queryVariables): ?WriterInterface
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
-        $globalStylesConfig = $this->stylesRepository->getAll();
 
         $this->datapoolManager = new DatapoolManager(
             $recipeConfig['queries'],
@@ -78,6 +77,9 @@ class Bakery
         );
         if (isset($recipeConfig['format'])) {
             $this->recipeDataBag->setFormat($recipeConfig['format']);
+        }
+        if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
+            $this->stylesRepository->addRecipeStyles($recipeConfig['styles']);
         }
         $this->processInstructions($recipeConfig['instructions']);
 
