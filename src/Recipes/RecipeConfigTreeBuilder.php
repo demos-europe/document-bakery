@@ -91,7 +91,7 @@ class RecipeConfigTreeBuilder implements ConfigurationInterface
                 ->end()
                 ->booleanNode('iterate')
                 ->end()
-                ->variableNode('options')
+                ->variableNode('style')
                 ->end()
                 ->append($this->addInstructionsArrayNode('children', ++$depth))
             ->end()

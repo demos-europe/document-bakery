@@ -81,6 +81,7 @@ class Bakery
         if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
             $this->stylesRepository->addRecipeStyles($recipeConfig['styles']);
         }
+        $this->recipeDataBag->setStylesRepository($this->stylesRepository);
         $this->processInstructions($recipeConfig['instructions']);
 
         $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
@@ -109,8 +110,7 @@ class Bakery
                 $this->setCurrentInstructionDataFromPath($datapool, $pathArray);
             }
 
-            $instructionClass->setCurrentConfigInstruction($instruction);
-            $instructionClass->setDataFromRecipeDataBag($this->recipeDataBag);
+            $instructionClass->initializeInstruction($instruction, $this->recipeDataBag);
             $instructionClass->render();
 
             // Iterate over children instructions

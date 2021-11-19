@@ -15,4 +15,9 @@ class StyleException extends \Exception
     {
         return new self("Found duplicate style with name: '$name'");
     }
+
+    public static function noStyleInformationFoundForInstruction(string $instructionName): self
+    {
+        return new self("The style attribute was declared without either a style name or attributes for instruction '$instructionName'");
+    }
 }

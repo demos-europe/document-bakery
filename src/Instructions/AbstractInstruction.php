@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
@@ -25,6 +26,9 @@ abstract class AbstractInstruction implements InstructionInterface
      */
     protected $renderContent;
 
+    /** @var array */
+    protected $styleContent;
+
     /** @var RecipeDataBag */
     protected $recipeDataBag;
 
@@ -38,17 +42,22 @@ abstract class AbstractInstruction implements InstructionInterface
         $this->twigRenderer = $twigRenderer;
     }
 
-    public function getCurrentConfigInstruction(): array
+    /**
+     * @throws StyleException
+     */
+    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void
     {
-        return $this->currentConfigInstruction;
+        $this->setCurrentConfigInstruction($instruction);
+        $this->setDataFromRecipeDataBag($recipeDataBag);
+        $this->setStyleContent();
     }
 
-    public function setCurrentConfigInstruction(array $currentConfigInstruction): void
+    protected function setCurrentConfigInstruction(array $currentConfigInstruction): void
     {
         $this->currentConfigInstruction = $currentConfigInstruction;
     }
 
-    public function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
+    protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
     {
         $this->recipeDataBag = $recipeDataBag;
         $this->currentParentElement = $recipeDataBag->getCurrentParentElement();
@@ -61,6 +70,26 @@ abstract class AbstractInstruction implements InstructionInterface
 
         // return only instruction name, not full class name incl. namespace
         return array_pop($explodedName);
+    }
+
+    /**
+     * @throws StyleException
+     */
+    protected function setStyleContent(): void
+    {
+        $styleContent = null;
+        if (isset($this->currentConfigInstruction['style']) && 0 < count($this->currentConfigInstruction['style'])) {
+            if (isset($this->currentConfigInstruction['style']['attributes'])) {
+                $styleContent = $this->currentConfigInstruction['style']['attributes'];
+            } elseif (isset($this->currentConfigInstruction['style']['name'])) {
+                $style = $this->recipeDataBag->getStyle($this->currentConfigInstruction['style']['name']);
+                $styleContent = $style['attributes'];
+            } else {
+                throw StyleException::noStyleInformationFoundForInstruction($this->currentConfigInstruction['name']);
+            }
+        }
+
+        $this->styleContent = $styleContent;
     }
 
     /**

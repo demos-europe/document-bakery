@@ -8,12 +8,7 @@ class Table extends AbstractInstruction implements StructuralInstructionInterfac
 {
     public function render(): void
     {
-        $tableStyle = array(
-            'borderColor' => '006699',
-            'borderSize'  => 6,
-            'cellMargin'  => 50
-        );
-        $table = $this->currentParentElement->addTable($tableStyle);
+        $table = $this->currentParentElement->addTable($this->styleContent);
         $this->recipeDataBag->addToWorkingPath($table);
     }
 }
