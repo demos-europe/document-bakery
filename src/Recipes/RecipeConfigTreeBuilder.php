@@ -60,13 +60,13 @@ class RecipeConfigTreeBuilder implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
-                    ->append($this->addElementsArrayNode('elements'))
+                    ->append($this->addInstructionsArrayNode('instructions'))
                 ->end()
             ->end();
         return $treeBuilder;
     }
 
-    public function addElementsArrayNode($name, $depth = 0): NodeDefinition
+    public function addInstructionsArrayNode($name, $depth = 0): NodeDefinition
     {
         if (6 > $depth) {
             $treeBuilder =  new TreeBuilder($name, 'variable');
@@ -75,7 +75,7 @@ class RecipeConfigTreeBuilder implements ConfigurationInterface
         $treeBuilder = new TreeBuilder($name);
 
         $node = $treeBuilder->getRootNode();
-        if ('elements' === $name) {
+        if ('instructions' === $name) {
             $node->isRequired()
                 ->requiresAtLeastOneElement();
         }
@@ -93,7 +93,7 @@ class RecipeConfigTreeBuilder implements ConfigurationInterface
                 ->end()
                 ->variableNode('options')
                 ->end()
-                ->append($this->addElementsArrayNode('children', ++$depth))
+                ->append($this->addInstructionsArrayNode('children', ++$depth))
             ->end()
         ->end();
 

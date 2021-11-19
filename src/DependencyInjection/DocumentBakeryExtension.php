@@ -52,25 +52,25 @@ class DocumentBakeryExtension extends Extension
             TwigRenderer::class
         ]);
 
-        // document_compiler.element
-        $elementsDefaults = new Definition();
-        $elementsDefaults->setAutoconfigured(true);
-        $elementsDefaults->setAutowired(true);
-        $elementsDefaults->addTag('document_compiler.element');
+        // document_compiler.instruction
+        $instructionsDefaults = new Definition();
+        $instructionsDefaults->setAutoconfigured(true);
+        $instructionsDefaults->setAutowired(true);
+        $instructionsDefaults->addTag('document_compiler.instruction');
 
         $containerBuilder->registerForAutoconfiguration(InstructionInterface::class);
 
         $this->yamlFileLoader->registerClasses(
-            $elementsDefaults,
+            $instructionsDefaults,
             'DemosEurope\\DocumentBakery\\Instructions\\',
             __DIR__ . '/../Instructions'
         );
 
-        $elementFactoryDefinition = $this->addSimpleDefinition($containerBuilder, InstructionFactory::class);
-        $elementFactoryDefinition->setArgument(
-            '$elements',
+        $instructionFactoryDefinition = $this->addSimpleDefinition($containerBuilder, InstructionFactory::class);
+        $instructionFactoryDefinition->setArgument(
+            '$instructions',
             new TaggedIteratorArgument(
-                'document_compiler.element',
+                'document_compiler.instruction',
             null,
             'getName')
         );

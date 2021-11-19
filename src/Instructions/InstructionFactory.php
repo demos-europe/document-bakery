@@ -11,16 +11,16 @@ class InstructionFactory
     /**
      * @var array<string, AbstractInstruction>
      */
-    private $elements = [];
+    private $instructions = [];
 
     /**
      * InstructionFactory constructor.
-     * @param \Traversable|iterable  $elements !tagged_iterator document_compiler.element
+     * @param \Traversable|iterable  $instructions !tagged_iterator document_compiler.instruction
      *
      */
-    public function __construct(iterable $elements)
+    public function __construct(iterable $instructions)
     {
-        $this->elements = iterator_to_array($elements);
+        $this->instructions = iterator_to_array($instructions);
     }
 
     /**
@@ -28,10 +28,10 @@ class InstructionFactory
      */
     public function lookupForName(string $name): AbstractInstruction
     {
-        if (array_key_exists($name, $this->elements)) {
-            return $this->elements[$name];
+        if (array_key_exists($name, $this->instructions)) {
+            return $this->instructions[$name];
         }
 
-        throw DocumentGenerationException::elementNotFound($name);
+        throw DocumentGenerationException::instructionNotFound($name);
     }
 }

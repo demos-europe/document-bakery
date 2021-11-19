@@ -23,7 +23,7 @@ class RecipeDataBag
     /**
      * @var mixed
      */
-    private $currentElementData;
+    private $currentInstructionData;
 
     public function __construct()
     {
@@ -63,9 +63,9 @@ class RecipeDataBag
         $this->workingPath[] = $phpWord->addSection();
     }
 
-    public function addToWorkingPath(AbstractElement $element): void
+    public function addToWorkingPath(AbstractElement $instruction): void
     {
-        $this->workingPath[] = $element;
+        $this->workingPath[] = $instruction;
     }
 
     public function removeFromWorkingPath(): void
@@ -76,16 +76,16 @@ class RecipeDataBag
     /**
      * @return mixed
      */
-    public function getCurrentElementData()
+    public function getCurrentInstructionData()
     {
-        return $this->currentElementData;
+        return $this->currentInstructionData;
     }
 
     /**
-     * @param mixed $currentElementData
+     * @param mixed $currentInstructionData
      */
-    public function setCurrentElementData($currentElementData): void
+    public function setCurrentInstructionData($currentInstructionData): void
     {
-        $this->currentElementData = $currentElementData;
+        $this->currentInstructionData = $currentInstructionData;
     }
 }

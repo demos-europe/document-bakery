@@ -16,17 +16,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
-use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
 {
     /** @var InstructionFactory */
-    private $elementFactory;
-
-    /** @var AbstractElement */
-    public $currentStructureElement;
+    private $instructionFactory;
 
     /** @var RecipeDataBag */
     private $recipeDataBag;
@@ -46,7 +42,7 @@ class Bakery
     private StylesRepository $stylesRepository;
 
     public function __construct(
-        InstructionFactory     $elementFactory,
+        InstructionFactory     $instructionFactory,
         EntityManagerInterface $entityManager,
         DrupalFilterParser     $drupalFilterParser,
         RecipeRepository       $recipeRepository,
@@ -54,7 +50,7 @@ class Bakery
         StylesRepository        $stylesRepository
     )
     {
-        $this->elementFactory = $elementFactory;
+        $this->instructionFactory = $instructionFactory;
         $this->recipeDataBag = new RecipeDataBag();
         $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
@@ -83,7 +79,7 @@ class Bakery
         if (isset($recipeConfig['format'])) {
             $this->recipeDataBag->setFormat($recipeConfig['format']);
         }
-        $this->processElements($recipeConfig['elements']);
+        $this->processInstructions($recipeConfig['instructions']);
 
         $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
         if (null === $writerObject) {
@@ -93,59 +89,57 @@ class Bakery
     }
 
     /**
-     * @param array $elements
+     * @param array $instructions
      * @throws DocumentGenerationException|AccessException
      */
-    private function processElements(array $elements): void
+    private function processInstructions(array $instructions): void
     {
-        foreach ($elements as $element) {
-            $elementClass = $this->elementFactory->lookupForName($element['name']);
+        foreach ($instructions as $instruction) {
+            $instructionClass = $this->instructionFactory->lookupForName($instruction['name']);
 
             // How to handle options? Do they have to be declared like in phpWord?
             // And then can just be handed over.
             // Or do we need a mapper to map from options to correct phpWord styles?
 
             // handle data lookup
-            if (array_key_exists('path', $element)) {
-                [$datapool, $pathArray] = $this->datapoolManager->parsePath($element['path']);
-                $this->setCurrentElementDataFromPath($datapool, $pathArray);
+            if (array_key_exists('path', $instruction)) {
+                [$datapool, $pathArray] = $this->datapoolManager->parsePath($instruction['path']);
+                $this->setCurrentInstructionDataFromPath($datapool, $pathArray);
             }
 
-            $elementClass->setCurrentConfigElement($element);
-            $elementClass->setDataFromRecipeDataBag($this->recipeDataBag);
-            $elementClass->render();
+            $instructionClass->setCurrentConfigInstruction($instruction);
+            $instructionClass->setDataFromRecipeDataBag($this->recipeDataBag);
+            $instructionClass->render();
 
-            // Iterate over children elements
-            if (array_key_exists('children', $element)) {
-                $this->processElements($element['children']);
+            // Iterate over children instructions
+            if (array_key_exists('children', $instruction)) {
+                $this->processInstructions($instruction['children']);
             }
 
-            // Now that all children have been processed, we can remove the structural element from the working path
-            if ($elementClass instanceof StructuralInstructionInterface) {
+            // Now that all children have been processed, we can remove the structural instruction from the working path
+            if ($instructionClass instanceof StructuralInstructionInterface) {
                 $this->recipeDataBag->removeFromWorkingPath();
             }
 
             // recall yourself if iterate is true and there are still entities left in the used datapool
             if (isset($datapool)) {
                 $isDatapoolEmpty = $datapool->isEmpty();
-                if (array_key_exists('iterate', $element) && $element['iterate'] && !$isDatapoolEmpty) {
+                if (array_key_exists('iterate', $instruction) && $instruction['iterate'] && !$isDatapoolEmpty) {
                     $datapool->setNextCurrentEntity();
-                    $this->processElements([$element]);
+                    $this->processInstructions([$instruction]);
                 }
             }
         }
     }
 
     /**
-     * @param Datapool $datapool
-     * @param array $pathArray
      * @throws AccessException
      */
-    private function setCurrentElementDataFromPath(Datapool $datapool, array $pathArray): void
+    private function setCurrentInstructionDataFromPath(Datapool $datapool, array $pathArray): void
     {
         if (0 !== count($pathArray)) {
-            $currentElementData = $datapool->getDataFromPath($pathArray);
-            $this->recipeDataBag->setCurrentElementData($currentElementData);
+            $currentInstructionData = $datapool->getDataFromPath($pathArray);
+            $this->recipeDataBag->setCurrentInstructionData($currentInstructionData);
         }
     }
 }

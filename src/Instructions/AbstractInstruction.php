@@ -6,17 +6,17 @@ namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\TwigRenderer;
-use PhpOffice\PhpWord\Element\AbstractElement as PhpWordAbstractElement;
+use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractInstruction implements InstructionInterface
 {
     /**
      * @var array
      */
-    protected $currentConfigElement;
+    protected $currentConfigInstruction;
 
     /**
-     * @var PhpWordAbstractElement
+     * @var AbstractElement
      */
     protected $currentParentElement;
 
@@ -38,14 +38,14 @@ abstract class AbstractInstruction implements InstructionInterface
         $this->twigRenderer = $twigRenderer;
     }
 
-    public function getCurrentConfigElement(): array
+    public function getCurrentConfigInstruction(): array
     {
-        return $this->currentConfigElement;
+        return $this->currentConfigInstruction;
     }
 
-    public function setCurrentConfigElement(array $currentConfigElement): void
+    public function setCurrentConfigInstruction(array $currentConfigInstruction): void
     {
-        $this->currentConfigElement = $currentConfigElement;
+        $this->currentConfigInstruction = $currentConfigInstruction;
     }
 
     public function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
@@ -59,7 +59,7 @@ abstract class AbstractInstruction implements InstructionInterface
     {
         $explodedName = explode('\\', static::class);
 
-        // return only element name, not full class name incl. namespace
+        // return only instruction name, not full class name incl. namespace
         return array_pop($explodedName);
     }
 
@@ -68,15 +68,15 @@ abstract class AbstractInstruction implements InstructionInterface
      */
     protected function getRenderContent(RecipeDataBag $recipeDataBag)
     {
-        // Only get renderContent for non-structural elements as structural elements do not render anything
+        // Only get renderContent for non-structural instructions as structural instructions do not render anything
         if ($this instanceof StructuralInstructionInterface) {
             return null;
         }
 
-        if (isset($this->currentConfigElement['path'])) {
-            $renderContent = $recipeDataBag->getCurrentElementData();
+        if (isset($this->currentConfigInstruction['path'])) {
+            $renderContent = $recipeDataBag->getCurrentInstructionData();
         } else {
-            $renderContent = $this->currentConfigElement['content'];
+            $renderContent = $this->currentConfigInstruction['content'];
         }
 
         return $renderContent;

@@ -6,9 +6,9 @@ namespace DemosEurope\DocumentBakery\Exceptions;
 
 class DocumentGenerationException extends \Exception
 {
-    public static function elementNotFound($elementName): self
+    public static function instructionNotFound($instructionName): self
     {
-        return new self("Couldn't find Element: '$elementName'");
+        return new self("Couldn't find instruction: '$instructionName'");
     }
 
     public static function noValueForPlaceholder($placeholder): self
