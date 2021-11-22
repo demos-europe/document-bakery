@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-class Cell extends AbstractInstruction implements StructuralInstructionInterface
+class Cell extends AbstractPhpWordInstruction implements StructuralInstructionInterface
 {
     public function render(): void
     {

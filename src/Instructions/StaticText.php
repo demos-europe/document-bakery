@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-class StaticText extends AbstractInstruction
+class StaticText extends AbstractPhpWordInstruction
 {
     public function render(): void
     {

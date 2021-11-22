@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-class TableRow extends AbstractInstruction implements StructuralInstructionInterface
+class TableRow extends AbstractPhpWordInstruction implements StructuralInstructionInterface
 {
     public function render(): void
     {

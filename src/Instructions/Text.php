@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-class Text extends AbstractInstruction
+class Text extends AbstractPhpWordInstruction
 {
     public function render(): void
     {

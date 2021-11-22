@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\Instructions;
 
 use PhpOffice\PhpWord\Style\ListItem;
 
-class UnorderedListItem extends AbstractInstruction
+class UnorderedListItem extends AbstractPhpWordInstruction
 {
 
     public function render(): void
