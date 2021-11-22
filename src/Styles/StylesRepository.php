@@ -44,13 +44,11 @@ class StylesRepository
         return $this->styleNameCache[$styleName];
     }
 
-    public function addRecipeStyles(array $recipeStyles): void
+    public function mergeStyles(array $recipeStyles): void
     {
         $this->buildStyleNameCacheIfRequired();
 
-        foreach ($recipeStyles as $styleName => $style) {
-            $this->styleNameCache[$styleName] = $style;
-        }
+        $this->styleNameCache = array_replace_recursive($this->styleNameCache, $recipeStyles);
     }
 
     private function buildStyleNameCacheIfRequired(): void

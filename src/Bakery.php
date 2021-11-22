@@ -79,7 +79,7 @@ class Bakery
             $this->recipeDataBag->setFormat($recipeConfig['format']);
         }
         if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
-            $this->stylesRepository->addRecipeStyles($recipeConfig['styles']);
+            $this->stylesRepository->mergeStyles($recipeConfig['styles']);
         }
         $this->recipeDataBag->setStylesRepository($this->stylesRepository);
         $this->processInstructions($recipeConfig['instructions']);
