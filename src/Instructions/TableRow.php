@@ -8,7 +8,7 @@ class TableRow extends AbstractPhpWordInstruction implements StructuralInstructi
 {
     public function render(): void
     {
-        $row = $this->currentParentElement->addRow();
+        $row = $this->currentParentElement->addRow(null, $this->styleContent['row']);
         $this->recipeDataBag->addToWorkingPath($row);
     }
 }

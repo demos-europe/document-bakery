@@ -11,6 +11,12 @@ class UnorderedListItem extends AbstractPhpWordInstruction
 
     public function render(): void
     {
-        $this->currentParentElement->addListItem($this->renderContent, 0, null, ListItem::TYPE_BULLET_FILLED);
+        $this->currentParentElement->addListItem(
+            $this->renderContent,
+            0,
+            $this->styleContent['font'],
+            ListItem::TYPE_BULLET_FILLED,
+            $this->styleContent['paragraph']
+        );
     }
 }

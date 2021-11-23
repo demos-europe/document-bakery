@@ -8,6 +8,11 @@ class CellSimpleText extends AbstractPhpWordInstruction
 {
     public function render(): void
     {
-        $this->currentParentElement->addCell()->addText($this->renderContent);
+        $this->currentParentElement->addCell(null, $this->styleContent['cell'])
+            ->addText(
+                $this->renderContent,
+                $this->styleContent['font'],
+                $this->styleContent['paragraph']
+            );
     }
 }

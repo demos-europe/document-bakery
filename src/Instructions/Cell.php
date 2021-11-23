@@ -8,7 +8,7 @@ class Cell extends AbstractPhpWordInstruction implements StructuralInstructionIn
 {
     public function render(): void
     {
-        $cell = $this->currentParentElement->addCell();
+        $cell = $this->currentParentElement->addCell(null, $this->styleContent['cell']);
         $this->recipeDataBag->addToWorkingPath($cell);
     }
 }

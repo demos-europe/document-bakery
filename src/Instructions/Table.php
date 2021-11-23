@@ -8,7 +8,7 @@ class Table extends AbstractPhpWordInstruction implements StructuralInstructionI
 {
     public function render(): void
     {
-        $table = $this->currentParentElement->addTable($this->styleContent);
+        $table = $this->currentParentElement->addTable($this->styleContent['table']);
         $this->recipeDataBag->addToWorkingPath($table);
     }
 }
