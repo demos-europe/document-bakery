@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
+use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
@@ -57,6 +58,9 @@ class RecipeDataBag
         $this->stylesRepository = $stylesRepository;
     }
 
+    /**
+     * @throws StyleException
+     */
     public function getStyle(string $styleName): array
     {
         return $this->stylesRepository->get($styleName);

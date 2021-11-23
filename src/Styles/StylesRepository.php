@@ -35,10 +35,13 @@ class StylesRepository
         return array_key_exists($styleName, $this->styleNameCache);
     }
 
+    /**
+     * @throws StyleException
+     */
     public function get(string $styleName): array
     {
         if (!$this->has($styleName)) {
-            StyleException::styleNotFound($styleName);
+            throw StyleException::styleNotFound($styleName);
         }
 
         return $this->styleNameCache[$styleName];

@@ -6,6 +6,7 @@ namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
+use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
@@ -37,18 +38,23 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
      */
     protected function setStyleContent(): void
     {
-        $styleContent = null;
+        $styleContent = [];
         if (isset($this->currentConfigInstruction['style']) && 0 < count($this->currentConfigInstruction['style'])) {
-            if (isset($this->currentConfigInstruction['style']['attributes'])) {
-                $styleContent = $this->currentConfigInstruction['style']['attributes'];
-            } elseif (isset($this->currentConfigInstruction['style']['name'])) {
+            // get attributes of style
+            if (isset($this->currentConfigInstruction['style']['name'])) {
                 $style = $this->recipeDataBag->getStyle($this->currentConfigInstruction['style']['name']);
                 $styleContent = $style['attributes'];
-            } else {
-                throw StyleException::noStyleInformationFoundForInstruction($this->currentConfigInstruction['name']);
+            }
+            // get local style attributes and merge them into existing styles
+            if (isset($this->currentConfigInstruction['style']['attributes'])) {
+                $styleContent = array_replace_recursive($styleContent, $this->currentConfigInstruction['style']['attributes']);
             }
         }
 
-        $this->styleContent = $styleContent;
+        // Now we need to map the attributes to the possible phpWord style sets
+        $phpWordMapper = new PhpWordStyleOptions();
+        $mappedStyles = $phpWordMapper->getMappedStyleOptions($styleContent);
+
+        $this->styleContent = $mappedStyles;
     }
 }
