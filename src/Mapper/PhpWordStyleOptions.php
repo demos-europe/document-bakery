@@ -63,6 +63,8 @@ class PhpWordStyleOptions
     private function isSectionStyleOption(string $option): bool
     {
         return in_array($option, [
+            'borderColor',
+            'borderSize',
             'borderBottomColor',
             'borderBottomSize',
             'borderLeftColor',
@@ -145,6 +147,8 @@ class PhpWordStyleOptions
         return in_array($option, [
             'alignment',
             'bgColor',
+            'borderColor',
+            'borderSize',
             'borderBottomColor',
             'borderBottomSize',
             'borderLeftColor',
@@ -153,10 +157,11 @@ class PhpWordStyleOptions
             'borderRightSize',
             'borderTopColor',
             'borderTopSize',
-            'CellMarginTop',
-            'CellMarginRight',
-            'CellMarginBottom',
-            'CellMarginLeft',
+            'cellMargin',
+            'cellMarginTop',
+            'cellMarginRight',
+            'cellMarginBottom',
+            'cellMarginLeft',
             'indent',
             'width',
             'unit',
@@ -190,6 +195,9 @@ class PhpWordStyleOptions
     {
         return in_array($option, [
             'bgColor',
+            'borderColor',
+            'borderSize',
+            'borderStyle',
             'borderBottomColor',
             'borderBottomSize',
             'borderBottomStyle',
