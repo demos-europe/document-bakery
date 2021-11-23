@@ -15,6 +15,16 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
      */
     protected $currentParentElement;
 
+    /**
+     * @throws StyleException
+     */
+    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void
+    {
+        $this->setCurrentConfigInstruction($instruction);
+        $this->setDataFromRecipeDataBag($recipeDataBag);
+        $this->setStyleContent();
+    }
+
     protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
     {
         $this->recipeDataBag = $recipeDataBag;
@@ -41,24 +51,4 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
 
         $this->styleContent = $styleContent;
     }
-
-    /**
-     * @return mixed
-     */
-    protected function getRenderContent(RecipeDataBag $recipeDataBag)
-    {
-        // Only get renderContent for non-structural instructions as structural instructions do not render anything
-        if ($this instanceof StructuralInstructionInterface) {
-            return null;
-        }
-
-        if (isset($this->currentConfigInstruction['path'])) {
-            $renderContent = $recipeDataBag->getCurrentInstructionData();
-        } else {
-            $renderContent = $this->currentConfigInstruction['content'];
-        }
-
-        return $renderContent;
-    }
-
 }

@@ -36,15 +36,14 @@ abstract class AbstractInstruction implements InstructionInterface
         $this->twigRenderer = $twigRenderer;
     }
 
+    abstract protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void;
+
+    abstract protected function setStyleContent(): void;
+
     /**
      * @throws StyleException
      */
-    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void
-    {
-        $this->setCurrentConfigInstruction($instruction);
-        $this->setDataFromRecipeDataBag($recipeDataBag);
-        $this->setStyleContent();
-    }
+    abstract public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void;
 
     protected function setCurrentConfigInstruction(array $currentConfigInstruction): void
     {
@@ -57,5 +56,24 @@ abstract class AbstractInstruction implements InstructionInterface
 
         // return only instruction name, not full class name incl. namespace
         return array_pop($explodedName);
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getRenderContent(RecipeDataBag $recipeDataBag)
+    {
+        // Only get renderContent for non-structural instructions as structural instructions do not render anything
+        if ($this instanceof StructuralInstructionInterface) {
+            return null;
+        }
+
+        if (isset($this->currentConfigInstruction['path'])) {
+            $renderContent = $recipeDataBag->getCurrentInstructionData();
+        } else {
+            $renderContent = $this->currentConfigInstruction['content'];
+        }
+
+        return $renderContent;
     }
 }
