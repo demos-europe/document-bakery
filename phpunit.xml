@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit
+        defaultTestSuite="All"
+        colors="true"
+        verbose="true">
+    <testsuites>
+        <testsuite name="All">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
