@@ -61,13 +61,20 @@ class Bakery
 
     /**
      * @throws DocumentGenerationException
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @throws AccessException
      */
     public function create(string $recipeName, array $queryVariables): ?WriterInterface
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
+        return $this->createFromRecipe($recipeConfig, $queryVariables);
+    }
+
+    /**
+     * @throws DocumentGenerationException
+     */
+    public function createFromRecipe (array $recipeConfig, array $queryVariables): ?WriterInterface
+    {
         $this->datapoolManager = new DatapoolManager(
             $recipeConfig['queries'],
             $queryVariables,
@@ -84,8 +91,9 @@ class Bakery
         $this->recipeDataBag->setStylesRepository($this->stylesRepository);
         $this->processInstructions($recipeConfig['instructions']);
 
-        $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
-        if (null === $writerObject) {
+        try {
+            $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
+        } catch (\Exception $e) {
             throw DocumentGenerationException::writerObjectGenerationFailed();
         }
         return $writerObject;

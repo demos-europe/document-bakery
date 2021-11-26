@@ -18,7 +18,7 @@ class DocumentBakeryBundleTest extends BaseBundleTestCase
         $container = $kernel->getContainer();
 
         $bundle = $container->get(Bakery::class );
-        $this->assertInstanceOf(Bakery::class, $bundle);
+        self::assertInstanceOf(Bakery::class, $bundle);
     }
 
     protected function getBundleClass(): string
