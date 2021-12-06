@@ -57,10 +57,6 @@ class RecipeProcessor
         foreach ($instructions as $instruction) {
             $instructionClass = $this->instructionFactory->lookupForName($instruction['name']);
 
-            // How to handle options? Do they have to be declared like in phpWord?
-            // And then can just be handed over.
-            // Or do we need a mapper to map from options to correct phpWord styles?
-
             // handle data lookup
             if (array_key_exists('path', $instruction)) {
                 [$datapool, $pathArray] = $this->datapoolManager->parsePath($instruction['path']);

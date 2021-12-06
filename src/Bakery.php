@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
-use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
@@ -16,7 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
-use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
