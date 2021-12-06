@@ -8,6 +8,7 @@ use DemosEurope\DocumentBakery\Data\Datapool;
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
+use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use EightDashThree\Wrapping\Contracts\AccessException;
@@ -34,7 +35,7 @@ class RecipeProcessor
     }
 
     /**
-     * @throws DocumentGenerationException
+     * @throws DocumentGenerationException|StyleException
      */
     public function createFromRecipe (): ?WriterInterface
     {
@@ -50,7 +51,7 @@ class RecipeProcessor
 
     /**
      * @param array $instructions
-     * @throws DocumentGenerationException|AccessException
+     * @throws DocumentGenerationException|AccessException|StyleException
      */
     private function processInstructions(array $instructions): void
     {
