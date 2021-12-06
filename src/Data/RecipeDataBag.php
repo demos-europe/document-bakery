@@ -17,6 +17,9 @@ class RecipeDataBag
      */
     private $format;
 
+    /** @var array */
+    private $instructions;
+
     /**
      * @var array
      */
@@ -105,5 +108,21 @@ class RecipeDataBag
     public function setCurrentInstructionData($currentInstructionData): void
     {
         $this->currentInstructionData = $currentInstructionData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInstructions(): array
+    {
+        return $this->instructions;
+    }
+
+    /**
+     * @param array $instructions
+     */
+    public function setInstructions(array $instructions): void
+    {
+        $this->instructions = $instructions;
     }
 }

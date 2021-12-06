@@ -24,12 +24,6 @@ class Bakery
     /** @var InstructionFactory */
     private $instructionFactory;
 
-    /** @var RecipeDataBag */
-    private $recipeDataBag;
-
-    /** @var DatapoolManager */
-    private $datapoolManager;
-
     /** @var DrupalFilterParser */
     private $drupalFilterParser;
 
@@ -51,7 +45,6 @@ class Bakery
     )
     {
         $this->instructionFactory = $instructionFactory;
-        $this->recipeDataBag = new RecipeDataBag();
         $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
@@ -67,15 +60,8 @@ class Bakery
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
-        return $this->createFromRecipe($recipeConfig, $queryVariables);
-    }
-
-    /**
-     * @throws DocumentGenerationException
-     */
-    public function createFromRecipe (array $recipeConfig, array $queryVariables): ?WriterInterface
-    {
-        $this->datapoolManager = new DatapoolManager(
+        $recipeDataBag = new RecipeDataBag();
+        $datapoolManager = new DatapoolManager(
             $recipeConfig['queries'],
             $queryVariables,
             $this->entityManager,
@@ -83,73 +69,16 @@ class Bakery
             $this->prefilledTypeProvider
         );
         if (isset($recipeConfig['format'])) {
-            $this->recipeDataBag->setFormat($recipeConfig['format']);
+            $recipeDataBag->setFormat($recipeConfig['format']);
         }
         if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
             $this->stylesRepository->mergeStyles($recipeConfig['styles']);
         }
-        $this->recipeDataBag->setStylesRepository($this->stylesRepository);
-        $this->processInstructions($recipeConfig['instructions']);
+        $recipeDataBag->setStylesRepository($this->stylesRepository);
+        $recipeDataBag->setInstructions($recipeConfig['instructions']);
 
-        try {
-            $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
-        } catch (\Exception $e) {
-            throw DocumentGenerationException::writerObjectGenerationFailed();
-        }
-        return $writerObject;
-    }
+        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag);
 
-    /**
-     * @param array $instructions
-     * @throws DocumentGenerationException|AccessException
-     */
-    private function processInstructions(array $instructions): void
-    {
-        foreach ($instructions as $instruction) {
-            $instructionClass = $this->instructionFactory->lookupForName($instruction['name']);
-
-            // How to handle options? Do they have to be declared like in phpWord?
-            // And then can just be handed over.
-            // Or do we need a mapper to map from options to correct phpWord styles?
-
-            // handle data lookup
-            if (array_key_exists('path', $instruction)) {
-                [$datapool, $pathArray] = $this->datapoolManager->parsePath($instruction['path']);
-                $this->setCurrentInstructionDataFromPath($datapool, $pathArray);
-            }
-
-            $instructionClass->initializeInstruction($instruction, $this->recipeDataBag);
-            $instructionClass->render();
-
-            // Iterate over children instructions
-            if (array_key_exists('children', $instruction)) {
-                $this->processInstructions($instruction['children']);
-            }
-
-            // Now that all children have been processed, we can remove the structural instruction from the working path
-            if ($instructionClass instanceof StructuralInstructionInterface) {
-                $this->recipeDataBag->removeFromWorkingPath();
-            }
-
-            // recall yourself if iterate is true and there are still entities left in the used datapool
-            if (isset($datapool)) {
-                $isDatapoolEmpty = $datapool->isEmpty();
-                if (array_key_exists('iterate', $instruction) && $instruction['iterate'] && !$isDatapoolEmpty) {
-                    $datapool->setNextCurrentEntity();
-                    $this->processInstructions([$instruction]);
-                }
-            }
-        }
-    }
-
-    /**
-     * @throws AccessException
-     */
-    private function setCurrentInstructionDataFromPath(Datapool $datapool, array $pathArray): void
-    {
-        if (0 !== count($pathArray)) {
-            $currentInstructionData = $datapool->getDataFromPath($pathArray);
-            $this->recipeDataBag->setCurrentInstructionData($currentInstructionData);
-        }
+        return $recipeProcessor->createFromRecipe();
     }
 }
