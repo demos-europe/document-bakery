@@ -33,8 +33,8 @@
   "require": {
     "php": ">=7.4",
 
-    "8-3/eight-dash-three": "dev-main",
-    "8-3/eight-dash-three-dql": "dev-main",
+    "8-3/eight-dash-three": "0.4.0",
+    "8-3/eight-dash-three-dql": "0.4.0",
     "phpoffice/phpword": "~0.18",
     "symfony/config": "^4.4 || ^5.3 || ^6.0",
     "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
