@@ -12,26 +12,18 @@ use PhpOffice\PhpWord\Settings;
 
 class RecipeDataBag
 {
-    /**
-     * @var array
-     */
-    private $format;
+    private array $format;
 
-    /** @var array */
-    private $instructions;
+    private array $instructions;
 
-    /**
-     * @var array
-     */
-    private $workingPath;
+    private array $workingPath;
 
     /**
      * @var mixed
      */
     private $currentInstructionData;
 
-    /** @var StylesRepository */
-    private $stylesRepository;
+    private StylesRepository $stylesRepository;
 
     public function __construct()
     {

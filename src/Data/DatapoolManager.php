@@ -11,6 +11,7 @@ use EightDashThree\DqlQuerying\PropertyAccessors\ProxyPropertyAccessor;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
 use EightDashThree\Querying\Utilities\ConditionEvaluator;
+use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
 use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 use EightDashThree\Wrapping\Utilities\PropertyReader;
@@ -20,22 +21,18 @@ use EightDashThree\Wrapping\WrapperFactories\WrapperObjectFactory;
 
 class DatapoolManager
 {
-    /**
-     * @var array
-     */
-    private $datapools = [];
+    private array $datapools = [];
 
-    private $queries;
+    private array $queries;
 
-    private $queryVariables;
-    /**
-     * @var DrupalFilterParser
-     */
-    private $drupalFilterParser;
+    private array $queryVariables;
 
-    /** @var WrapperFactoryInterface */
-    private $wrapperFactory;
+    private DrupalFilterParser $drupalFilterParser;
+
+    private WrapperFactoryInterface $wrapperFactory;
+
     private EntityManagerInterface $entityManager;
+
     private PrefilledTypeProvider $prefilledTypeProvider;
 
     public function __construct(
@@ -55,7 +52,6 @@ class DatapoolManager
     }
 
     /**
-     * @param string $name
      * @throws DocumentGenerationException
      */
     public function create(string $name): void
@@ -66,15 +62,14 @@ class DatapoolManager
         $this->datapools[$name] = new Datapool($dataFetcher);
     }
 
-    private function getDataFetcher($parsedQuery): DataFetcher
+    private function getDataFetcher(array $parsedQuery): DataFetcher
     {
         $objectProvider = $this->getResourceProvider($parsedQuery['resource_type']);
         return new DataFetcher($parsedQuery, $objectProvider, $this->wrapperFactory, $this->drupalFilterParser);
     }
 
     /**
-     * @param string $path
-     * @return array
+     * @return array<int, mixed>
      * @throws DocumentGenerationException
      */
     public function parsePath(string $path): array
@@ -91,7 +86,7 @@ class DatapoolManager
         return [$datapool, $pathArray];
     }
 
-    private function getResourceProvider($ResourceType): TypeRestrictedEntityProvider
+    private function getResourceProvider(ReadableTypeInterface $ResourceType): TypeRestrictedEntityProvider
     {
         $doctrineProvider = new DoctrineOrmEntityProvider(
             $ResourceType->getEntityClass(),
@@ -120,8 +115,8 @@ class DatapoolManager
     }
 
     /**
-     * @param array $query
-     * @return array
+     * @param array<string, string> $query
+     * @return array<string, string>
      * @throws DocumentGenerationException
      */
     private function parseQuery(array $query): array

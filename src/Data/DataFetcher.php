@@ -8,6 +8,7 @@ use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Querying\Contracts\FunctionInterface;
 use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
+use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
 use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
 
@@ -30,7 +31,7 @@ class DataFetcher
 
     private TypeRestrictedEntityProvider $resourceProvider;
 
-    private string $resourceType;
+    private ReadableTypeInterface $resourceType;
 
     private WrapperFactoryInterface $wrapperFactory;
 

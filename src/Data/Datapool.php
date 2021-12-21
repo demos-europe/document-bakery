@@ -9,16 +9,11 @@ use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
 
 class Datapool
 {
-    /**
-     * @var WrapperObject
-     */
-    private $currentEntity;
+    private WrapperObject $currentEntity;
 
-    private $currentIterationNumber = 0;
-    /**
-     * @var DataFetcher
-     */
-    private $dataFetcher;
+    private int $currentIterationNumber = 0;
+
+    private DataFetcher $dataFetcher;
 
     public function __construct(DataFetcher $dataFetcher)
     {
@@ -34,7 +29,7 @@ class Datapool
     }
 
     /**
-     * @param array $path
+     * @param array<int, string> $path
      * @return WrapperObject|mixed|null
      * @throws AccessException
      */
