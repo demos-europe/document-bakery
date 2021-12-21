@@ -11,7 +11,7 @@ class InstructionFactory
     /**
      * @var array<string, AbstractInstruction>
      */
-    private $instructions = [];
+    private $instructions;
 
     /**
      * InstructionFactory constructor.

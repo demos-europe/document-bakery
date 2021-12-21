@@ -8,7 +8,6 @@ class StaticText extends AbstractPhpWordInstruction
 {
     public function render(): void
     {
-        $renderContent = $this->twigRenderer->render($this->renderContent);
-        $this->currentParentElement->addText($renderContent, $this->styleContent['font'], $this->styleContent['paragraph']);
+        $this->currentParentElement->addText($this->renderContent, $this->styleContent['font'], $this->styleContent['paragraph']);
     }
 }

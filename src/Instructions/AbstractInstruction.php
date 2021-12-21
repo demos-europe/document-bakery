@@ -11,25 +11,20 @@ use DemosEurope\DocumentBakery\TwigRenderer;
 abstract class AbstractInstruction implements InstructionInterface
 {
     /**
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $currentConfigInstruction;
+    protected array $currentConfigInstruction;
 
     /**
      * @var mixed
      */
     protected $renderContent;
 
-    /** @var array */
-    protected $styleContent;
+    protected array $styleContent;
 
-    /** @var RecipeDataBag */
-    protected $recipeDataBag;
+    protected RecipeDataBag $recipeDataBag;
 
-    /**
-     * @var TwigRenderer
-     */
-    protected $twigRenderer;
+    protected TwigRenderer $twigRenderer;
 
     public function __construct(TwigRenderer $twigRenderer)
     {
@@ -71,7 +66,7 @@ abstract class AbstractInstruction implements InstructionInterface
         if (isset($this->currentConfigInstruction['path'])) {
             $renderContent = $recipeDataBag->getCurrentInstructionData();
         } else {
-            $renderContent = $this->currentConfigInstruction['content'];
+            $renderContent = $this->twigRenderer->render($this->currentConfigInstruction['content']);
         }
 
         return $renderContent;

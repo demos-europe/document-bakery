@@ -12,14 +12,9 @@ use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
 {
-    /**
-     * @var AbstractElement
-     */
-    protected $currentParentElement;
-    /**
-     * @var PhpWordStyleOptions
-     */
-    private $phpWordStylesMapper;
+    protected AbstractElement $currentParentElement;
+
+    private PhpWordStyleOptions $phpWordStylesMapper;
 
     public function __construct(PhpWordStyleOptions $phpWordStylesMapper, TwigRenderer $twigRenderer)
     {
@@ -28,6 +23,7 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
     }
 
     /**
+     * @param array<string, mixed> $instruction
      * @throws StyleException
      */
     public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void
