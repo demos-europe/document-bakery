@@ -6,30 +6,33 @@ namespace DemosEurope\DocumentBakery\Data;
 
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
+use EightDashThree\Querying\Contracts\FunctionInterface;
 use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
 use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
 
 class DataFetcher
 {
+    /**
+     * @var array|FunctionInterface
+     */
     private $conditions = [];
 
-    private $sort = [];
+    private array $sort = [];
 
-    private $offset = 0;
+    private int $offset = 0;
 
-    private $limit = 5;
+    private int $limit = 5;
 
-    private $items = [];
+    private array $items = [];
 
-    private $continueLoading = false;
+    private bool $continueLoading = false;
 
-    private $resourceProvider;
+    private TypeRestrictedEntityProvider $resourceProvider;
 
-    private $resourceType;
+    private string $resourceType;
 
-    /** @var WrapperFactoryInterface  */
-    private $wrapperFactory;
+    private WrapperFactoryInterface $wrapperFactory;
 
     public function __construct(
         array $query,
@@ -68,7 +71,11 @@ class DataFetcher
 
     public function loadNextChunkOfItems(): void
     {
-        $this->items = $this->resourceProvider->getObjects([$this->conditions], $this->sort, $this->offset, $this->limit);
+        try {
+            $this->items = $this->resourceProvider->getObjects([$this->conditions], $this->sort, $this->offset, $this->limit);
+        } catch (\Exception $e) {
+            $this->items = [];
+        }
         // Always increase the offset to not load data twice
         $this->offset += $this->limit;
         // If less items than the limit were loaded, it means we reached the end. So we don't need to load again
