@@ -17,10 +17,10 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class RecipeProcessor
 {
-    /** @var RecipeDataBag */
-    private $recipeDataBag;
-    /** @var InstructionFactory  */
-    private $instructionFactory;
+    private RecipeDataBag $recipeDataBag;
+
+    private InstructionFactory $instructionFactory;
+
     private DatapoolManager $datapoolManager;
 
     public function __construct(
@@ -50,7 +50,7 @@ class RecipeProcessor
     }
 
     /**
-     * @param array $instructions
+     * @param array<string, mixed> $instructions
      * @throws DocumentGenerationException|AccessException|StyleException
      */
     private function processInstructions(array $instructions): void
@@ -89,6 +89,7 @@ class RecipeProcessor
     }
 
     /**
+     * @param array<int, string> $pathArray
      * @throws AccessException
      */
     private function setCurrentInstructionDataFromPath(Datapool $datapool, array $pathArray): void

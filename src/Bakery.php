@@ -18,18 +18,16 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
 {
-    /** @var InstructionFactory */
-    private $instructionFactory;
+    private InstructionFactory $instructionFactory;
 
-    /** @var DrupalFilterParser */
-    private $drupalFilterParser;
+    private DrupalFilterParser $drupalFilterParser;
 
-    /** @var RecipeRepository  */
-    private $recipeRepository;
-    /** @var EntityManagerInterface  */
-    private $entityManager;
-    /** @var PrefilledTypeProvider  */
-    private $prefilledTypeProvider;
+    private RecipeRepository $recipeRepository;
+
+    private EntityManagerInterface $entityManager;
+
+    private PrefilledTypeProvider $prefilledTypeProvider;
+
     private StylesRepository $stylesRepository;
 
     public function __construct(
@@ -50,14 +48,15 @@ class Bakery
     }
 
     /**
+     * @param array<string, string> $queryVariables
      * @throws DocumentGenerationException
-     * @throws AccessException
+     * @throws AccessException|Exceptions\StyleException
      */
     public function create(string $recipeName, array $queryVariables): ?WriterInterface
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
-        $recipeDataBag = new RecipeDataBag();
+        $recipeDataBag = $this->getRecipeDataBag($recipeConfig);
         $datapoolManager = new DatapoolManager(
             $recipeConfig['queries'],
             $queryVariables,
@@ -65,6 +64,18 @@ class Bakery
             $this->drupalFilterParser,
             $this->prefilledTypeProvider
         );
+
+        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag);
+
+        return $recipeProcessor->createFromRecipe();
+    }
+
+    /**
+     * @param array<string, mixed> $recipeConfig
+     */
+    private function getRecipeDataBag(array $recipeConfig): RecipeDataBag
+    {
+        $recipeDataBag = new RecipeDataBag();
         if (isset($recipeConfig['format'])) {
             $recipeDataBag->setFormat($recipeConfig['format']);
         }
@@ -74,8 +85,6 @@ class Bakery
         $recipeDataBag->setStylesRepository($this->stylesRepository);
         $recipeDataBag->setInstructions($recipeConfig['instructions']);
 
-        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag);
-
-        return $recipeProcessor->createFromRecipe();
+        return $recipeDataBag;
     }
 }
