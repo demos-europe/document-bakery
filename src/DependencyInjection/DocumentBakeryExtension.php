@@ -26,9 +26,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class DocumentBakeryExtension extends Extension
 {
-    private $yamlFileLoader;
+    private YamlFileLoader $yamlFileLoader;
 
-    public function load(array $configs, ContainerBuilder $container)
+    /**
+     * @param array<string, mixed> $configs
+     */
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $processedConfiguration = $this->processConfiguration($configuration, $configs);
@@ -38,7 +41,7 @@ class DocumentBakeryExtension extends Extension
             new FileLocator(__DIR__.'/../../config')
         );
 
-        $this->registerEdt($container);
+        $this->registerEdt();
 
         $this->registerDefinitions($container, $processedConfiguration);
     }
@@ -54,6 +57,13 @@ class DocumentBakeryExtension extends Extension
             TwigRenderer::class
         ]);
 
+        $this->registerInstructions($containerBuilder);
+        $this->registerRecipes($containerBuilder, $configuration);
+        $this->registerStyles($containerBuilder, $configuration);
+    }
+
+    private function registerInstructions(ContainerBuilder $containerBuilder): void
+    {
         // document_compiler.instruction
         $instructionsDefaults = new Definition();
         $instructionsDefaults->setAutoconfigured(true);
@@ -73,14 +83,14 @@ class DocumentBakeryExtension extends Extension
             '$instructions',
             new TaggedIteratorArgument(
                 'document_compiler.instruction',
-            null,
-            'getName')
+                null,
+                'getName')
         );
-
-        $this->registerRecipes($containerBuilder, $configuration);
-        $this->registerStyles($containerBuilder, $configuration);
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function registerRecipes(ContainerBuilder $containerBuilder, array $configuration): void
     {
         $containerBuilder->registerForAutoconfiguration(RecipeLoaderInterface::class)
@@ -100,6 +110,9 @@ class DocumentBakeryExtension extends Extension
         $configRecipeLoader->setArgument('$recipes', $configuration['recipes']);
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function registerStyles(ContainerBuilder $containerBuilder, array $configuration): void
     {
         $containerBuilder->registerForAutoconfiguration(StylesLoaderInterface::class)
@@ -119,7 +132,7 @@ class DocumentBakeryExtension extends Extension
         $configStylesLoader->setArgument('$styles', $configuration['styles']);
     }
 
-    private function registerEdt(ContainerBuilder $container): void
+    private function registerEdt(): void
     {
         $this->yamlFileLoader->load('services_edt.yml');
     }
