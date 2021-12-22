@@ -57,6 +57,8 @@ class DocumentBakeryExtension extends Extension
             TwigRenderer::class
         ]);
 
+        $containerBuilder->getDefinition(Bakery::class)->setPublic(true);
+
         $this->registerInstructions($containerBuilder);
         $this->registerRecipes($containerBuilder, $configuration);
         $this->registerStyles($containerBuilder, $configuration);
