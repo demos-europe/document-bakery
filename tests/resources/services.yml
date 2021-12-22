@@ -1,0 +1,7 @@
+services:
+  EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider:
+    autoconfigure: false
+    autowire: true
+    lazy: true
+    arguments:
+      $types: !tagged app.resourceType
