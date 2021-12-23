@@ -16,5 +16,5 @@ interface InstructionInterface
      */
     public static function getName(): string;
 
-    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void;
+    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void;
 }

@@ -65,7 +65,8 @@ abstract class InstructionsTestCase extends TestCase
     public function prepareInstruction(array $instruction): void {
         $this->resetRecipeDataBag();
 
-        $this->instructionUnderTest->initializeInstruction($instruction, static::$recipeDataBag);
+        $mappedStyles = [];
+        $this->instructionUnderTest->initializeInstruction($instruction, static::$recipeDataBag, $mappedStyles);
     }
 
     /**

@@ -65,7 +65,7 @@ class Bakery
             $this->prefilledTypeProvider
         );
 
-        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag);
+        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag, $this->stylesRepository);
 
         return $recipeProcessor->createFromRecipe();
     }
@@ -82,7 +82,6 @@ class Bakery
         if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
             $this->stylesRepository->mergeStyles($recipeConfig['styles']);
         }
-        $recipeDataBag->setStylesRepository($this->stylesRepository);
         $recipeDataBag->setInstructions($recipeConfig['instructions']);
 
         return $recipeDataBag;

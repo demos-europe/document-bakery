@@ -11,6 +11,8 @@ use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
+use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
+use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use EightDashThree\Wrapping\Contracts\AccessException;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
@@ -22,16 +24,19 @@ class RecipeProcessor
     private InstructionFactory $instructionFactory;
 
     private DatapoolManager $datapoolManager;
+    private StylesRepository $stylesRepository;
 
     public function __construct(
         DatapoolManager $datapoolManager,
         InstructionFactory $instructionFactory,
-        RecipeDataBag $recipeDataBag
+        RecipeDataBag $recipeDataBag,
+        StylesRepository $stylesRepository
     )
     {
         $this->recipeDataBag = $recipeDataBag;
         $this->instructionFactory = $instructionFactory;
         $this->datapoolManager = $datapoolManager;
+        $this->stylesRepository = $stylesRepository;
     }
 
     /**
@@ -64,7 +69,8 @@ class RecipeProcessor
                 $this->setCurrentInstructionDataFromPath($datapool, $pathArray);
             }
 
-            $instructionClass->initializeInstruction($instruction, $this->recipeDataBag);
+            $mappedStyles = $this->getMappedStyleContent($instruction);
+            $instructionClass->initializeInstruction($instruction, $this->recipeDataBag, $mappedStyles);
             $instructionClass->render();
 
             // Iterate over children instructions
@@ -98,6 +104,28 @@ class RecipeProcessor
             $currentInstructionData = $datapool->getDataFromPath($pathArray);
             $this->recipeDataBag->setCurrentInstructionData($currentInstructionData);
         }
+    }
+
+    /**
+     * @throws StyleException
+     */
+    private function getMappedStyleContent(array $instruction): array
+    {
+        $styleContent = [];
+        if (isset($instruction['style']) && 0 < count($instruction['style'])) {
+            // get attributes of style
+            if (isset($instruction['style']['name'])) {
+                $style = $this->stylesRepository->get($instruction['style']['name']);
+                $styleContent = $style['attributes'];
+            }
+            // get local style attributes and merge them into existing styles
+            if (isset($instruction['style']['attributes'])) {
+                $styleContent = array_replace_recursive($styleContent, $instruction['style']['attributes']);
+            }
+        }
+
+        // Now we need to map the attributes to the possible phpWord style sets
+        return PhpWordStyleOptions::getMappedStyleOptions($styleContent);
     }
 
 }

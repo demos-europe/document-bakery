@@ -33,12 +33,15 @@ abstract class AbstractInstruction implements InstructionInterface
 
     abstract protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void;
 
-    abstract protected function setStyleContent(): void;
+    protected function setStyleContent(array $styleContent): void
+    {
+        $this->styleContent = $styleContent;
+    }
 
     /**
      * @throws StyleException
      */
-    abstract public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag): void;
+    abstract public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void;
 
     protected function setCurrentConfigInstruction(array $currentConfigInstruction): void
     {
