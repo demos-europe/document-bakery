@@ -7,6 +7,8 @@ namespace DemosEurope\DocumentBakery\Tests\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\Text;
+use PhpOffice\PhpWord\Element\AbstractContainer;
+use PhpOffice\PhpWord\Element\Section;
 
 class TextTest extends InstructionsTestCase
 {
@@ -23,9 +25,9 @@ class TextTest extends InstructionsTestCase
             'content' => 'Simple Test',
         ];
 
-        $recipeDataBag = new RecipeDataBag();
-        $recipeDataBag->setCurrentInstructionData('TestingText');
-        $recipeDataBag->setInstructions(
+        $this->recipeDataBag = new RecipeDataBag();
+        $this->recipeDataBag->setCurrentInstructionData('TestingText');
+        $this->recipeDataBag->setInstructions(
             [
                 [
                     'name' => 'Text',
@@ -33,7 +35,7 @@ class TextTest extends InstructionsTestCase
                 ]
             ]
         );
-        $recipeDataBag->setFormat(
+        $this->recipeDataBag->setFormat(
             [
                 'name' => 'A4LandscapeFormat',
                 'options' => [],
@@ -55,11 +57,24 @@ class TextTest extends InstructionsTestCase
             'line' => NULL,
         ];
 
-        $this->prepareInstruction($instruction, $recipeDataBag, $mappedStyles);
+        $this->prepareInstruction($instruction, $this->recipeDataBag, $mappedStyles);
     }
 
     public function testIsWorkingInstance(): void
     {
         self::assertInstanceOf(Text::class, $this->instructionUnderTest);
+        $this->instructionUnderTest->render();
+        /**
+         * @var AbstractContainer $currentParentElement
+         */
+        $currentParentElement = $this->recipeDataBag->getCurrentParentElement();
+        $elementList = $currentParentElement->getElements();
+        /**
+         * @var \PhpOffice\PhpWord\Element\Text $newElement
+         */
+        $newElement = $elementList[0];
+        self::assertInstanceOf(Section::class, $currentParentElement);
+        self::assertInstanceOf(\PhpOffice\PhpWord\Element\Text::class, $newElement);
+        self::assertEquals('Simple Test', $newElement->getText());
     }
 }
