@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\Mapper;
 
 class PhpWordStyleOptions
 {
-    public function getMappedStyleOptions(array $options): array
+    public static function getMappedStyleOptions(array $options): array
     {
         $mappedStyles = [
             'section' => null,
@@ -23,44 +23,44 @@ class PhpWordStyleOptions
         ];
 
         foreach ($options as $option => $value) {
-            if ($this->isSectionStyleOption($option)) {
+            if (self::isSectionStyleOption($option)) {
                 $mappedStyles['section'][$option] = $value;
             }
-            if ($this->isFontStyleOption($option)) {
+            if (self::isFontStyleOption($option)) {
                 $mappedStyles['font'][$option] = $value;
             }
-            if ($this->isParagraphStyleOption($option)) {
+            if (self::isParagraphStyleOption($option)) {
                 $mappedStyles['paragraph'][$option] = $value;
             }
-            if ($this->isTableStyleOption($option)) {
+            if (self::isTableStyleOption($option)) {
                 $mappedStyles['table'][$option] = $value;
             }
-            if ($this->isRowStyleOption($option)) {
+            if (self::isRowStyleOption($option)) {
                 $mappedStyles['row'][$option] = $value;
             }
-            if ($this->isCellStyleOption($option)) {
+            if (self::isCellStyleOption($option)) {
                 $mappedStyles['cell'][$option] = $value;
             }
-            if ($this->isImageStyleOption($option)) {
+            if (self::isImageStyleOption($option)) {
                 $mappedStyles['image'][$option] = $value;
             }
-            if ($this->isNumberingLevelStyleOption($option)) {
+            if (self::isNumberingLevelStyleOption($option)) {
                 $mappedStyles['numberingLevel'][$option] = $value;
             }
-            if ($this->isChartStyleOption($option)) {
+            if (self::isChartStyleOption($option)) {
                 $mappedStyles['chart'][$option] = $value;
             }
-            if ($this->isTocStyleOption($option)) {
+            if (self::isTocStyleOption($option)) {
                 $mappedStyles['toc'][$option] = $value;
             }
-            if ($this->isLineStyleOption($option)) {
+            if (self::isLineStyleOption($option)) {
                 $mappedStyles['line'][$option] = $value;
             }
         }
         return $mappedStyles;
     }
 
-    private function isSectionStyleOption(string $option): bool
+    private static function isSectionStyleOption(string $option): bool
     {
         return in_array($option, [
             'borderColor',
@@ -90,7 +90,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isFontStyleOption(string $option): bool
+    private static function isFontStyleOption(string $option): bool
     {
         return in_array($option, [
             'allCaps',
@@ -115,7 +115,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isParagraphStyleOption(string $option): bool
+    private static function isParagraphStyleOption(string $option): bool
     {
         return in_array($option, [
             'alignment',
@@ -142,7 +142,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isTableStyleOption(string $option): bool
+    private static function isTableStyleOption(string $option): bool
     {
         return in_array($option, [
             'alignment',
@@ -182,7 +182,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isRowStyleOption(string $option): bool
+    private static function isRowStyleOption(string $option): bool
     {
         return in_array($option, [
             'cantSplit',
@@ -191,7 +191,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isCellStyleOption(string $option): bool
+    private static function isCellStyleOption(string $option): bool
     {
         return in_array($option, [
             'bgColor',
@@ -218,7 +218,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isImageStyleOption(string $option): bool
+    private static function isImageStyleOption(string $option): bool
     {
         return in_array($option, [
             'alignment',
@@ -234,7 +234,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isNumberingLevelStyleOption(string $option): bool
+    private static function isNumberingLevelStyleOption(string $option): bool
     {
         return in_array($option, [
             'alignment',
@@ -251,7 +251,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isChartStyleOption(string $option): bool
+    private static function isChartStyleOption(string $option): bool
     {
         return in_array($option, [
             'width',
@@ -272,7 +272,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isTocStyleOption(string $option): bool
+    private static function isTocStyleOption(string $option): bool
     {
         return in_array($option, [
             'tabLeader',
@@ -281,7 +281,7 @@ class PhpWordStyleOptions
         ], true);
     }
 
-    private function isLineStyleOption(string $option): bool
+    private static function isLineStyleOption(string $option): bool
     {
         return in_array($option, [
             'weight',

@@ -9,8 +9,6 @@ class PhpWordStyleOptionsTest extends TestCase
 {
     public function testGetMappedStyleOptions(): void
     {
-        $sut = new PhpWordStyleOptions();
-
         $testArray = [
             'borderBottomColor' => '00ff77',
             'borderTopSize' => 4,
@@ -19,7 +17,7 @@ class PhpWordStyleOptionsTest extends TestCase
             'dash' => 'dash',
         ];
 
-        $result = $sut->getMappedStyleOptions($testArray);
+        $result = PhpWordStyleOptions::getMappedStyleOptions($testArray);
 
         self::assertEquals(['borderBottomColor', 'borderTopSize'], array_keys($result['section']));
         self::assertEquals(['borderBottomColor', 'borderTopSize'], array_keys($result['table']));

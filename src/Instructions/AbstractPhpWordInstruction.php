@@ -7,20 +7,11 @@ namespace DemosEurope\DocumentBakery\Instructions;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
-use DemosEurope\DocumentBakery\TwigRenderer;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
 {
     protected AbstractElement $currentParentElement;
-
-    private PhpWordStyleOptions $phpWordStylesMapper;
-
-    public function __construct(PhpWordStyleOptions $phpWordStylesMapper, TwigRenderer $twigRenderer)
-    {
-        parent::__construct($twigRenderer);
-        $this->phpWordStylesMapper = $phpWordStylesMapper;
-    }
 
     /**
      * @param array<string, mixed> $instruction
@@ -59,6 +50,6 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
         }
 
         // Now we need to map the attributes to the possible phpWord style sets
-        $this->styleContent = $this->phpWordStylesMapper->getMappedStyleOptions($styleContent);
+        $this->styleContent = PhpWordStyleOptions::getMappedStyleOptions($styleContent);
     }
 }
