@@ -60,11 +60,11 @@ abstract class InstructionsTestCase extends TestCase
         $this->instructionUnderTest = $this->createInstructionInstance($instructionUnderTest);
     }
 
-    public function prepareInstruction(array $instruction): void {
-        $this->resetRecipeDataBag();
+    public function prepareInstruction(array $instruction, $recipeDataBag, $mappedStyles): void {
+        //$this->resetRecipeDataBag();
 
-        $mappedStyles = [];
-        $this->instructionUnderTest->initializeInstruction($instruction, static::$recipeDataBag, $mappedStyles);
+        //$mappedStyles = [];
+        $this->instructionUnderTest->initializeInstruction($instruction, $recipeDataBag, $mappedStyles);
     }
 
     /**
@@ -107,8 +107,8 @@ abstract class InstructionsTestCase extends TestCase
         self::$recipeDataBag = new RecipeDataBag();
     }
 
-    public static function assertCurrentRepositoryPathEquals($expected): void
-    {
-        self::assertEquals($expected, self::$recipeDataBag->getCurrentPath());
-    }
+    //public static function assertCurrentRepositoryPathEquals($expected): void
+    //{
+    //    self::assertEquals($expected, self::$recipeDataBag->getCurrentPath());
+    //}
 }
