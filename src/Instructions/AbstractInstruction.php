@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
-use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\TwigRenderer;
 
 abstract class AbstractInstruction implements InstructionInterface
@@ -38,9 +37,6 @@ abstract class AbstractInstruction implements InstructionInterface
         $this->styleContent = $styleContent;
     }
 
-    /**
-     * @throws StyleException
-     */
     abstract public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void;
 
     protected function setCurrentConfigInstruction(array $currentConfigInstruction): void

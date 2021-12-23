@@ -7,7 +7,6 @@ namespace DemosEurope\DocumentBakery\Tests\Instructions;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
 use DemosEurope\DocumentBakery\Instructions\PhpWordInstructionInterface;
-use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +29,6 @@ abstract class InstructionsTestCase extends TestCase
 
         $this->addSetupDependency(PhpWordInstructionInterface::class, static function (): array {
             return [
-                new PhpWordStyleOptions(),
                 new TwigRenderer(),
             ];
         });

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
-use DemosEurope\DocumentBakery\Exceptions\StyleException;
-use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
@@ -15,7 +13,6 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
 
     /**
      * @param array<string, mixed> $instruction
-     * @throws StyleException
      */
     public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void
     {
