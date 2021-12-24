@@ -61,10 +61,47 @@ abstract class InstructionsTestCase extends TestCase
     }
 
     public function prepareInstruction(array $instruction, $recipeDataBag, $mappedStyles): void {
-        //$this->resetRecipeDataBag();
-
-        //$mappedStyles = [];
         $this->instructionUnderTest->initializeInstruction($instruction, $recipeDataBag, $mappedStyles);
+    }
+
+    protected function getDefaultRecipeDataBag(string $instructionData): RecipeDataBag
+    {
+        $recipeDataBag = new RecipeDataBag();
+        $recipeDataBag->setCurrentInstructionData($instructionData);
+        $recipeDataBag->setInstructions(
+            [
+                [
+                    'name' => 'Text',
+                    'content' => 'Simple Test',
+                ]
+            ]
+        );
+        $recipeDataBag->setFormat(
+            [
+                'name' => 'A4LandscapeFormat',
+                'options' => [],
+                'output' => 'docx'
+            ]
+        );
+
+        return $recipeDataBag;
+    }
+
+    protected function getDefaultMappedStyles(): array
+    {
+        return [
+            'section' => NULL,
+            'font' => NULL,
+            'paragraph' => NULL,
+            'table' => NULL,
+            'row' => NULL,
+            'cell' => NULL,
+            'image' => NULL,
+            'numberingLevel' => NULL,
+            'chart' => NULL,
+            'toc' => NULL,
+            'line' => NULL,
+        ];
     }
 
     /**
@@ -103,12 +140,4 @@ abstract class InstructionsTestCase extends TestCase
         return $this->dependencySetupMap[$instructionInterface]();
     }
 
-    private function resetRecipeDataBag(): void {
-        self::$recipeDataBag = new RecipeDataBag();
-    }
-
-    //public static function assertCurrentRepositoryPathEquals($expected): void
-    //{
-    //    self::assertEquals($expected, self::$recipeDataBag->getCurrentPath());
-    //}
 }

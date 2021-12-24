@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Tests\Instructions;
 
-
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\Text;
 use PhpOffice\PhpWord\Element\AbstractContainer;
 use PhpOffice\PhpWord\Element\Section;
@@ -25,37 +23,9 @@ class TextTest extends InstructionsTestCase
             'content' => 'Simple Test',
         ];
 
-        $this->recipeDataBag = new RecipeDataBag();
-        $this->recipeDataBag->setCurrentInstructionData('TestingText');
-        $this->recipeDataBag->setInstructions(
-            [
-                [
-                    'name' => 'Text',
-                    'content' => 'Simple Test',
-                ]
-            ]
-        );
-        $this->recipeDataBag->setFormat(
-            [
-                'name' => 'A4LandscapeFormat',
-                'options' => [],
-                'output' => 'docx'
-            ]
-        );
-
-        $mappedStyles = [
-            'section' => NULL,
-            'font' => NULL,
-            'paragraph' => NULL,
-            'table' => NULL,
-            'row' => NULL,
-            'cell' => NULL,
-            'image' => NULL,
-            'numberingLevel' => NULL,
-            'chart' => NULL,
-            'toc' => NULL,
-            'line' => NULL,
-        ];
+        // Instruction data is only used if the instruction has a path attribute and not content.
+        $this->recipeDataBag = $this->getDefaultRecipeDataBag('Testing Text');
+        $mappedStyles = $this->getDefaultMappedStyles();
 
         $this->prepareInstruction($instruction, $this->recipeDataBag, $mappedStyles);
     }
