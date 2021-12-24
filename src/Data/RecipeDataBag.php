@@ -59,9 +59,9 @@ class RecipeDataBag
         $this->workingPath[] = $phpWord->addSection();
     }
 
-    public function addToWorkingPath(AbstractElement $instruction): void
+    public function addToWorkingPath(AbstractElement $phpWordElement): void
     {
-        $this->workingPath[] = $instruction;
+        $this->workingPath[] = $phpWordElement;
     }
 
     public function removeFromWorkingPath(): void
