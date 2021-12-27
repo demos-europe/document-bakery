@@ -8,6 +8,7 @@ use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Querying\Contracts\FunctionInterface;
 use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
+use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
 use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
@@ -28,6 +29,10 @@ class DataFetcher
     private array $items = [];
 
     private bool $continueLoading = false;
+
+    private WrapperObject $currentEntity;
+
+    private int $currentIterationNumber = 0;
 
     private TypeRestrictedEntityProvider $resourceProvider;
 
@@ -53,6 +58,8 @@ class DataFetcher
             $this->setContinueLoading(true);
         }
         $this->wrapperFactory = $wrapperFactory;
+        $this->setNextCurrentEntity();
+        $this->currentIterationNumber++;
     }
 
     public function getNextItem(): WrapperObject
@@ -88,6 +95,31 @@ class DataFetcher
     public function getItemCount(): int
     {
         return count($this->items);
+    }
+
+    public function setNextCurrentEntity(): void
+    {
+        $this->currentEntity = $this->getNextItem();
+        $this->currentIterationNumber++;
+    }
+
+    /**
+     * @param array<int, string> $path
+     * @return WrapperObject|mixed|null
+     * @throws AccessException
+     */
+    public function getDataFromPath(array $path)
+    {
+        $currentData = $this->currentEntity;
+        foreach ($path as $property) {
+            $currentData = $currentData->__get($property);
+        }
+        return $currentData;
+    }
+
+    public function isEmpty(): bool
+    {
+        return 0 === $this->getItemCount();
     }
 
 }

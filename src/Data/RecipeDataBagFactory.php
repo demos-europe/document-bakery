@@ -15,7 +15,7 @@ class RecipeDataBagFactory
         $this->recipeRepository = $recipeRepository;
     }
 
-    public function build(string $recipeName): RecipeDataBag
+    public function build(string $recipeName, array $queryVariables): RecipeDataBag
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
@@ -28,6 +28,7 @@ class RecipeDataBagFactory
         }
         $recipeDataBag->setInstructions($recipeConfig['instructions']);
         $recipeDataBag->setQueries($recipeConfig['queries']);
+        $recipeDataBag->setQueryVariables($queryVariables);
 
         return $recipeDataBag;
     }

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Data\Datapool;
-use DemosEurope\DocumentBakery\Data\DatapoolManager;
+use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
@@ -23,11 +22,13 @@ class RecipeProcessor
 
     private InstructionFactory $instructionFactory;
 
-    private DatapoolManager $datapoolManager;
     private StylesRepository $stylesRepository;
 
+    private array $dataProviders = [];
+    private DataFetcherFactory $dataFetcherFactory;
+
     public function __construct(
-        DatapoolManager $datapoolManager,
+        DataFetcherFactory $dataFetcherFactory,
         InstructionFactory $instructionFactory,
         RecipeDataBag $recipeDataBag,
         StylesRepository $stylesRepository
@@ -35,8 +36,8 @@ class RecipeProcessor
     {
         $this->recipeDataBag = $recipeDataBag;
         $this->instructionFactory = $instructionFactory;
-        $this->datapoolManager = $datapoolManager;
         $this->stylesRepository = $stylesRepository;
+        $this->dataFetcherFactory = $dataFetcherFactory;
     }
 
     /**
@@ -71,8 +72,8 @@ class RecipeProcessor
 
             // handle data lookup
             if (array_key_exists('path', $instruction)) {
-                [$datapool, $pathArray] = $this->datapoolManager->parsePath($instruction['path']);
-                $this->setCurrentInstructionDataFromPath($datapool, $pathArray);
+                $instructionDataPath = explode('.', $instruction['path']);
+                $this->setCurrentInstructionDataFromPath($instructionDataPath);
             }
 
             $mappedStyles = $this->getMappedStyleContent($instruction);
@@ -89,11 +90,12 @@ class RecipeProcessor
                 $this->recipeDataBag->removeFromWorkingPath();
             }
 
-            // recall yourself if iterate is true and there are still entities left in the used datapool
-            if (isset($datapool)) {
-                $isDatapoolEmpty = $datapool->isEmpty();
-                if (array_key_exists('iterate', $instruction) && $instruction['iterate'] && !$isDatapoolEmpty) {
-                    $datapool->setNextCurrentEntity();
+            // recall yourself if iterate is true and there are still entities left in the used dataFetcher
+            if (isset($instructionDataPath)) {
+                $dataFetcher = $this->dataProviders[$instructionDataPath[0]];
+                $isDataFetcherEmpty = $dataFetcher->isEmpty();
+                if (array_key_exists('iterate', $instruction) && $instruction['iterate'] && !$isDataFetcherEmpty) {
+                    $dataFetcher->setNextCurrentEntity();
                     $this->processInstructions([$instruction]);
                 }
             }
@@ -101,13 +103,15 @@ class RecipeProcessor
     }
 
     /**
-     * @param array<int, string> $pathArray
-     * @throws AccessException
+     * @param array<int, string> $instructionDataPath
+     * @throws AccessException|DocumentGenerationException
      */
-    private function setCurrentInstructionDataFromPath(Datapool $datapool, array $pathArray): void
+    private function setCurrentInstructionDataFromPath(array $instructionDataPath): void
     {
-        if (0 !== count($pathArray)) {
-            $currentInstructionData = $datapool->getDataFromPath($pathArray);
+        $dataFetcherName = array_shift($instructionDataPath);
+        $this->createDataFetcherIfNotExists($dataFetcherName);
+        if (0 !== count($instructionDataPath)) {
+            $currentInstructionData = $this->dataProviders[$dataFetcherName]->getDataFromPath($instructionDataPath);
             $this->recipeDataBag->setCurrentInstructionData($currentInstructionData);
         }
     }
@@ -132,6 +136,51 @@ class RecipeProcessor
 
         // Now we need to map the attributes to the possible phpWord style sets
         return PhpWordStyleOptions::getMappedStyleOptions($styleContent);
+    }
+
+    /**
+     * @throws DocumentGenerationException
+     */
+    public function createDataFetcher(string $name): void
+    {
+        $query = $this->recipeDataBag->getQueryByName($name);
+        $parsedQuery = $this->parseQuery($query);
+        $dataFetcher = $this->dataFetcherFactory->build($parsedQuery);
+        $this->dataProviders[$name] = $dataFetcher;
+    }
+
+    /**
+     * @throws DocumentGenerationException
+     */
+    public function createDataFetcherIfNotExists(string $dataFetcherName): void
+    {
+        if (!array_key_exists($dataFetcherName, $this->dataProviders)) {
+            $this->createDataFetcher($dataFetcherName);
+        }
+    }
+
+    /**
+     * @param array<string, string> $query
+     * @return array<string, string>
+     * @throws DocumentGenerationException
+     */
+    private function parseQuery(array $query): array
+    {
+        foreach ($query as $key => $value) {
+            if (is_array($value)) {
+                $query[$key] = $this->parseQuery($value);
+            } elseif (is_string($value) && false !== strpos($value, '{{')) {
+                // check if placeholder is present and replace it
+                $trimmedPlaceholder = trim($value, '{}');
+                $queryVariables = $this->recipeDataBag->getQueryVariables();
+                if (!array_key_exists($trimmedPlaceholder, $queryVariables)) {
+                    throw DocumentGenerationException::noValueForPlaceholder($trimmedPlaceholder);
+                }
+                $query[$key] = $queryVariables[$trimmedPlaceholder];
+            }
+        }
+
+        return $query;
     }
 
 }

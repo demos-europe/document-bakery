@@ -16,6 +16,8 @@ class RecipeDataBag
 
     private array $queries;
 
+    private array $queryVariables;
+
     private array $styles;
 
     private array $workingPath;
@@ -30,6 +32,7 @@ class RecipeDataBag
         $this->format = [];
         $this->instructions = [];
         $this->queries = [];
+        $this->queryVariables = [];
         $this->styles = [];
         $this->workingPath = [];
 
@@ -133,10 +136,34 @@ class RecipeDataBag
     }
 
     /**
+     * @return array
+     */
+    public function getQueryByName(string $queryName): array
+    {
+        return $this->queries[$queryName];
+    }
+
+    /**
      * @param array $queries
      */
     public function setQueries(array $queries): void
     {
         $this->queries = $queries;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueryVariables(): array
+    {
+        return $this->queryVariables;
+    }
+
+    /**
+     * @param array $queryVariables
+     */
+    public function setQueryVariables(array $queryVariables): void
+    {
+        $this->queryVariables = $queryVariables;
     }
 }

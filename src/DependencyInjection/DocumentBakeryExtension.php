@@ -6,7 +6,6 @@ namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use DemosEurope\DocumentBakery\Data\DatapoolManagerFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBagFactory;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
@@ -57,7 +56,6 @@ class DocumentBakeryExtension extends Extension
         }, [
             Bakery::class,
             DataFetcherFactory::class,
-            DatapoolManagerFactory::class,
             PhpWordStyleOptions::class,
             RecipeConfigTreeBuilder::class,
             RecipeDataBagFactory::class,

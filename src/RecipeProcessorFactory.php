@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Data\DatapoolManager;
+use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
@@ -13,15 +13,20 @@ class RecipeProcessorFactory
 {
     private InstructionFactory $instructionFactory;
     private StylesRepository $stylesRepository;
+    private DataFetcherFactory $dataFetcherFactory;
 
-    public function __construct(InstructionFactory $instructionFactory, StylesRepository $stylesRepository)
+    public function __construct(
+        DataFetcherFactory $dataFetcherFactory,
+        InstructionFactory $instructionFactory,
+        StylesRepository $stylesRepository)
     {
         $this->instructionFactory = $instructionFactory;
         $this->stylesRepository = $stylesRepository;
+        $this->dataFetcherFactory = $dataFetcherFactory;
     }
 
-    public function build(DatapoolManager $datapoolManager, RecipeDataBag $recipeDataBag): RecipeProcessor
+    public function build(RecipeDataBag $recipeDataBag): RecipeProcessor
     {
-        return new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag, $this->stylesRepository);
+        return new RecipeProcessor($this->dataFetcherFactory, $this->instructionFactory, $recipeDataBag, $this->stylesRepository);
     }
 }
