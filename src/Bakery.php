@@ -4,41 +4,29 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery;
 
-use DemosEurope\DocumentBakery\Data\DatapoolManager;
+use DemosEurope\DocumentBakery\Data\DatapoolManagerFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
-use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
 {
-    private DrupalFilterParser $drupalFilterParser;
-
     private RecipeRepository $recipeRepository;
 
-    private EntityManagerInterface $entityManager;
-
-    private PrefilledTypeProvider $prefilledTypeProvider;
-
     private RecipeProcessorFactory $recipeProcessorFactory;
+    private DatapoolManagerFactory $datapoolManagerFactory;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        DrupalFilterParser     $drupalFilterParser,
+        DatapoolManagerFactory $datapoolManagerFactory,
         RecipeProcessorFactory $recipeProcessorFactory,
-        RecipeRepository       $recipeRepository,
-        PrefilledTypeProvider  $prefilledTypeProvider
+        RecipeRepository       $recipeRepository
     )
     {
-        $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
-        $this->entityManager = $entityManager;
-        $this->prefilledTypeProvider = $prefilledTypeProvider;
         $this->recipeProcessorFactory = $recipeProcessorFactory;
+        $this->datapoolManagerFactory = $datapoolManagerFactory;
     }
 
     /**
@@ -51,14 +39,7 @@ class Bakery
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
         $recipeDataBag = $this->getRecipeDataBag($recipeConfig);
-        $datapoolManager = new DatapoolManager(
-            $recipeConfig['queries'],
-            $queryVariables,
-            $this->entityManager,
-            $this->drupalFilterParser,
-            $this->prefilledTypeProvider
-        );
-
+        $datapoolManager = $this->datapoolManagerFactory->build($recipeConfig['queries'], $queryVariables);
         $recipeProcessor = $this->recipeProcessorFactory->build($datapoolManager, $recipeDataBag);
 
         return $recipeProcessor->createFromRecipe();

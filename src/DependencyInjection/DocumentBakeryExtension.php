@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\DependencyInjection;
 
 
+use DemosEurope\DocumentBakery\Data\DatapoolManagerFactory;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
 use DemosEurope\DocumentBakery\Bakery;
@@ -53,6 +54,7 @@ class DocumentBakeryExtension extends Extension
             $this->addSimpleDefinition($containerBuilder, $className);
         }, [
             Bakery::class,
+            DatapoolManagerFactory::class,
             PhpWordStyleOptions::class,
             RecipeConfigTreeBuilder::class,
             RecipeProcessorFactory::class,
