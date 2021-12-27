@@ -116,4 +116,23 @@ class RecipeDataBagTest extends TestCase
         $this->sut->setInstructions($expected);
         self::assertEquals($expected, $this->sut->getInstructions());
     }
+
+    public function testGetStyles(): void
+    {
+        $this->resetSut();
+
+        self::assertEquals([], $this->sut->getStyles());
+    }
+
+    public function testSetStyles(): void
+    {
+        $this->resetSut();
+
+        $expected = [
+            'format' => 'landscape',
+            'other' => 'stuff'
+        ];
+        $this->sut->setStyles($expected);
+        self::assertEquals($expected, $this->sut->getStyles());
+    }
 }
