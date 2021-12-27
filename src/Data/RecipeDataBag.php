@@ -14,6 +14,8 @@ class RecipeDataBag
 
     private array $instructions;
 
+    private array $queries;
+
     private array $styles;
 
     private array $workingPath;
@@ -27,6 +29,7 @@ class RecipeDataBag
     {
         $this->format = [];
         $this->instructions = [];
+        $this->queries = [];
         $this->styles = [];
         $this->workingPath = [];
 
@@ -119,5 +122,21 @@ class RecipeDataBag
     public function setStyles(array $styles): void
     {
         $this->styles = $styles;
+    }
+
+    /**
+     * @return array
+     */
+    public function getQueries(): array
+    {
+        return $this->queries;
+    }
+
+    /**
+     * @param array $queries
+     */
+    public function setQueries(array $queries): void
+    {
+        $this->queries = $queries;
     }
 }

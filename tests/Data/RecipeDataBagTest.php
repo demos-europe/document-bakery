@@ -135,4 +135,25 @@ class RecipeDataBagTest extends TestCase
         $this->sut->setStyles($expected);
         self::assertEquals($expected, $this->sut->getStyles());
     }
+
+    public function testGetQueries(): void
+    {
+        $this->resetSut();
+
+        self::assertEquals([], $this->sut->getQueries());
+    }
+
+    public function testSetQueries(): void
+    {
+        $this->resetSut();
+
+        $expected = [
+            'store' => [
+                'resource_type' => '{{resource}}',
+                'filter' => []
+            ]
+        ];
+        $this->sut->setStyles($expected);
+        self::assertEquals($expected, $this->sut->getStyles());
+    }
 }
