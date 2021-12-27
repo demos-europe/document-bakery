@@ -24,6 +24,7 @@ class RecipeDataBag
     public function __construct()
     {
         $this->format = [];
+        $this->instructions = [];
         $this->workingPath = [];
 
         $this->initializePhpWord();
