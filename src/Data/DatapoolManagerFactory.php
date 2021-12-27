@@ -4,25 +4,16 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use Doctrine\ORM\EntityManagerInterface;
-use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
-use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 
 class DatapoolManagerFactory
 {
-    private DrupalFilterParser $drupalFilterParser;
-    private EntityManagerInterface $entityManager;
-    private PrefilledTypeProvider $prefilledTypeProvider;
+    private DataFetcherFactory $dataFetcherFactory;
 
     public function __construct(
-        DrupalFilterParser     $drupalFilterParser,
-        EntityManagerInterface $entityManager,
-        PrefilledTypeProvider  $prefilledTypeProvider
+        DataFetcherFactory $dataFetcherFactory
     )
     {
-        $this->drupalFilterParser = $drupalFilterParser;
-        $this->entityManager = $entityManager;
-        $this->prefilledTypeProvider = $prefilledTypeProvider;
+        $this->dataFetcherFactory = $dataFetcherFactory;
     }
 
     public function build(array $queries, array $queryVariables): DatapoolManager
@@ -30,9 +21,7 @@ class DatapoolManagerFactory
         return new DatapoolManager(
             $queries,
             $queryVariables,
-            $this->entityManager,
-            $this->drupalFilterParser,
-            $this->prefilledTypeProvider
+            $this->dataFetcherFactory
         );
     }
 }
