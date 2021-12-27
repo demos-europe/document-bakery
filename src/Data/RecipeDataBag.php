@@ -14,6 +14,8 @@ class RecipeDataBag
 
     private array $instructions;
 
+    private array $styles;
+
     private array $workingPath;
 
     /**
@@ -25,6 +27,7 @@ class RecipeDataBag
     {
         $this->format = [];
         $this->instructions = [];
+        $this->styles = [];
         $this->workingPath = [];
 
         $this->initializePhpWord();
@@ -100,5 +103,21 @@ class RecipeDataBag
     public function setInstructions(array $instructions): void
     {
         $this->instructions = $instructions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStyles(): array
+    {
+        return $this->styles;
+    }
+
+    /**
+     * @param array $styles
+     */
+    public function setStyles(array $styles): void
+    {
+        $this->styles = $styles;
     }
 }

@@ -9,6 +9,7 @@ use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
 use DemosEurope\DocumentBakery\Bakery;
 use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
+use DemosEurope\DocumentBakery\RecipeProcessorFactory;
 use DemosEurope\DocumentBakery\Recipes\ConfigRecipeLoader;
 use DemosEurope\DocumentBakery\Recipes\RecipeConfigTreeBuilder;
 use DemosEurope\DocumentBakery\Recipes\RecipeLoaderInterface;
@@ -54,6 +55,7 @@ class DocumentBakeryExtension extends Extension
             Bakery::class,
             PhpWordStyleOptions::class,
             RecipeConfigTreeBuilder::class,
+            RecipeProcessorFactory::class,
             TwigRenderer::class
         ]);
 

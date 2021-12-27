@@ -6,10 +6,8 @@ namespace DemosEurope\DocumentBakery;
 
 use DemosEurope\DocumentBakery\Data\DatapoolManager;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
-use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
-use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\Contracts\AccessException;
@@ -18,8 +16,6 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
 {
-    private InstructionFactory $instructionFactory;
-
     private DrupalFilterParser $drupalFilterParser;
 
     private RecipeRepository $recipeRepository;
@@ -28,23 +24,21 @@ class Bakery
 
     private PrefilledTypeProvider $prefilledTypeProvider;
 
-    private StylesRepository $stylesRepository;
+    private RecipeProcessorFactory $recipeProcessorFactory;
 
     public function __construct(
-        InstructionFactory     $instructionFactory,
         EntityManagerInterface $entityManager,
         DrupalFilterParser     $drupalFilterParser,
+        RecipeProcessorFactory $recipeProcessorFactory,
         RecipeRepository       $recipeRepository,
-        PrefilledTypeProvider  $prefilledTypeProvider,
-        StylesRepository        $stylesRepository
+        PrefilledTypeProvider  $prefilledTypeProvider
     )
     {
-        $this->instructionFactory = $instructionFactory;
         $this->drupalFilterParser = $drupalFilterParser;
         $this->recipeRepository = $recipeRepository;
         $this->entityManager = $entityManager;
         $this->prefilledTypeProvider = $prefilledTypeProvider;
-        $this->stylesRepository = $stylesRepository;
+        $this->recipeProcessorFactory = $recipeProcessorFactory;
     }
 
     /**
@@ -65,7 +59,7 @@ class Bakery
             $this->prefilledTypeProvider
         );
 
-        $recipeProcessor = new RecipeProcessor($datapoolManager, $this->instructionFactory, $recipeDataBag, $this->stylesRepository);
+        $recipeProcessor = $this->recipeProcessorFactory->build($datapoolManager, $recipeDataBag);
 
         return $recipeProcessor->createFromRecipe();
     }
@@ -80,7 +74,7 @@ class Bakery
             $recipeDataBag->setFormat($recipeConfig['format']);
         }
         if (isset($recipeConfig['styles']) && 0 < count($recipeConfig['styles'])) {
-            $this->stylesRepository->mergeStyles($recipeConfig['styles']);
+            $recipeDataBag->setStyles($recipeConfig['styles']);
         }
         $recipeDataBag->setInstructions($recipeConfig['instructions']);
 

@@ -44,6 +44,12 @@ class RecipeProcessor
      */
     public function createFromRecipe (): ?WriterInterface
     {
+        // Process Styles
+        $styles = $this->recipeDataBag->getStyles();
+        if (0 < count($styles)) {
+            $this->stylesRepository->mergeStyles($styles);
+        }
+
         $this->processInstructions($this->recipeDataBag->getInstructions());
 
         try {
