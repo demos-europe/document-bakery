@@ -3,6 +3,9 @@
         defaultTestSuite="All"
         colors="true"
         verbose="true">
+    <php>
+        <server name="KERNEL_CLASS" value="App\Kernel" />
+    </php>
     <testsuites>
         <testsuite name="All">
             <directory>tests/</directory>
