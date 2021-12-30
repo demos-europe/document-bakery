@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Recipes;
 
+use DemosEurope\DocumentBakery\Data\DataFetcher;
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
@@ -24,6 +25,9 @@ class RecipeProcessor
 
     private StylesRepository $stylesRepository;
 
+    /**
+     * @var DataFetcher[]
+     */
     private array $dataProviders = [];
     private DataFetcherFactory $dataFetcherFactory;
 
