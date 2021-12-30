@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery;
+namespace DemosEurope\DocumentBakery\Recipes;
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeDataBag;
