@@ -4,8 +4,9 @@ $finder = PhpCsFixer\Finder::create()
     ->in('src')
     ->in('tests');
 
-return PhpCsFixer\Config::create()
-    ->setRiskyAllowed(true)
+$fixer = new PhpCsFixer\Config();
+
+$fixer->setRiskyAllowed(true)
     ->setRules(
         [
             'array_syntax'           => ['syntax' => 'short'],
@@ -15,3 +16,5 @@ return PhpCsFixer\Config::create()
         ]
     )
     ->setFinder($finder);
+
+return $fixer;
