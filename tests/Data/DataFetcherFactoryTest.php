@@ -3,15 +3,16 @@
 namespace DemosEurope\DocumentBakery\Tests\Data;
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use DemosEurope\DocumentBakery\Tests\KernelTestCase;
 
 class DataFetcherFactoryTest extends KernelTestCase
 {
     private $sut;
     protected function setUp(): void
     {
-        static::bootKernel();
-        $this->sut = static::getContainer()->get(DataFetcherFactory::class);
+        parent::setUp();
+
+        $this->sut = $this->getContainer()->get(DataFetcherFactory::class);
     }
 
     public function testBuild(): void
