@@ -10,7 +10,11 @@ use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 
 class DataFetcherFactoryTest extends KernelTestCase
 {
+    /**
+     * @var DataFetcherFactory
+     */
     private $sut;
+
     protected function setUp(): void
     {
         parent::setUp();
