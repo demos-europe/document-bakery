@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Tests;
 
 
+use DAMA\DoctrineTestBundle\DAMADoctrineTestBundle;
 use DemosEurope\DocumentBakery\DocumentBakeryBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Nyholm\BundleTest\AppKernel;
 use Nyholm\BundleTest\BaseBundleTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -25,6 +25,8 @@ class KernelTestCase extends BaseBundleTestCase
         $kernel = parent::createKernel();
 
         $kernel->addBundle(DoctrineBundle::class);
+        $kernel->addBundle(DAMADoctrineTestBundle::class);
+
         $kernel->addConfigFile(__DIR__.'/resources/doctrine.yml');
         $kernel->addConfigFile(__DIR__.'/resources/services.yml');
 

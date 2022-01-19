@@ -51,7 +51,8 @@
     "matthiasnoback/symfony-dependency-injection-test": "^4.3",
     "nyholm/symfony-bundle-test": "^1.8",
     "doctrine/doctrine-bundle": "^2.5",
-    "8-3/edt-paths": "^0.5.1"
+    "8-3/edt-paths": "^0.5.1",
+    "dama/doctrine-test-bundle": "^6.7"
   },
   "config": {
     "allow-plugins": {

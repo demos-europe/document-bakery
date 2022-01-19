@@ -6,3 +6,14 @@ services:
     public: true
     arguments:
       $types: !tagged app.resourceType
+
+  DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook: ~
+
+  DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:
+    tags:
+      - app.resourceType
+
+  Doctrine\ORM\Tools\SchemaTool:
+    public: true
+    arguments:
+      $em: '@doctrine.orm.default_entity_manager'

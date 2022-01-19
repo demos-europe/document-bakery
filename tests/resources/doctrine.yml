@@ -1,6 +1,6 @@
 doctrine:
   dbal:
-    url: ''
+    url: sqlite3:///tests/resources/document-bakery-test-database.sqlite
 
     # IMPORTANT: You MUST configure your server version,
     # either here or in the DATABASE_URL env var (see .env file)
