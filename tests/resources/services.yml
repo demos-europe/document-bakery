@@ -3,5 +3,6 @@ services:
     autoconfigure: false
     autowire: true
     lazy: true
+    public: true
     arguments:
       $types: !tagged app.resourceType

@@ -3,26 +3,25 @@ services:
     autowire: true
     autoconfigure: true
 
-  EightDashThree\Apization\:
-    resource: '../vendor/8-3/eight-dash-three/src/Apization/*'
-
-  EightDashThree\Parsing\:
-    resource: '../vendor/8-3/eight-dash-three/src/Parsing/*'
-
-  EightDashThree\PathBuilding\:
-    resource: '../vendor/8-3/eight-dash-three/src/PathBuilding/*'
-
   EightDashThree\Querying\:
-    resource: '../vendor/8-3/eight-dash-three/src/Querying/*'
+    resource: '../vendor/8-3/edt-queries/src/Querying/*'
+
+  EightDashThree\Querying\ConditionParsers\:
+    resource: '../vendor/8-3/edt-extra/src/Querying/ConditionParsers/*'
+
+  EightDashThree\Querying\ObjectProviders\:
+    resource: '../vendor/8-3/edt-access-definitions/src/Querying/ObjectProviders/*'
 
   EightDashThree\Wrapping\:
-    resource: '../vendor/8-3/eight-dash-three/src/Wrapping/*'
+    resource: '../vendor/8-3/edt-access-definitions/src/Wrapping/*'
 
   EightDashThree\DqlQuerying\:
-    resource: '../vendor/8-3/eight-dash-three-dql/src/DqlQuerying/*'
+    resource: '../vendor/8-3/edt-dql/src/DqlQuerying/*'
+
+  EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser:
+    public: true
 
   EightDashThree\Querying\Contracts\ConditionFactoryInterface: '@EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory'
   EightDashThree\Querying\Contracts\ConditionParserInterface: '@EightDashThree\Querying\ConditionParsers\Drupal\PredefinedConditionParser'
-  #EightDashThree\Querying\Contracts\ObjectProviderInterface: '@EightDashThree\DqlQuerying\ObjectProviders\DoctrineOrmEntityProvider'
   EightDashThree\Wrapping\Contracts\WrapperFactoryInterface: '@EightDashThree\Wrapping\WrapperFactories\WrapperObjectFactory'
   EightDashThree\Querying\Contracts\PropertyAccessorInterface: '@EightDashThree\Querying\PropertyAccessors\ReflectionPropertyAccessor'

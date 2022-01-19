@@ -4,6 +4,9 @@ namespace DemosEurope\DocumentBakery\Tests\Data;
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Tests\KernelTestCase;
+use Doctrine\ORM\EntityManagerInterface;
+use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
+use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 
 class DataFetcherFactoryTest extends KernelTestCase
 {
@@ -12,7 +15,17 @@ class DataFetcherFactoryTest extends KernelTestCase
     {
         parent::setUp();
 
-        $this->sut = $this->getContainer()->get(DataFetcherFactory::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        $drupalFilterParser = $this->getContainer()->get(DrupalFilterParser::class);
+        $prefilledTypeProvider = $this->getContainer()->get(PrefilledTypeProvider::class);
+
+        $this->sut = new DataFetcherFactory(
+            $entityManager,
+            $drupalFilterParser,
+            $prefilledTypeProvider
+        );
     }
 
     public function testBuild(): void

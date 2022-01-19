@@ -33,14 +33,15 @@
   "require": {
     "php": ">=7.4",
 
-    "8-3/eight-dash-three": "0.4.0",
-    "8-3/eight-dash-three-dql": "0.4.0",
+    "8-3/edt-dql": "^0.5.0",
     "phpoffice/phpword": "~0.18",
     "symfony/config": "^4.4 || ^5.3 || ^6.0",
     "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
     "symfony/http-kernel": "^4.4 || ^5.3 || ^6.0",
     "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
-    "twig/twig": "^2.0 || ^3.3"
+    "twig/twig": "^2.0 || ^3.3",
+    "8-3/edt-extra": "^0.5.1",
+    "8-3/edt-access-definitions": "^0.5.1"
   },
   "require-dev": {
     "repman-io/composer-plugin": "^1.1",
@@ -49,6 +50,13 @@
     "phpunit/phpunit": "^9.5",
     "matthiasnoback/symfony-dependency-injection-test": "^4.3",
     "nyholm/symfony-bundle-test": "^1.8",
-    "doctrine/doctrine-bundle": "^2.5"
+    "doctrine/doctrine-bundle": "^2.5",
+    "8-3/edt-paths": "^0.5.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "repman-io/composer-plugin": true
+    }
   }
 }
