@@ -10,6 +10,7 @@ services:
   DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook: ~
 
   DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:
+    autowire: true
     tags:
       - app.resourceType
 
