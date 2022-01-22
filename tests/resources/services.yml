@@ -11,6 +11,7 @@ services:
 
   DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:
     autowire: true
+    public: true
     tags:
       - app.resourceType
 
