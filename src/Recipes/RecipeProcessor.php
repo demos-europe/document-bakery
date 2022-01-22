@@ -145,7 +145,7 @@ class RecipeProcessor
     /**
      * @throws DocumentGenerationException
      */
-    public function createDataFetcher(string $name): void
+    private function createDataFetcher(string $name): void
     {
         $query = $this->recipeDataBag->getQueryByName($name);
         $parsedQuery = $this->parseQuery($query);
@@ -156,7 +156,7 @@ class RecipeProcessor
     /**
      * @throws DocumentGenerationException
      */
-    public function createDataFetcherIfNotExists(string $dataFetcherName): void
+    private function createDataFetcherIfNotExists(string $dataFetcherName): void
     {
         if (!array_key_exists($dataFetcherName, $this->dataProviders)) {
             $this->createDataFetcher($dataFetcherName);

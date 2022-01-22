@@ -62,7 +62,7 @@ class DataFetcher
         $this->currentIterationNumber++;
     }
 
-    public function getNextItem(): WrapperObject
+    private function getNextItem(): WrapperObject
     {
         $currentEntity = $this->wrapperFactory->createWrapper(array_shift($this->items), $this->resourceType);
         if ($this->continueLoading && 0 === count($this->items)) {
@@ -72,12 +72,12 @@ class DataFetcher
         return $currentEntity;
     }
 
-    public function setContinueLoading(bool $value): void
+    private function setContinueLoading(bool $value): void
     {
         $this->continueLoading = $value;
     }
 
-    public function loadNextChunkOfItems(): void
+    private function loadNextChunkOfItems(): void
     {
         try {
             $this->items = $this->resourceProvider->getObjects([$this->conditions], $this->sort, $this->offset, $this->limit);
@@ -92,7 +92,7 @@ class DataFetcher
         }
     }
 
-    public function getItemCount(): int
+    private function getItemCount(): int
     {
         return count($this->items);
     }
