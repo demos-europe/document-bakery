@@ -4,59 +4,27 @@ namespace DemosEurope\DocumentBakery\Tests\Data;
 
 use DemosEurope\DocumentBakery\Data\DataFetcher;
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use DemosEurope\DocumentBakery\Tests\KernelTestCase;
-use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
+use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
 use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 
-class DataFetcherFactoryTest extends KernelTestCase
+class DataFetcherFactoryTest extends BakeryFunctionalTestCase
 {
     /**
      * @var DataFetcherFactory
      */
     private $sut;
 
-    /**
-     * @var SchemaTool|object|null
-     */
-    private $schemaTool;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-
         $drupalFilterParser = $this->getContainer()->get(DrupalFilterParser::class);
         $prefilledTypeProvider = $this->getContainer()->get(PrefilledTypeProvider::class);
 
-        // Create an entity in the DB
-        $this->schemaTool = $this->getContainer()->get(SchemaTool::class);
-        $metadatas = $entityManager->getMetadataFactory()->getAllMetadata();
-
-        $this->schemaTool->createSchema($metadatas);
-
-        $cookbook = new Cookbook();
-        $cookbook->setFlavour('salty');
-        $cookbook->setId(1);
-        $cookbook->setName('Crunchy caramel treats and other afternoon snacks');
-
-        $entityManager->persist($cookbook);
-
-        $cookbook2 = new Cookbook();
-        $cookbook2->setFlavour('sweet');
-        $cookbook2->setId(2);
-        $cookbook2->setName('Chocolate Chips Cookies');
-
-        $entityManager->persist($cookbook2);
-        $entityManager->flush();
-
         $this->sut = new DataFetcherFactory(
-            $entityManager,
+            $this->entityManager,
             $drupalFilterParser,
             $prefilledTypeProvider
         );
@@ -84,12 +52,5 @@ class DataFetcherFactoryTest extends KernelTestCase
         self::assertInstanceOf(DataFetcher::class, $result);
         self::assertNotTrue($result->isEmpty());
         self::assertEquals('salty', $flavour);
-
-    }
-
-    protected function tearDown(): void
-    {
-        $this->schemaTool->dropDatabase();
-        parent::tearDown();
     }
 }
