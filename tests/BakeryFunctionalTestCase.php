@@ -20,6 +20,19 @@ class BakeryFunctionalTestCase extends KernelTestCase
      */
     protected $entityManager;
 
+    protected array $cookbooks = [
+        [
+            'id' => 1,
+            'flavour' => 'salty',
+            'name' => 'Crunchy caramel treats and other afternoon snacks',
+        ],
+        [
+            'id' => 2,
+            'flavour' => 'sweet',
+            'name' => 'Chocolate Chips Cookies',
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,19 +45,19 @@ class BakeryFunctionalTestCase extends KernelTestCase
         $this->schemaTool = $this->getContainer()->get(SchemaTool::class);
         $this->schemaTool->createSchema($metadatas);
 
-        $cookbook = new Cookbook();
-        $cookbook->setFlavour('salty');
-        $cookbook->setId(1);
-        $cookbook->setName('Crunchy caramel treats and other afternoon snacks');
+        $this->createCookbookEntities();
+    }
 
-        $this->entityManager->persist($cookbook);
+    private function createCookbookEntities(): void
+    {
+        foreach ($this->cookbooks as $cookbookData) {
+            $cookbookEntity = new Cookbook();
+            $cookbookEntity->setId($cookbookData['id']);
+            $cookbookEntity->setFlavour($cookbookData['flavour']);
+            $cookbookEntity->setName($cookbookData['name']);
 
-        $cookbook2 = new Cookbook();
-        $cookbook2->setFlavour('sweet');
-        $cookbook2->setId(2);
-        $cookbook2->setName('Chocolate Chips Cookies');
-
-        $this->entityManager->persist($cookbook2);
+            $this->entityManager->persist($cookbookEntity);
+        }
         $this->entityManager->flush();
     }
 

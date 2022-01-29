@@ -51,6 +51,6 @@ class DataFetcherFactoryTest extends BakeryFunctionalTestCase
         $flavour = $result->getDataFromPath(['flavour']);
         self::assertInstanceOf(DataFetcher::class, $result);
         self::assertNotTrue($result->isEmpty());
-        self::assertEquals('salty', $flavour);
+        self::assertEquals($this->cookbooks[0]['flavour'], $flavour);
     }
 }

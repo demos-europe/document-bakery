@@ -3,32 +3,29 @@
 namespace DemosEurope\DocumentBakery\Tests\Data;
 
 use DemosEurope\DocumentBakery\Data\DataFetcher;
-use DemosEurope\DocumentBakery\Tests\KernelTestCase;
+use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
 use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
 use EightDashThree\DqlQuerying\ObjectProviders\DoctrineOrmEntityProvider;
 use EightDashThree\DqlQuerying\PropertyAccessors\ProxyPropertyAccessor;
 use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
 use EightDashThree\Querying\Utilities\ConditionEvaluator;
+use EightDashThree\Wrapping\Contracts\AccessException;
 use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
-use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
 use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 use EightDashThree\Wrapping\Utilities\PropertyReader;
 use EightDashThree\Wrapping\Utilities\SchemaPathProcessor;
 use EightDashThree\Wrapping\Utilities\TypeAccessor;
 use EightDashThree\Wrapping\WrapperFactories\WrapperObjectFactory;
-use PHPUnit\Framework\TestCase;
 
-class DataFetcherTest extends KernelTestCase
+class DataFetcherTest extends BakeryFunctionalTestCase
 {
     protected $sut;
-    private $entityManager;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $prefilledTypeProvider = $this->getContainer()->get(PrefilledTypeProvider::class);
         $drupalFilterParser = $this->getContainer()->get(DrupalFilterParser::class);
         $resourceType = $this->getContainer()->get(CookbookResourceType::class);
@@ -43,19 +40,38 @@ class DataFetcherTest extends KernelTestCase
         $this->sut = new DataFetcher($parsedQuery, $objectProvider, $wrapperFactory, $drupalFilterParser);
     }
 
-    public function testSetNextCurrentEntity()
+    public function testSetNextCurrentEntity(): void
     {
-        self::isTrue();
+        $idBefore = $this->sut->getDataFromPath(['id']);
+        $this->sut->setNextCurrentEntity();
+        $idAfter = $this->sut->getDataFromPath(['id']);
+
+        self::assertEquals($this->cookbooks[0]['id'], $idBefore);
+        self::assertEquals($this->cookbooks[1]['id'], $idAfter);
     }
 
-    public function testGetDataFromPath()
+    public function testGetDataFromPath(): void
     {
-        self::isTrue();
+        $id = $this->sut->getDataFromPath(['id']);
+        $flavour = $this->sut->getDataFromPath(['flavour']);
+        $name = $this->sut->getDataFromPath(['name']);
+
+        self::assertEquals($this->cookbooks[0]['id'], $id);
+        self::assertEquals($this->cookbooks[0]['flavour'], $flavour);
+        self::assertEquals($this->cookbooks[0]['name'], $name);
     }
 
-    public function testIsEmpty()
+    public function testGetDataFromPathException(): void
     {
-        self::isTrue();
+        $this->expectException(AccessException::class);
+        $this->sut->getDataFromPath(['nonsense']);
+    }
+
+    public function testIsEmpty(): void
+    {
+        self::assertNotTrue($this->sut->isEmpty());
+        $this->sut->setNextCurrentEntity();
+        self::assertTrue($this->sut->isEmpty());
     }
 
     private function getResourceProvider(ReadableTypeInterface $ResourceType, PrefilledTypeProvider $prefilledTypeProvider): TypeRestrictedEntityProvider
