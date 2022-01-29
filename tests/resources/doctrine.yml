@@ -1,6 +1,8 @@
 doctrine:
   dbal:
-    url: sqlite3:///tests/resources/document-bakery-test-database.sqlite
+    driver: pdo_sqlite
+    memory: true
+    #url: sqlite3:///tests/resources/document-bakery-test-database.sqlite
 
     # IMPORTANT: You MUST configure your server version,
     # either here or in the DATABASE_URL env var (see .env file)
@@ -9,3 +11,9 @@ doctrine:
     auto_generate_proxy_classes: true
     naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
     auto_mapping: true
+    mappings:
+      App:
+        type: annotation
+        prefix: 'DemosEurope\DocumentBakery\Tests\resources\Entity\'
+        dir: '%kernel.project_dir%/tests/resources/Entity/'
+        #is_bundle: false

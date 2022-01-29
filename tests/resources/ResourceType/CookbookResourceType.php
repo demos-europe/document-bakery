@@ -8,9 +8,10 @@ namespace DemosEurope\DocumentBakery\Tests\resources\ResourceType;
 use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
 use EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory;
 use EightDashThree\Querying\Contracts\FunctionInterface;
+use EightDashThree\Wrapping\Contracts\Types\FilterableTypeInterface;
 use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
 
-class CookbookResourceType implements ReadableTypeInterface
+class CookbookResourceType implements ReadableTypeInterface, FilterableTypeInterface
 {
     /**
      * @var DqlConditionFactory
@@ -69,5 +70,14 @@ class CookbookResourceType implements ReadableTypeInterface
     public function getDefaultSortMethods(): array
     {
         return [];
+    }
+
+    public function getFilterableProperties(): array
+    {
+        return [
+            'id' => null,
+            'name' => null,
+            'flavour' => null,
+        ];
     }
 }

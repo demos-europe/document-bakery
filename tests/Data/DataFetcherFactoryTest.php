@@ -19,6 +19,11 @@ class DataFetcherFactoryTest extends KernelTestCase
      */
     private $sut;
 
+    /**
+     * @var SchemaTool|object|null
+     */
+    private $schemaTool;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,10 +35,10 @@ class DataFetcherFactoryTest extends KernelTestCase
         $prefilledTypeProvider = $this->getContainer()->get(PrefilledTypeProvider::class);
 
         // Create an entity in the DB
-        $schemaTool = $this->getContainer()->get(SchemaTool::class);
+        $this->schemaTool = $this->getContainer()->get(SchemaTool::class);
         $metadatas = $entityManager->getMetadataFactory()->getAllMetadata();
 
-        $schemaTool->createSchema($metadatas);
+        $this->schemaTool->createSchema($metadatas);
 
         $cookbook = new Cookbook();
         $cookbook->setFlavour('salty');
@@ -44,7 +49,7 @@ class DataFetcherFactoryTest extends KernelTestCase
 
         $cookbook2 = new Cookbook();
         $cookbook2->setFlavour('sweet');
-        $cookbook2->setId(1);
+        $cookbook2->setId(2);
         $cookbook2->setName('Chocolate Chips Cookies');
 
         $entityManager->persist($cookbook2);
@@ -75,6 +80,16 @@ class DataFetcherFactoryTest extends KernelTestCase
         ];
 
         $result = $this->sut->build($parsedQuery);
+        $flavour = $result->getDataFromPath(['flavour']);
         self::assertInstanceOf(DataFetcher::class, $result);
+        self::assertNotTrue($result->isEmpty());
+        self::assertEquals('salty', $flavour);
+
+    }
+
+    protected function tearDown(): void
+    {
+        $this->schemaTool->dropDatabase();
+        parent::tearDown();
     }
 }
