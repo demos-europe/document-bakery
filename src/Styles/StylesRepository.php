@@ -28,6 +28,9 @@ class StylesRepository
         $this->styleNameCache = [];
     }
 
+    /**
+     * @throws StyleException
+     */
     public function has(string $styleName): bool
     {
         $this->buildStyleNameCacheIfRequired();
@@ -47,6 +50,9 @@ class StylesRepository
         return $this->styleNameCache[$styleName];
     }
 
+    /**
+     * @throws StyleException
+     */
     public function mergeStyles(array $recipeStyles): void
     {
         $this->buildStyleNameCacheIfRequired();
@@ -54,6 +60,9 @@ class StylesRepository
         $this->styleNameCache = array_replace_recursive($this->styleNameCache, $recipeStyles);
     }
 
+    /**
+     * @throws StyleException
+     */
     private function buildStyleNameCacheIfRequired(): void
     {
         if (0 === count($this->styleNameCache)) {
@@ -61,6 +70,9 @@ class StylesRepository
         }
     }
 
+    /**
+     * @throws StyleException
+     */
     private function buildStyleNameCache(): void
     {
         foreach ($this->loaders as $loader) {
@@ -68,7 +80,7 @@ class StylesRepository
 
             foreach ($availableStyles as $styleName => $style) {
                 if (array_key_exists($styleName, $this->styleNameCache)) {
-                    StyleException::duplicateStyleFound($styleName);
+                    throw StyleException::duplicateStyleFound($styleName);
                 }
 
                 $this->styleNameCache[$styleName] = $style;
