@@ -38,10 +38,13 @@ class RecipeRepository
         return array_key_exists($recipeName, $this->recipeNameCache);
     }
 
+    /**
+     * @throws RecipeException
+     */
     public function get(string $recipeName): array
     {
         if (!$this->has($recipeName)) {
-            RecipeException::recipeNotFound($recipeName);
+            throw RecipeException::recipeNotFound($recipeName);
         }
 
         return $this->loaders[$this->recipeNameCache[$recipeName]]->load($recipeName);
