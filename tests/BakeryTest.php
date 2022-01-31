@@ -5,51 +5,59 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Tests;
 
 
-use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
+use DemosEurope\DocumentBakery\Bakery;
+use DemosEurope\DocumentBakery\Data\RecipeDataBagFactory;
+use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
+use DemosEurope\DocumentBakery\Recipes\RecipeProcessorFactory;
+use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
+use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\Element\Text;
+use PhpOffice\PhpWord\Writer\Word2007;
 
-class BakeryTest extends KernelTestCase
+class BakeryTest extends BakeryFunctionalTestCase
 {
-    /** @var EntityManagerInterface */
-    private $em;
-
-    public function setUp(): void
+    protected $sut;
+    protected $cookbookResourceType;
+    protected function setUp(): void
     {
         parent::setUp();
 
-        touch($this->getContainer()->getParameter('kernel.project_dir').'/tests/resources/document-bakery-test-database.sqlite');
+        $this->cookbookResourceType = $this->getContainer()->get(CookbookResourceType::class);
+        $recipeProcessorFactory = $this->getContainer()->get(RecipeProcessorFactory::class);
 
-        /** @var EntityManagerInterface $em */
-        $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-        $this->em = $em;
+        $recipeConfig = $this->config['recipes']['RecipeWithoutStyles'];
+        $mockRecipeRepository = $this->getMockBuilder(RecipeRepository::class)
+            ->disableOriginalConstructor()->getMock();
+        $mockRecipeRepository->method('get')->willReturn($recipeConfig);
 
-        $schemaTool = $this->getContainer()->get(SchemaTool::class);
-        $metadatas = $em->getMetadataFactory()->getAllMetadata();
+        $recipeDataBagFactory = new RecipeDataBagFactory($mockRecipeRepository);
 
-        $schemaTool->createSchema($metadatas);
-
-        $cookbook = new Cookbook();
-        $cookbook->setFlavour('salty');
-        $cookbook->setId(1);
-        $cookbook->setName('Crunchy caramel treats and other afternoon snacks');
-
-        $em->persist($cookbook);
-        $em->flush();
+        $this->sut = new Bakery($recipeDataBagFactory, $recipeProcessorFactory);
     }
 
-    protected function tearDown(): void
+    public function testCreateException(): void
     {
-        \unlink($this->getContainer()->getParameter('kernel.project_dir').'/tests/resources/document-bakery-test-database.sqlite');
-
-        parent::tearDown();
+        $this->expectException(DocumentGenerationException::class);
+        $this->sut->create('test', [
+            'Wrong' => $this->cookbookResourceType
+        ]);
     }
 
-    public function testBake(): void
+    public function testCreateSuccess(): void
     {
-        $repo = $this->em->getRepository(Cookbook::class);
-        $entity = $repo->find(1);
-
-        self::assertEquals('salty', $entity->getFlavour());
+        /** @var Word2007 $result2 */
+        $result2 = $this->sut->create('test', [
+            'Cookbook' => $this->cookbookResourceType
+        ]);
+        self::assertInstanceOf(Word2007::class, $result2);
+        $phpWordObject = $result2->getPhpWord();
+        $section = $phpWordObject->getSection(0);
+        $elements = $section->getElements();
+        self::assertCount(4, $elements);
+        self::assertInstanceOf(Text::class, $elements[0]);
+        self::assertInstanceOf(Text::class, $elements[1]);
+        self::assertInstanceOf(Table::class, $elements[2]);
+        self::assertInstanceOf(Text::class, $elements[3]);
     }
 }

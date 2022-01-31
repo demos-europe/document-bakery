@@ -11,7 +11,7 @@ use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
 use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\Element\Text;
-use PhpOffice\PhpWord\Writer\WriterInterface;
+use PhpOffice\PhpWord\Writer\Word2007;
 
 class RecipeProcessorTest extends BakeryFunctionalTestCase
 {
@@ -32,10 +32,10 @@ class RecipeProcessorTest extends BakeryFunctionalTestCase
         ]);
 
         $sut = new RecipeProcessor($dataFetcherFactory, $instructionFactory, $recipeDataBag, $mockedStylesRepository);
+        /** @var Word2007 $result */
         $result = $sut->createFromRecipe();
         // Actual Testing
-        self::assertInstanceOf(RecipeProcessor::class, $sut);
-        self::assertInstanceOf(WriterInterface::class, $result);
+        self::assertInstanceOf(Word2007::class, $result);
         $phpWordObject = $result->getPhpWord();
         $section = $phpWordObject->getSection(0);
         $elements = $section->getElements();
