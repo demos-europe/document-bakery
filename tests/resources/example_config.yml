@@ -1,0 +1,55 @@
+document_bakery:
+  recipes:
+    RecipeWithoutStyles:
+      queries:
+        cookbooks:
+          resource_type: "{{Cookbook}}"
+          filter: []
+          iterable: true
+      format: # Not yet implemented
+        name: A4LandscapeFormat
+        options:
+          pagination: roman|none|decimal # pagination style
+          pagination_first_page: 23 # first page number to print
+          pagination_skip_pages: 1 # no page number on the first
+        output: docx
+      instructions:
+        - name: Text
+          content: "Modern Times: PoC {{ current_date|date(d.m.Y) }}"
+        - name: Text
+          content: "Erstellt aus yml-config"
+          attributes:
+            align: right
+        - name: Table
+          children:
+            - name: TableRow
+              children:
+                - name: CellSimpleText
+                  content: "Id"
+                - name: CellSimpleText
+                  content: "Flavour"
+                - name: CellSimpleText
+                  content: "Name"
+            - name: TableRow
+              iterate: true
+              path: cookbooks
+              children:
+                - name: CellSimpleText
+                  path: cookbooks.id
+                - name: CellSimpleText
+                  path: cookbooks.flavour
+                - name: CellSimpleText
+                  path: cookbooks.name
+        - name: Text
+          content: "Und hier ist erstmal Schluss! Am: {{ current_date|date(d.m.Y) }}"
+  styles:
+    GlobalTable:
+      attributes:
+        borderColor: '006699'
+        borderSize: 6
+        cellMargin: 50
+    FontHighlight:
+      attributes:
+        bold: true
+        color: AE0234
+

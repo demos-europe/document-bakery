@@ -150,6 +150,7 @@ class DocumentBakeryExtension extends Extension
         $definition = new Definition($className);
         $definition->setAutowired(true);
         $definition->setAutoconfigured(true);
+        $definition->setPublic(true);
 
         $containerBuilder->addDefinitions([$className => $definition]);
 

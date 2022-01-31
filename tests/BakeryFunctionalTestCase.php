@@ -7,6 +7,7 @@ namespace DemosEurope\DocumentBakery\Tests;
 use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Symfony\Component\Yaml\Yaml;
 
 class BakeryFunctionalTestCase extends KernelTestCase
 {
@@ -33,6 +34,8 @@ class BakeryFunctionalTestCase extends KernelTestCase
         ],
     ];
 
+    protected array $config;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +49,15 @@ class BakeryFunctionalTestCase extends KernelTestCase
         $this->schemaTool->createSchema($metadatas);
 
         $this->createCookbookEntities();
+
+        $this->getConfig();
+    }
+
+    private function getConfig(): void
+    {
+        $content = file_get_contents(__DIR__.'/resources/example_config.yml');
+        $parsedContent = Yaml::parse($content);
+        $this->config = $parsedContent['document_bakery'];
     }
 
     private function createCookbookEntities(): void
