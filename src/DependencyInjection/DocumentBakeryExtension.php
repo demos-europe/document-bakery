@@ -44,7 +44,7 @@ class DocumentBakeryExtension extends Extension
             new FileLocator(__DIR__.'/../../config')
         );
 
-        $this->registerEdt();
+//        $this->registerEdt();
 
         $this->registerDefinitions($container, $processedConfiguration);
     }
