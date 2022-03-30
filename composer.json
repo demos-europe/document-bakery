@@ -31,13 +31,13 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.4",
+    "php": ">=7.3",
 
     "8-3/edt-bundle": "dev-main",
     "phpoffice/phpword": "~0.18",
     "symfony/config": "^4.4 || ^5.3 || ^6.0",
     "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
-    "symfony/http-kernel": "^4.4 || ^5.3 || ^6.0",
+    "symfony/http-kernel": "^4.4 || ^5.3",
     "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
     "twig/twig": "^2.0 || ^3.3"
   },
@@ -49,7 +49,8 @@
     "matthiasnoback/symfony-dependency-injection-test": "^4.3",
     "nyholm/symfony-bundle-test": "^1.8",
     "doctrine/doctrine-bundle": "^2.5",
-    "dama/doctrine-test-bundle": "^6.7"
+    "dama/doctrine-test-bundle": "^6.7",
+    "doctrine/orm": "^2.11"
   },
   "config": {
     "allow-plugins": {

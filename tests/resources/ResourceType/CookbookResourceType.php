@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\Tests\resources\ResourceType;
 
 
 use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
-use EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory;
+use EightDashThree\Querying\ConditionFactories\PhpConditionFactory;
 use EightDashThree\Querying\Contracts\FunctionInterface;
 use EightDashThree\Wrapping\Contracts\Types\FilterableTypeInterface;
 use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
@@ -14,11 +14,11 @@ use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
 class CookbookResourceType implements ReadableTypeInterface, FilterableTypeInterface
 {
     /**
-     * @var DqlConditionFactory
+     * @var PhpConditionFactory
      */
     private $dqlConditionFactory;
 
-    public function __construct(DqlConditionFactory $dqlConditionFactory)
+    public function __construct(PhpConditionFactory $dqlConditionFactory)
     {
         $this->dqlConditionFactory = $dqlConditionFactory;
     }
