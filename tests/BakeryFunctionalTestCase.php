@@ -21,7 +21,7 @@ class BakeryFunctionalTestCase extends KernelTestCase
      */
     protected $entityManager;
 
-    protected array $cookbooks = [
+    protected $cookbooks = [
         [
             'id' => 1,
             'flavour' => 'salty',
@@ -34,7 +34,7 @@ class BakeryFunctionalTestCase extends KernelTestCase
         ],
     ];
 
-    protected array $config;
+    protected $config;
 
     protected function setUp(): void
     {

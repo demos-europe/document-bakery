@@ -20,25 +20,37 @@ class DataFetcher
      */
     private $conditions = [];
 
-    private array $sort = [];
+    private $sort = [];
 
-    private int $offset = 0;
+    private $offset = 0;
 
-    private int $limit = 5;
+    private $limit = 5;
 
-    private array $items = [];
+    private $items = [];
 
-    private bool $continueLoading = false;
+    private $continueLoading = false;
 
-    private WrapperObject $currentEntity;
+    /**
+     * @var WrapperObject
+     */
+    private $currentEntity;
 
-    private int $currentIterationNumber = 0;
+    private $currentIterationNumber = 0;
 
-    private TypeRestrictedEntityProvider $resourceProvider;
+    /**
+     * @var TypeRestrictedEntityProvider
+     */
+    private $resourceProvider;
 
-    private ReadableTypeInterface $resourceType;
+    /**
+     * @var ReadableTypeInterface|mixed
+     */
+    private $resourceType;
 
-    private WrapperFactoryInterface $wrapperFactory;
+    /**
+     * @var WrapperFactoryInterface
+     */
+    private $wrapperFactory;
 
     public function __construct(
         array $query,

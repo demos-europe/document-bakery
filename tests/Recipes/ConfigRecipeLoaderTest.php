@@ -7,7 +7,10 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigRecipeLoaderTest extends TestCase
 {
-    private ConfigRecipeLoader $sut;
+    /**
+     * @var ConfigRecipeLoader
+     */
+    private $sut;
 
     protected function setUp(): void
     {

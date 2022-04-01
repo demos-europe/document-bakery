@@ -10,7 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 class RecipeDataBagTest extends TestCase
 {
-    private RecipeDataBag $sut;
+    /**
+     * @var RecipeDataBag
+     */
+    private $sut;
 
     protected function resetSut(): void
     {

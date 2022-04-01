@@ -7,7 +7,10 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigStylesLoaderTest extends TestCase
 {
-    private ConfigStylesLoader $sut;
+    /**
+     * @var ConfigStylesLoader
+     */
+    private $sut;
 
     private array $testData = [
         'recipe1' => [],

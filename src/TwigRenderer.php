@@ -9,7 +9,10 @@ use Twig\Loader\ArrayLoader;
 
 class TwigRenderer
 {
-    private Environment $twig;
+    /**
+     * @var Environment
+     */
+    private $twig;
 
     public function __construct()
     {

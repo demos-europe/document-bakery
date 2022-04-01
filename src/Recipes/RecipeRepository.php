@@ -15,7 +15,7 @@ class RecipeRepository
     /**
      * @var iterable|array<string,RecipeLoaderInterface>
      */
-    private iterable $loaders;
+    private $loaders;
 
     /**
      * @var array<string, string>

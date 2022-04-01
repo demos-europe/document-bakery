@@ -11,9 +11,18 @@ use DemosEurope\DocumentBakery\Styles\StylesRepository;
 
 class RecipeProcessorFactory
 {
-    private InstructionFactory $instructionFactory;
-    private StylesRepository $stylesRepository;
-    private DataFetcherFactory $dataFetcherFactory;
+    /**
+     * @var InstructionFactory
+     */
+    private $instructionFactory;
+    /**
+     * @var StylesRepository
+     */
+    private $stylesRepository;
+    /**
+     * @var DataFetcherFactory
+     */
+    private $dataFetcherFactory;
 
     public function __construct(
         DataFetcherFactory $dataFetcherFactory,

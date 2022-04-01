@@ -19,11 +19,20 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class RecipeProcessor
 {
-    private RecipeDataBag $recipeDataBag;
+    /**
+     * @var RecipeDataBag
+     */
+    private $recipeDataBag;
 
-    private InstructionFactory $instructionFactory;
+    /**
+     * @var InstructionFactory
+     */
+    private $instructionFactory;
 
-    private StylesRepository $stylesRepository;
+    /**
+     * @var StylesRepository
+     */
+    private $stylesRepository;
 
     /**
      * @var DataFetcher[]

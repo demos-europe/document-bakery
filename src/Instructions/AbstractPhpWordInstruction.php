@@ -9,7 +9,10 @@ use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
 {
-    protected AbstractElement $currentParentElement;
+    /**
+     * @var AbstractElement
+     */
+    protected $currentParentElement;
 
     /**
      * @param array<string, mixed> $instruction

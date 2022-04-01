@@ -12,7 +12,7 @@ class StylesRepository
     /**
      * @var iterable|array<string,StylesLoaderInterface>
      */
-    private iterable $loaders;
+    private $loaders;
 
     /**
      * @var array<string, array>

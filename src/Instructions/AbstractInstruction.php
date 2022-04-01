@@ -12,18 +12,24 @@ abstract class AbstractInstruction implements InstructionInterface
     /**
      * @var array<string, mixed>
      */
-    protected array $currentConfigInstruction;
+    protected $currentConfigInstruction;
 
     /**
      * @var mixed
      */
     protected $renderContent;
 
-    protected array $styleContent;
+    protected $styleContent;
 
-    protected RecipeDataBag $recipeDataBag;
+    /**
+     * @var RecipeDataBag
+     */
+    protected $recipeDataBag;
 
-    protected TwigRenderer $twigRenderer;
+    /**
+     * @var TwigRenderer
+     */
+    protected $twigRenderer;
 
     public function __construct(TwigRenderer $twigRenderer)
     {

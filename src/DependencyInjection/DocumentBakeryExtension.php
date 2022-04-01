@@ -29,7 +29,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class DocumentBakeryExtension extends Extension
 {
-    private YamlFileLoader $yamlFileLoader;
+    /**
+     * @var YamlFileLoader
+     */
+    private $yamlFileLoader;
 
     /**
      * @param array<string, mixed> $configs

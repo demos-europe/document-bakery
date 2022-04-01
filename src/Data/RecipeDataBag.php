@@ -10,17 +10,17 @@ use PhpOffice\PhpWord\Settings;
 
 class RecipeDataBag
 {
-    private array $format;
+    private $format;
 
-    private array $instructions;
+    private $instructions;
 
-    private array $queries;
+    private $queries;
 
-    private array $queryVariables;
+    private $queryVariables;
 
-    private array $styles;
+    private $styles;
 
-    private array $workingPath;
+    private $workingPath;
 
     /**
      * @var mixed

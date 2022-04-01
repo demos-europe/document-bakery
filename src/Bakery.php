@@ -12,8 +12,14 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
 {
-    private RecipeProcessorFactory $recipeProcessorFactory;
-    private RecipeDataBagFactory $recipeDataBagFactory;
+    /**
+     * @var RecipeProcessorFactory
+     */
+    private $recipeProcessorFactory;
+    /**
+     * @var RecipeDataBagFactory
+     */
+    private $recipeDataBagFactory;
 
     public function __construct(
         RecipeDataBagFactory $recipeDataBagFactory,

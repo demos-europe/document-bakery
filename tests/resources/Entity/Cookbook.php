@@ -17,17 +17,17 @@ class Cookbook
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length="64")
      */
-    private string $name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length="64")
      */
-    private string $flavour;
+    private $flavour;
 
     public function getId(): int
     {

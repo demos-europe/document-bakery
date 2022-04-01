@@ -8,7 +8,10 @@ use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 
 class RecipeDataBagFactory
 {
-    private RecipeRepository $recipeRepository;
+    /**
+     * @var RecipeRepository
+     */
+    private $recipeRepository;
 
     public function __construct(RecipeRepository $recipeRepository)
     {

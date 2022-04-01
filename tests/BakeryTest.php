@@ -17,7 +17,13 @@ use PhpOffice\PhpWord\Writer\Word2007;
 
 class BakeryTest extends BakeryFunctionalTestCase
 {
+    /**
+     * @var Bakery
+     */
     protected $sut;
+    /**
+     * @var CookbookResourceType
+     */
     protected $cookbookResourceType;
     protected function setUp(): void
     {

@@ -19,10 +19,22 @@ use EightDashThree\Wrapping\WrapperFactories\WrapperObjectFactory;
 
 class DataFetcherFactory
 {
-    private EntityManagerInterface $entityManager;
-    private PrefilledTypeProvider $prefilledTypeProvider;
-    private DrupalFilterParser $drupalFilterParser;
-    private WrapperObjectFactory $wrapperFactory;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var PrefilledTypeProvider
+     */
+    private $prefilledTypeProvider;
+    /**
+     * @var DrupalFilterParser
+     */
+    private $drupalFilterParser;
+    /**
+     * @var WrapperObjectFactory
+     */
+    private $wrapperFactory;
 
     public function __construct(
         EntityManagerInterface $entityManager,

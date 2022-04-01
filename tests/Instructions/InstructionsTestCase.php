@@ -21,7 +21,7 @@ abstract class InstructionsTestCase extends TestCase
     private $dependencySetupMap = [];
 
     /** @var RecipeDataBag */
-    protected RecipeDataBag $recipeDataBag;
+    protected $recipeDataBag;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
