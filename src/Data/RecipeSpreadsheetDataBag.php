@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use PhpOffice\PhpWord\Element\AbstractElement;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use stdClass;
 
-class RecipeWordDataBag implements RecipeDataBagInterface
+class RecipeSpreadsheetDataBag implements RecipeDataBagInterface
 {
+
     private $format;
 
     private $instructions;
@@ -36,10 +36,10 @@ class RecipeWordDataBag implements RecipeDataBagInterface
         $this->styles = [];
         $this->workingPath = [];
 
-        $this->initializePhpWord();
+        $this->initializePhpSpreadsheet();
     }
 
-    public function getWriterObject(): PhpWord
+    public function getWriterObject(): Spreadsheet
     {
         return $this->workingPath[0];
     }
@@ -54,24 +54,20 @@ class RecipeWordDataBag implements RecipeDataBagInterface
         $this->format = $format;
     }
 
-    public function getCurrentParentElement(): AbstractElement
+    public function getCurrentParentElement(): stdClass
     {
         return end($this->workingPath);
     }
 
-    private function initializePhpWord(): void
+    private function initializePhpSpreadsheet(): void
     {
-        $phpWord = new PhpWord();
-        Settings::setOutputEscapingEnabled(true);
-        $phpWord->getSettings()->setUpdateFields(true);
+        $phpSpreadsheet = new Spreadsheet();
 
-        $this->workingPath[] = $phpWord;
-        $this->workingPath[] = $phpWord->addSection();
+        $this->workingPath[] = $phpSpreadsheet;
     }
 
     /**
-     * @param AbstractElement $phpOfficeElement
-     * @return void
+     * @param stdClass $phpOfficeElement
      */
     public function addToWorkingPath($phpOfficeElement): void
     {

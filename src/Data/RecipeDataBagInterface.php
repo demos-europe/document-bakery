@@ -5,6 +5,7 @@ namespace DemosEurope\DocumentBakery\Data;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
+use stdClass;
 
 interface RecipeDataBagInterface
 {
@@ -17,9 +18,15 @@ interface RecipeDataBagInterface
 
     public function setFormat(array $format): void;
 
-    public function getCurrentParentElement(): AbstractElement;
+    /**
+     * @return AbstractElement|stdClass
+     */
+    public function getCurrentParentElement();
 
-    public function addToWorkingPath(AbstractElement $phpWordElement): void;
+    /**
+     * @param AbstractElement|stdClass $phpOfficeElement
+     */
+    public function addToWorkingPath($phpOfficeElement): void;
 
     public function removeFromWorkingPath(): void;
 
