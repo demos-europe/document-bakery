@@ -37,8 +37,11 @@ class RecipeProcessor
     /**
      * @var DataFetcher[]
      */
-    private array $dataProviders = [];
-    private DataFetcherFactory $dataFetcherFactory;
+    private $dataProviders = [];
+    /**
+     * @var DataFetcherFactory
+     */
+    private $dataFetcherFactory;
 
     public function __construct(
         DataFetcherFactory $dataFetcherFactory,
