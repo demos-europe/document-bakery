@@ -34,7 +34,6 @@
     "php": ">=7.3",
 
     "8-3/edt-bundle": "dev-main",
-    "8-3/edt-dql": "0.5.4",
     "phpoffice/phpword": "~0.18",
     "symfony/config": "^4.4 || ^5.3 || ^6.0",
     "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
