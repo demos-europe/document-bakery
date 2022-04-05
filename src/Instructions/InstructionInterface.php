@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeDataBagInterface;
 
 interface InstructionInterface
 {
@@ -16,5 +16,5 @@ interface InstructionInterface
      */
     public static function getName(): string;
 
-    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void;
+    public function initializeInstruction(array $instruction, RecipeDataBagInterface $recipeDataBag, array $mappedStyles): void;
 }

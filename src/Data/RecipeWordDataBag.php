@@ -8,7 +8,7 @@ use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
-class RecipeDataBag
+class RecipeWordDataBag implements RecipeDataBagInterface
 {
     private $format;
 
@@ -39,7 +39,7 @@ class RecipeDataBag
         $this->initializePhpWord();
     }
 
-    public function getPhpWordObject(): PhpWord
+    public function getWriterObject(): PhpWord
     {
         return $this->workingPath[0];
     }

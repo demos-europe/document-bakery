@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\Recipes;
 
 use DemosEurope\DocumentBakery\Data\DataFetcher;
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
@@ -20,7 +20,7 @@ use PhpOffice\PhpWord\Writer\WriterInterface;
 class RecipeProcessor
 {
     /**
-     * @var RecipeDataBag
+     * @var RecipeWordDataBag
      */
     private $recipeDataBag;
 
@@ -46,8 +46,8 @@ class RecipeProcessor
     public function __construct(
         DataFetcherFactory $dataFetcherFactory,
         InstructionFactory $instructionFactory,
-        RecipeDataBag $recipeDataBag,
-        StylesRepository $stylesRepository
+        RecipeWordDataBag  $recipeDataBag,
+        StylesRepository   $stylesRepository
     )
     {
         $this->recipeDataBag = $recipeDataBag;
@@ -70,7 +70,7 @@ class RecipeProcessor
         $this->processInstructions($this->recipeDataBag->getInstructions());
 
         try {
-            $writerObject = IOFactory::createWriter($this->recipeDataBag->getPhpWordObject(), 'Word2007');
+            $writerObject = IOFactory::createWriter($this->recipeDataBag->getWriterObject(), 'Word2007');
         } catch (\Exception $e) {
             throw DocumentGenerationException::writerObjectGenerationFailed();
         }

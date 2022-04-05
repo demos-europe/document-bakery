@@ -2,22 +2,22 @@
 
 namespace DemosEurope\DocumentBakery\Tests\Data;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use PhpOffice\PhpWord\Element\Section;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\PhpWord;
 use PHPUnit\Framework\TestCase;
 
-class RecipeDataBagTest extends TestCase
+class RecipeWordDataBagTest extends TestCase
 {
     /**
-     * @var RecipeDataBag
+     * @var RecipeWordDataBag
      */
     private $sut;
 
     protected function resetSut(): void
     {
-        $this->sut = new RecipeDataBag();
+        $this->sut = new RecipeWordDataBag();
     }
 
     public function testAddToWorkingPath(): void
@@ -85,7 +85,7 @@ class RecipeDataBagTest extends TestCase
     {
         $this->resetSut();
 
-        self::assertInstanceOf(PhpWord::class, $this->sut->getPhpWordObject());
+        self::assertInstanceOf(PhpWord::class, $this->sut->getWriterObject());
     }
 
     public function testGetCurrentParentElement(): void

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Recipes;
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
 
@@ -34,7 +34,7 @@ class RecipeProcessorFactory
         $this->dataFetcherFactory = $dataFetcherFactory;
     }
 
-    public function build(RecipeDataBag $recipeDataBag): RecipeProcessor
+    public function build(RecipeWordDataBag $recipeDataBag): RecipeProcessor
     {
         return new RecipeProcessor($this->dataFetcherFactory, $this->instructionFactory, $recipeDataBag, $this->stylesRepository);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Instructions;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeDataBagInterface;
 use DemosEurope\DocumentBakery\TwigRenderer;
 
 abstract class AbstractInstruction implements InstructionInterface
@@ -22,7 +22,7 @@ abstract class AbstractInstruction implements InstructionInterface
     protected $styleContent;
 
     /**
-     * @var RecipeDataBag
+     * @var RecipeDataBagInterface
      */
     protected $recipeDataBag;
 
@@ -36,14 +36,14 @@ abstract class AbstractInstruction implements InstructionInterface
         $this->twigRenderer = $twigRenderer;
     }
 
-    abstract protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void;
+    abstract protected function setDataFromRecipeDataBag(RecipeDataBagInterface $recipeDataBag): void;
 
     protected function setStyleContent(array $styleContent): void
     {
         $this->styleContent = $styleContent;
     }
 
-    abstract public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void;
+    abstract public function initializeInstruction(array $instruction, RecipeDataBagInterface $recipeDataBag, array $mappedStyles): void;
 
     protected function setCurrentConfigInstruction(array $currentConfigInstruction): void
     {
@@ -61,7 +61,7 @@ abstract class AbstractInstruction implements InstructionInterface
     /**
      * @return mixed
      */
-    protected function getRenderContent(RecipeDataBag $recipeDataBag)
+    protected function getRenderContent(RecipeDataBagInterface $recipeDataBag)
     {
         // Only get renderContent for non-structural instructions as structural instructions do not render anything
         if ($this instanceof StructuralInstructionInterface) {
