@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
+use DemosEurope\DocumentBakery\Exceptions\RecipeException;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 
 class RecipeDataBagFactory
@@ -18,6 +19,10 @@ class RecipeDataBagFactory
         $this->recipeRepository = $recipeRepository;
     }
 
+    /**
+     * @param array<string, mixed> $queryVariables
+     * @throws RecipeException
+     */
     public function build(string $recipeName, array $queryVariables): RecipeDataBag
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
