@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Instructions;
+namespace DemosEurope\DocumentBakery\Instructions\Word;
+
+use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 
 class Cell extends AbstractPhpWordInstruction implements StructuralInstructionInterface
 {

@@ -6,7 +6,7 @@ namespace DemosEurope\DocumentBakery\Tests\Instructions;
 
 use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
-use DemosEurope\DocumentBakery\Instructions\PhpWordInstructionInterface;
+use DemosEurope\DocumentBakery\Instructions\Word\PhpWordInstructionInterface;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 

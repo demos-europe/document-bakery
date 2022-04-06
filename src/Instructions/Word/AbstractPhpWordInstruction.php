@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Instructions;
+namespace DemosEurope\DocumentBakery\Instructions\Word;
 
 use DemosEurope\DocumentBakery\Data\RecipeDataBagInterface;
+use DemosEurope\DocumentBakery\Instructions\AbstractInstruction;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface

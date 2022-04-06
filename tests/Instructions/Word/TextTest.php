@@ -1,24 +1,26 @@
 <?php
 
-namespace DemosEurope\DocumentBakery\Tests\Instructions;
+declare(strict_types=1);
 
-use DemosEurope\DocumentBakery\Instructions\UnorderedListItem;
+namespace DemosEurope\DocumentBakery\Tests\Instructions\Word;
+
+use DemosEurope\DocumentBakery\Instructions\Word\Text;
+use DemosEurope\DocumentBakery\Tests\Instructions\InstructionsTestCase;
 use PhpOffice\PhpWord\Element\AbstractContainer;
-use PhpOffice\PhpWord\Element\ListItem;
 use PhpOffice\PhpWord\Element\Section;
 
-class UnorderedListItemTest extends InstructionsTestCase
+class TextTest extends InstructionsTestCase
 {
     protected function setUp(): void
     {
-        $this->setInstructionUnderTest(UnorderedListItem::class);
+        $this->setInstructionUnderTest(Text::class);
         $this->prepareData();
     }
 
     protected function prepareData(): void
     {
         $instruction = [
-            'name' => 'UnorderedListItem',
+            'name' => 'Text',
             'content' => 'Simple Test',
         ];
 
@@ -31,7 +33,7 @@ class UnorderedListItemTest extends InstructionsTestCase
 
     public function testIsWorkingInstance(): void
     {
-        self::assertInstanceOf(UnorderedListItem::class, $this->instructionUnderTest);
+        self::assertInstanceOf(Text::class, $this->instructionUnderTest);
         $this->instructionUnderTest->render();
         /**
          * @var AbstractContainer $currentParentElement
@@ -39,11 +41,11 @@ class UnorderedListItemTest extends InstructionsTestCase
         $currentParentElement = $this->recipeDataBag->getCurrentParentElement();
         $elementList = $currentParentElement->getElements();
         /**
-         * @var ListItem $newElement
+         * @var \PhpOffice\PhpWord\Element\Text $newElement
          */
         $newElement = $elementList[0];
         self::assertInstanceOf(Section::class, $currentParentElement);
-        self::assertInstanceOf(ListItem::class, $newElement);
+        self::assertInstanceOf(\PhpOffice\PhpWord\Element\Text::class, $newElement);
         self::assertEquals('Simple Test', $newElement->getText());
     }
 }

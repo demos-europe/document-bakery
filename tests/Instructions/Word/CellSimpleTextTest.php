@@ -1,8 +1,9 @@
 <?php
 
-namespace DemosEurope\DocumentBakery\Tests\Instructions;
+namespace DemosEurope\DocumentBakery\Tests\Instructions\Word;
 
-use DemosEurope\DocumentBakery\Instructions\CellSimpleText;
+use DemosEurope\DocumentBakery\Instructions\Word\CellSimpleText;
+use DemosEurope\DocumentBakery\Tests\Instructions\InstructionsTestCase;
 use PhpOffice\PhpWord\Element\Cell;
 use PhpOffice\PhpWord\Element\Row;
 use PhpOffice\PhpWord\Element\Table;

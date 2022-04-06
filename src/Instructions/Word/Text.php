@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Instructions;
+namespace DemosEurope\DocumentBakery\Instructions\Word;
 
 class Text extends AbstractPhpWordInstruction
 {
