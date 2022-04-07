@@ -22,6 +22,8 @@ class RecipeSpreadsheetDataBag implements RecipeDataBagInterface
 
     private $workingPath;
 
+    private $currentCounters;
+
     /**
      * @var mixed
      */
@@ -35,6 +37,7 @@ class RecipeSpreadsheetDataBag implements RecipeDataBagInterface
         $this->queryVariables = [];
         $this->styles = [];
         $this->workingPath = [];
+        $this->setCurrentCounters(0,0);
 
         $this->initializePhpSpreadsheet();
     }
@@ -77,6 +80,22 @@ class RecipeSpreadsheetDataBag implements RecipeDataBagInterface
     public function removeFromWorkingPath(): void
     {
         array_pop($this->workingPath);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getCurrentCounters(): array
+    {
+        return $this->currentCounters;
+    }
+
+    public function setCurrentCounters(int $row, int $column): void
+    {
+        $this->currentCounters = [
+            "row" => $row,
+            "column" => $column,
+        ];
     }
 
     /**
