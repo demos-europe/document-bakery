@@ -3,7 +3,7 @@
 namespace DemosEurope\DocumentBakery\Tests\Recipes;
 
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Recipes\RecipeProcessor;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
@@ -25,7 +25,7 @@ class RecipeProcessorTest extends BakeryFunctionalTestCase
 
         $mockedStylesRepository = $this->getMockedStylesRepository();
 
-        $recipeDataBag = new RecipeDataBag();
+        $recipeDataBag = new RecipeWordDataBag();
         $recipeConfig = $this->config['recipes']['RecipeWithoutStyles'];
         $recipeDataBag->setInstructions($recipeConfig['instructions']);
         $recipeDataBag->setQueries($recipeConfig['queries']);

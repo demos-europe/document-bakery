@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use PhpOffice\PhpWord\Element\AbstractElement;
-use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use stdClass;
 
-class RecipeDataBag
+class RecipeSpreadsheetDataBag implements RecipeDataBagInterface
 {
+
     private $format;
 
     private $instructions;
@@ -21,6 +21,8 @@ class RecipeDataBag
     private $styles;
 
     private $workingPath;
+
+    private $currentCounters;
 
     /**
      * @var mixed
@@ -35,11 +37,12 @@ class RecipeDataBag
         $this->queryVariables = [];
         $this->styles = [];
         $this->workingPath = [];
+        $this->setCurrentCounters(0,0);
 
-        $this->initializePhpWord();
+        $this->initializePhpSpreadsheet();
     }
 
-    public function getPhpWordObject(): PhpWord
+    public function getWriterObject(): Spreadsheet
     {
         return $this->workingPath[0];
     }
@@ -54,29 +57,45 @@ class RecipeDataBag
         $this->format = $format;
     }
 
-    public function getCurrentParentElement(): AbstractElement
+    public function getCurrentParentElement(): stdClass
     {
         return end($this->workingPath);
     }
 
-    private function initializePhpWord(): void
+    private function initializePhpSpreadsheet(): void
     {
-        $phpWord = new PhpWord();
-        Settings::setOutputEscapingEnabled(true);
-        $phpWord->getSettings()->setUpdateFields(true);
+        $phpSpreadsheet = new Spreadsheet();
 
-        $this->workingPath[] = $phpWord;
-        $this->workingPath[] = $phpWord->addSection();
+        $this->workingPath[] = $phpSpreadsheet;
     }
 
-    public function addToWorkingPath(AbstractElement $phpWordElement): void
+    /**
+     * @param stdClass $phpOfficeElement
+     */
+    public function addToWorkingPath($phpOfficeElement): void
     {
-        $this->workingPath[] = $phpWordElement;
+        $this->workingPath[] = $phpOfficeElement;
     }
 
     public function removeFromWorkingPath(): void
     {
         array_pop($this->workingPath);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getCurrentCounters(): array
+    {
+        return $this->currentCounters;
+    }
+
+    public function setCurrentCounters(int $row, int $column): void
+    {
+        $this->currentCounters = [
+            "row" => $row,
+            "column" => $column,
+        ];
     }
 
     /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace DemosEurope\DocumentBakery\Tests\Instructions;
+namespace DemosEurope\DocumentBakery\Tests\Instructions\Word;
 
-use DemosEurope\DocumentBakery\Instructions\Table;
+use DemosEurope\DocumentBakery\Instructions\Word\Table;
+use DemosEurope\DocumentBakery\Tests\Instructions\InstructionsTestCase;
 use PhpOffice\PhpWord\Element\AbstractContainer;
 
 class TableTest extends InstructionsTestCase

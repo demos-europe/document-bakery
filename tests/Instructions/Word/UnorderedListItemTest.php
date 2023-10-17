@@ -1,25 +1,25 @@
 <?php
 
-declare(strict_types=1);
+namespace DemosEurope\DocumentBakery\Tests\Instructions\Word;
 
-namespace DemosEurope\DocumentBakery\Tests\Instructions;
-
-use DemosEurope\DocumentBakery\Instructions\Text;
+use DemosEurope\DocumentBakery\Instructions\Word\UnorderedListItem;
+use DemosEurope\DocumentBakery\Tests\Instructions\InstructionsTestCase;
 use PhpOffice\PhpWord\Element\AbstractContainer;
+use PhpOffice\PhpWord\Element\ListItem;
 use PhpOffice\PhpWord\Element\Section;
 
-class TextTest extends InstructionsTestCase
+class UnorderedListItemTest extends InstructionsTestCase
 {
     protected function setUp(): void
     {
-        $this->setInstructionUnderTest(Text::class);
+        $this->setInstructionUnderTest(UnorderedListItem::class);
         $this->prepareData();
     }
 
     protected function prepareData(): void
     {
         $instruction = [
-            'name' => 'Text',
+            'name' => 'UnorderedListItem',
             'content' => 'Simple Test',
         ];
 
@@ -32,7 +32,7 @@ class TextTest extends InstructionsTestCase
 
     public function testIsWorkingInstance(): void
     {
-        self::assertInstanceOf(Text::class, $this->instructionUnderTest);
+        self::assertInstanceOf(UnorderedListItem::class, $this->instructionUnderTest);
         $this->instructionUnderTest->render();
         /**
          * @var AbstractContainer $currentParentElement
@@ -40,11 +40,11 @@ class TextTest extends InstructionsTestCase
         $currentParentElement = $this->recipeDataBag->getCurrentParentElement();
         $elementList = $currentParentElement->getElements();
         /**
-         * @var \PhpOffice\PhpWord\Element\Text $newElement
+         * @var ListItem $newElement
          */
         $newElement = $elementList[0];
         self::assertInstanceOf(Section::class, $currentParentElement);
-        self::assertInstanceOf(\PhpOffice\PhpWord\Element\Text::class, $newElement);
+        self::assertInstanceOf(ListItem::class, $newElement);
         self::assertEquals('Simple Test', $newElement->getText());
     }
 }

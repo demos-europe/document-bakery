@@ -4,8 +4,8 @@ namespace DemosEurope\DocumentBakery\Tests\Instructions;
 
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
-use DemosEurope\DocumentBakery\Instructions\Text;
-use DemosEurope\DocumentBakery\Instructions\UnorderedListItem;
+use DemosEurope\DocumentBakery\Instructions\Word\Text;
+use DemosEurope\DocumentBakery\Instructions\Word\UnorderedListItem;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 

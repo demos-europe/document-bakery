@@ -23,11 +23,11 @@ class RecipeDataBagFactory
      * @param array<string, mixed> $queryVariables
      * @throws RecipeException
      */
-    public function build(string $recipeName, array $queryVariables): RecipeDataBag
+    public function build(string $recipeName, array $queryVariables): RecipeWordDataBag
     {
         $recipeConfig = $this->recipeRepository->get($recipeName);
 
-        $recipeDataBag = new RecipeDataBag();
+        $recipeDataBag = new RecipeWordDataBag();
         if (isset($recipeConfig['format'])) {
             $recipeDataBag->setFormat($recipeConfig['format']);
         }

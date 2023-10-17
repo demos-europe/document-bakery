@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Tests\Instructions;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionInterface;
-use DemosEurope\DocumentBakery\Instructions\PhpWordInstructionInterface;
+use DemosEurope\DocumentBakery\Instructions\Word\PhpWordInstructionInterface;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +20,7 @@ abstract class InstructionsTestCase extends TestCase
     /** @var array<class-string,callable> */
     private $dependencySetupMap = [];
 
-    /** @var RecipeDataBag */
+    /** @var RecipeWordDataBag */
     protected $recipeDataBag;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
@@ -64,9 +64,9 @@ abstract class InstructionsTestCase extends TestCase
         $this->instructionUnderTest->initializeInstruction($instruction, $recipeDataBag, $mappedStyles);
     }
 
-    protected function getDefaultRecipeDataBag(string $instructionData): RecipeDataBag
+    protected function getDefaultRecipeDataBag(string $instructionData): RecipeWordDataBag
     {
-        $recipeDataBag = new RecipeDataBag();
+        $recipeDataBag = new RecipeWordDataBag();
         $recipeDataBag->setCurrentInstructionData($instructionData);
         $recipeDataBag->setInstructions(
             [

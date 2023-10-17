@@ -2,7 +2,7 @@
 
 namespace DemosEurope\DocumentBakery\Tests\Data;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Data\RecipeDataBagFactory;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use PHPUnit\Framework\TestCase;
@@ -66,7 +66,7 @@ class RecipeDataBagFactoryTest extends TestCase
 
         $testObject = $sut->build('TestRecipe', $queryVariables);
 
-        self::assertInstanceOf(RecipeDataBag::class, $testObject);
+        self::assertInstanceOf(RecipeWordDataBag::class, $testObject);
         self::assertEquals($dummyReturnArray['format'], $testObject->getFormat());
         self::assertEquals($dummyReturnArray['styles'], $testObject->getStyles());
         self::assertEquals($dummyReturnArray['queries'], $testObject->getQueries());

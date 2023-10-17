@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DemosEurope\DocumentBakery\Instructions;
+namespace DemosEurope\DocumentBakery\Instructions\Word;
 
-use DemosEurope\DocumentBakery\Data\RecipeDataBag;
+use DemosEurope\DocumentBakery\Data\RecipeDataBagInterface;
+use DemosEurope\DocumentBakery\Instructions\AbstractInstruction;
 use PhpOffice\PhpWord\Element\AbstractElement;
 
 abstract class AbstractPhpWordInstruction extends AbstractInstruction implements PhpWordInstructionInterface
@@ -17,14 +18,14 @@ abstract class AbstractPhpWordInstruction extends AbstractInstruction implements
     /**
      * @param array<string, mixed> $instruction
      */
-    public function initializeInstruction(array $instruction, RecipeDataBag $recipeDataBag, array $mappedStyles): void
+    public function initializeInstruction(array $instruction, RecipeDataBagInterface $recipeDataBag, array $mappedStyles): void
     {
         $this->setCurrentConfigInstruction($instruction);
         $this->setDataFromRecipeDataBag($recipeDataBag);
         $this->setStyleContent($mappedStyles);
     }
 
-    protected function setDataFromRecipeDataBag(RecipeDataBag $recipeDataBag): void
+    protected function setDataFromRecipeDataBag(RecipeDataBagInterface $recipeDataBag): void
     {
         $this->recipeDataBag = $recipeDataBag;
         $this->currentParentElement = $recipeDataBag->getCurrentParentElement();
