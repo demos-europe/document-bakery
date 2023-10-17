@@ -2,26 +2,292 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-
-  EightDashThree\Querying\:
-    resource: '../vendor/8-3/edt-queries/src/Querying/*'
-
-  EightDashThree\Querying\ConditionParsers\:
-    resource: '../vendor/8-3/edt-extra/src/Querying/ConditionParsers/*'
-
-  EightDashThree\Querying\ObjectProviders\:
-    resource: '../vendor/8-3/edt-access-definitions/src/Querying/ObjectProviders/*'
-
-  EightDashThree\Wrapping\:
-    resource: '../vendor/8-3/edt-access-definitions/src/Wrapping/*'
-
-  EightDashThree\DqlQuerying\:
-    resource: '../vendor/8-3/edt-dql/src/DqlQuerying/*'
-
-  EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser:
     public: true
 
-  EightDashThree\Querying\Contracts\ConditionFactoryInterface: '@EightDashThree\DqlQuerying\ConditionFactories\DqlConditionFactory'
-  EightDashThree\Querying\Contracts\ConditionParserInterface: '@EightDashThree\Querying\ConditionParsers\Drupal\PredefinedConditionParser'
-  EightDashThree\Wrapping\Contracts\WrapperFactoryInterface: '@EightDashThree\Wrapping\WrapperFactories\WrapperObjectFactory'
-  EightDashThree\Querying\Contracts\PropertyAccessorInterface: '@EightDashThree\Querying\PropertyAccessors\ReflectionPropertyAccessor'
+  EDT\Querying\PropertyAccessors\:
+    resource: '../vendor/demos-europe/edt-queries/src/PropertyAccessors/*'
+
+  EDT\Querying\ConditionParsers\:
+    resource: '../vendor/demos-europe/edt-extra/src/Querying/ConditionParsers/*'
+
+  #EDT\Querying\ObjectProviders\:
+  #  resource: '../vendor/demos-europe/edt-access-definitions/src/Querying/ObjectProviders/*'
+
+  EDT\Wrapping\:
+    resource: '../vendor/demos-europe/edt-access-definitions/src/Wrapping/*'
+
+  EDT\Wrapping\EntityData:
+    arguments:
+      - 'Test-Entity'
+      - []
+      - []
+      - []
+
+  EDT\Wrapping\PropertyBehavior\Attribute\AttributeConstructorParameter:
+    arguments:
+      - 'Attribute 1'
+      - 'Argument 1'
+
+  EDT\Wrapping\PropertyBehavior\Attribute\CallbackAttributeReadability:
+    arguments:
+      - true
+      - false
+
+  EDT\Wrapping\PropertyBehavior\Attribute\CallbackAttributeSetability:
+    arguments:
+      - 'Attribute 1'
+      - []
+      - Null
+      - false
+
+  EDT\Wrapping\PropertyBehavior\Attribute\PathAttributeReadability:
+    arguments:
+      - 'Entity 1'
+      - Null
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Attribute\PathAttributeSetability:
+    arguments:
+      - 'Property 1'
+      - 'Entity Class'
+      - []
+      - ''
+      - EDT\Querying\Contracts\PropertyAccessorInterface
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Identifier\CallbackIdentifierReadability:
+    arguments:
+      - ''
+
+  EDT\Wrapping\PropertyBehavior\Identifier\DataProvidedIdentifierConstructorParameter:
+    arguments:
+      - ''
+
+  EDT\Wrapping\PropertyBehavior\Identifier\PathIdentifierPostInstantiability:
+    arguments:
+      - ''
+      - ''
+      - EDT\Querying\Contracts\PropertyAccessorInterface
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Identifier\PathIdentifierReadability:
+    arguments:
+      - ''
+      - ''
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToMany\CallbackToManyRelationshipReadability:
+    arguments:
+      - true
+      - false
+      - ''
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToMany\CallbackToManyRelationshipSetability:
+    arguments:
+      - ''
+      - []
+      - []
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - ''
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToMany\PathToManyRelationshipReadability:
+    arguments:
+      - ''
+      - [ ]
+      - [ ]
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - ''
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToMany\PathToManyRelationshipSetability:
+    arguments:
+      - ''
+      - ''
+      - [ ]
+      - [ ]
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - []
+      - EDT\Querying\Contracts\PropertyAccessorInterface
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToMany\ToManyRelationshipConstructorParameter:
+    arguments:
+      - ''
+      - ''
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - [ ]
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToOne\CallbackToOneRelationshipReadability:
+    arguments:
+      - true
+      - false
+      - ''
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToOne\CallbackToOneRelationshipSetability:
+    arguments:
+      - ''
+      - [ ]
+      - [ ]
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - ''
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToOne\PathToOneRelationshipReadability:
+    arguments:
+      - ''
+      - [ ]
+      - [ ]
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - ''
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToOne\PathToOneRelationshipSetability:
+    arguments:
+      - ''
+      - ''
+      - [ ]
+      - [ ]
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - [ ]
+      - EDT\Querying\Contracts\PropertyAccessorInterface
+      - true
+
+  EDT\Wrapping\PropertyBehavior\Relationship\ToOne\ToOneRelationshipConstructorParameter:
+    arguments:
+      - ''
+      - ''
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+      - [ ]
+
+  EDT\Wrapping\ResourceBehavior\ResourceInstantiability:
+    arguments:
+      - ''
+      - []
+      - []
+      - null
+
+  EDT\Wrapping\ResourceBehavior\ResourceReadability:
+    arguments:
+      - ''
+      - [ ]
+      - [ ]
+      - null
+
+  EDT\Wrapping\ResourceBehavior\ResourceUpdatability:
+    arguments:
+      - ''
+      - [ ]
+      - [ ]
+      - null
+
+  EDT\Wrapping\TypeProviders\PrefilledTypeProvider:
+    arguments:
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+
+  EDT\Wrapping\Utilities\ExternReadableRelationshipSchemaVerificationException:
+    arguments:
+      - EDT\Wrapping\Contracts\Types\NamedTypeInterface
+      - []
+      - EDT\Querying\ConditionParsers\Drupal\DrupalFilterException
+
+  EDT\Wrapping\Utilities\TypeAccessors\ExternSortableProcessorConfig:
+    arguments:
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+
+  EDT\Wrapping\WrapperFactories\WrapperArrayFactory:
+    arguments:
+      - EDT\Querying\Contracts\PropertyAccessorInterface
+      - 0
+
+  EDT\Wrapping\WrapperFactories\WrapperObject:
+    arguments:
+      - '@DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook'
+      - EDT\Wrapping\Contracts\Types\TransferableTypeInterface
+
+  EDT\DqlQuerying\:
+    resource: '../vendor/demos-europe/edt-dql/src/*'
+
+  EDT\Querying\ConditionParsers\Drupal\DrupalFilter:
+    arguments:
+      - []
+
+  EDT\Querying\ConditionParsers\Drupal\DrupalFilterParser:
+    arguments:
+      - '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+      - '@EDT\Querying\ConditionParsers\Drupal\DrupalConditionParser'
+      - '@EDT\Querying\ConditionParsers\Drupal\DrupalFilterValidator'
+
+  EDT\DqlQuerying\ClassGeneration\ResourceConfigBuilderFromEntityGenerator:
+    arguments:
+      - ''
+      - ''
+
+  EDT\DqlQuerying\Functions\:
+    resource: '../vendor/demos-europe/edt-dql/src/Functions/*'
+    public: false
+
+  EDT\DqlQuerying\ObjectProviders\DoctrineOrmEntityProvider:
+    public: false
+    arguments:
+      $entityClass: 'Cookbook'
+
+  EDT\DqlQuerying\PropertyAccessors\ProxyPropertyAccessor:
+    public: false
+
+  EDT\DqlQuerying\SortMethods\Ascending:
+    public: false
+
+  EDT\DqlQuerying\SortMethods\Descending:
+    public: false
+
+  EDT\DqlQuerying\Utilities\JoinFinder:
+    public: false
+
+  EDT\DqlQuerying\Utilities\QueryBuilderPreparer:
+    public: false
+    arguments:
+      $mainEntityClass: DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook
+
+  EDT\JsonApi\ApiDocumentation\AttributeTypeResolver: ~
+
+  EDT\JsonApi\InputHandling\RepositoryInterface: '@DemosEurope\DocumentBakery\Tests\resources\Repository\CookbookRepository'
+  EDT\ConditionFactory\PathsBasedConditionFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+  EDT\Querying\Contracts\ConditionParserInterface: '@EDT\Querying\ConditionParsers\Drupal\DrupalConditionParser'
+  EDT\Querying\Contracts\PropertyAccessorInterface: '@EDT\Querying\PropertyAccessors\ReflectionPropertyAccessor'
+  EDT\Wrapping\Utilities\AttributeTypeResolverInterface: '@EDT\JsonApi\ApiDocumentation\AttributeTypeResolver'
+  EDT\Wrapping\Utilities\TypeAccessors\AbstractProcessorConfig: '@EDT\Wrapping\Utilities\TypeAccessors\ExternFilterableProcessorConfig'
+  EDT\Wrapping\Contracts\Types\TransferableTypeInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
+  EDT\Wrapping\Contracts\Types\NamedTypeInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
+  EDT\Querying\Contracts\EntityBasedInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
+  EDT\Wrapping\Contracts\Types\FilteringTypeInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
+
+  DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook: ~
+  DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:
+    public: true
+    arguments:
+      $propertyAccessor: EDT\Querying\Contracts\PropertyAccessorInterface
+      $repository: EDT\JsonApi\InputHandling\RepositoryInterface
+      $attributeTypeResolver: EDT\Wrapping\Utilities\AttributeTypeResolverInterface
+    tags:
+      - app.resourceType
+
+  DemosEurope\DocumentBakery\Tests\resources\Repository\CookbookRepository: ~
+
+  Doctrine\ORM\Tools\SchemaTool: ~
+  Doctrine\ORM\Mapping\ClassMetadata:
+    arguments:
+      $entityName: DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook
+  Doctrine\ORM\Mapping\ClassMetadataFactory: ~
+  Doctrine\ORM\Configuration: ~
+
+  Symfony\Component\Validator\Validator\RecursiveValidator: ~
+  Symfony\Component\Validator\Context\ExecutionContextFactory: ~
+  Symfony\Component\Validator\Mapping\Factory\BlackHoleMetadataFactory: ~
+  Symfony\Component\Validator\ConstraintValidatorFactory: ~
+  Symfony\Component\Translation\IdentityTranslator: ~
+
+  Symfony\Component\Validator\Validator\ValidatorInterface: '@Symfony\Component\Validator\Validator\RecursiveValidator'
+  Symfony\Component\Validator\Context\ExecutionContextFactoryInterface: '@Symfony\Component\Validator\Context\ExecutionContextFactory'
+  Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface: '@Symfony\Component\Validator\Mapping\Factory\BlackHoleMetadataFactory'
+  Symfony\Component\Validator\ConstraintValidatorFactoryInterface: '@Symfony\Component\Validator\ConstraintValidatorFactory'
+  Symfony\Contracts\Translation\TranslatorInterface: '@Symfony\Component\Translation\IdentityTranslator'

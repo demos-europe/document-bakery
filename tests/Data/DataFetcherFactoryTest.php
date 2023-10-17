@@ -5,9 +5,6 @@ namespace DemosEurope\DocumentBakery\Tests\Data;
 use DemosEurope\DocumentBakery\Data\DataFetcher;
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
-use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
-use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
-use EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider;
 
 class DataFetcherFactoryTest extends BakeryFunctionalTestCase
 {
@@ -20,14 +17,7 @@ class DataFetcherFactoryTest extends BakeryFunctionalTestCase
     {
         parent::setUp();
 
-        $drupalFilterParser = $this->getContainer()->get(DrupalFilterParser::class);
-        $prefilledTypeProvider = $this->getContainer()->get(PrefilledTypeProvider::class);
-
-        $this->sut = new DataFetcherFactory(
-            $this->entityManager,
-            $drupalFilterParser,
-            $prefilledTypeProvider
-        );
+        $this->sut = new DataFetcherFactory();
     }
 
     public function testBuildWithError(): void
@@ -37,17 +27,19 @@ class DataFetcherFactoryTest extends BakeryFunctionalTestCase
         ];
 
         $this->expectError();
-        $this->sut->build($parsedQuery);
+        $this->sut->build($parsedQuery, $this->conditionFactory->true());
     }
 
     public function testBuildSuccessfully(): void
     {
+
+
         $parsedQuery = [
-            'resource_type' => $this->getContainer()->get(CookbookResourceType::class),
+            'resource_type' => $this->resourceType,
             'filter' => []
         ];
 
-        $result = $this->sut->build($parsedQuery);
+        $result = $this->sut->build($parsedQuery, $this->conditionFactory->true());
         $flavour = $result->getDataFromPath(['flavour']);
         self::assertInstanceOf(DataFetcher::class, $result);
         self::assertNotTrue($result->isEmpty());

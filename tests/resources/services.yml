@@ -1,21 +1,60 @@
 services:
-  EightDashThree\Wrapping\TypeProviders\PrefilledTypeProvider:
-    autoconfigure: false
+  _defaults:
     autowire: true
-    lazy: true
+    autoconfigure: true
     public: true
-    arguments:
-      $types: !tagged app.resourceType
+
+  EDT\DqlQuerying\ConditionFactories\DqlConditionFactory: ~
+
+  EDT\JsonApi\RequestHandling\MessageFormatter: ~
+
+  EDT\Wrapping\WrapperFactories\WrapperObjectFactory: ~
+
+  EDT\Querying\ConditionParsers\Drupal\DrupalFilterValidator: ~
+
+  EDT\Querying\ConditionParsers\Drupal\DrupalFilterParser:
+    public: true
+
+  EDT\JsonApi\InputHandling\RepositoryInterface: ~
+
+  EDT\Wrapping\Utilities\AttributeTypeResolverInterface: ~
 
   DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook: ~
 
   DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:
-    autowire: true
     public: true
+    arguments:
+      $propertyAccessor: EDT\Querying\Contracts\PropertyAccessorInterface
+      $repository: EDT\JsonApi\InputHandling\RepositoryInterface
+      $attributeTypeResolver: EDT\Wrapping\Utilities\AttributeTypeResolverInterface
     tags:
       - app.resourceType
+
+  EDT\Querying\PropertyAccessors\ReflectionPropertyAccessor: ~
+
+  EDT\Querying\Contracts\PropertyAccessorInterface: '@EDT\Querying\PropertyAccessors\ReflectionPropertyAccessor'
+
+  EDT\Querying\ConditionParsers\Drupal\PredefinedConditionParser: ~
+
 
   Doctrine\ORM\Tools\SchemaTool:
     public: true
     arguments:
       $em: '@doctrine.orm.default_entity_manager'
+
+  Doctrine\ORM\Mapping\ClassMetadata:
+    arguments:
+      $entityName: DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook
+  Doctrine\ORM\Mapping\ClassMetadataFactory: ~
+  Doctrine\ORM\Configuration: ~
+
+  Symfony\Component\Validator\Validator\RecursiveValidator: ~
+
+  Symfony\Component\Validator\Validator\ValidatorInterface: '@Symfony\Component\Validator\Validator\RecursiveValidator'
+
+
+  #EDT\Querying\Contracts\ConditionFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+  EDT\Querying\Contracts\ConditionParserInterface: '@EDT\Querying\ConditionParsers\Drupal\PredefinedConditionParser'
+  EDT\Wrapping\Contracts\WrapperFactoryInterface: '@EDT\Wrapping\WrapperFactories\WrapperObjectFactory'
+  EDT\ConditionFactory\PathsBasedConditionGroupFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+  EDT\Querying\ConditionParsers\Drupal\DrupalConditionFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'

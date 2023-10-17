@@ -8,14 +8,13 @@ namespace DemosEurope\DocumentBakery\Tests\resources\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="DemosEurope\DocumentBakery\Tests\resources\Repository\CookbookRepository")
  */
 class Cookbook
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -29,17 +28,17 @@ class Cookbook
      */
     private $flavour;
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * @param string $id
      *
      * @return Cookbook
      */
-    public function setId(int $id): Cookbook
+    public function setId(string $id): Cookbook
     {
         $this->id = $id;
 

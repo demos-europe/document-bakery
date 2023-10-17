@@ -13,7 +13,7 @@ use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Instructions\StructuralInstructionInterface;
 use DemosEurope\DocumentBakery\Mapper\PhpWordStyleOptions;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
-use EightDashThree\Wrapping\Contracts\AccessException;
+use EDT\Wrapping\Contracts\AccessException;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 

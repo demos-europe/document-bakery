@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Tests;
 
 use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
+use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Tools\SchemaTool;
+use EDT\DqlQuerying\ConditionFactories\DqlConditionFactory;
 use Symfony\Component\Yaml\Yaml;
 
 class BakeryFunctionalTestCase extends KernelTestCase
@@ -21,18 +24,24 @@ class BakeryFunctionalTestCase extends KernelTestCase
      */
     protected $entityManager;
 
+    protected DqlConditionFactory $conditionFactory;
+
     protected $cookbooks = [
         [
-            'id' => 1,
+            'id' => '1',
             'flavour' => 'salty',
             'name' => 'Crunchy caramel treats and other afternoon snacks',
         ],
         [
-            'id' => 2,
+            'id' => '2',
             'flavour' => 'sweet',
             'name' => 'Chocolate Chips Cookies',
         ],
     ];
+
+    protected Array $cookbookEntities;
+
+    protected CookbookResourceType $resourceType;
 
     protected $config;
 
@@ -41,6 +50,12 @@ class BakeryFunctionalTestCase extends KernelTestCase
         parent::setUp();
 
         $this->entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        $classMetaDataFactory = $this->getContainer()->get(ClassMetadataFactory::class);
+        $classMetaDataFactory->setEntityManager($this->entityManager);
+
+        $this->conditionFactory = $this->getContainer()->get(DqlConditionFactory::class);
+
+        $this->resourceType = $this->getContainer()->get(CookbookResourceType::class);
 
         $metadatas = $this->entityManager->getMetadataFactory()->getAllMetadata();
 
@@ -67,6 +82,8 @@ class BakeryFunctionalTestCase extends KernelTestCase
             $cookbookEntity->setId($cookbookData['id']);
             $cookbookEntity->setFlavour($cookbookData['flavour']);
             $cookbookEntity->setName($cookbookData['name']);
+
+            $this->cookbookEntities[] = $cookbookEntity;
 
             $this->entityManager->persist($cookbookEntity);
         }

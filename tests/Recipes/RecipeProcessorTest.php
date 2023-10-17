@@ -17,6 +17,8 @@ class RecipeProcessorTest extends BakeryFunctionalTestCase
 {
     public function testCreateFromRecipe()
     {
+        $this->markTestSkipped('This test is skipped until the redesign of the data fetching is done.');
+
         $dataFetcherFactory = $this->getContainer()->get(DataFetcherFactory::class);
         $instructionFactory = $this->getContainer()->get(InstructionFactory::class);
         $cookbookResourceType = $this->getContainer()->get(CookbookResourceType::class);

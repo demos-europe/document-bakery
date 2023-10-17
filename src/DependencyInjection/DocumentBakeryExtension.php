@@ -19,6 +19,9 @@ use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
 use DemosEurope\DocumentBakery\Styles\ConfigStylesLoader;
 use DemosEurope\DocumentBakery\Styles\StylesLoaderInterface;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
+use DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook;
+use DemosEurope\DocumentBakery\Tests\resources\Repository\CookbookRepository;
+use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
 use DemosEurope\DocumentBakery\TwigRenderer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -47,7 +50,7 @@ class DocumentBakeryExtension extends Extension
             new FileLocator(__DIR__.'/../../config')
         );
 
-//        $this->registerEdt();
+        $this->registerEdt();
 
         $this->registerDefinitions($container, $processedConfiguration);
     }
@@ -58,6 +61,9 @@ class DocumentBakeryExtension extends Extension
             $this->addSimpleDefinition($containerBuilder, $className);
         }, [
             Bakery::class,
+            Cookbook::class,
+            CookbookRepository::class,
+            CookbookResourceType::class,
             DataFetcherFactory::class,
             PhpWordStyleOptions::class,
             RecipeConfigTreeBuilder::class,
