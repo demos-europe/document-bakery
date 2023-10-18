@@ -46,7 +46,7 @@ class BakeryTest extends BakeryFunctionalTestCase
 
     public function testCreateSuccess(): void
     {
-        $this->markTestSkipped('This test is skipped until the redesign of the data fetching is done.');
+        //$this->markTestSkipped('This test is skipped until the redesign of the data fetching is done.');
 
         /** @var Word2007 $result2 */
         $result2 = $this->sut->create('test', [

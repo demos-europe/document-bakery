@@ -6,6 +6,7 @@ use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Instructions\InstructionFactory;
 use DemosEurope\DocumentBakery\Recipes\RecipeProcessor;
+use DemosEurope\DocumentBakery\Recipes\RecipeProcessorFactory;
 use DemosEurope\DocumentBakery\Styles\StylesRepository;
 use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
 use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
@@ -17,13 +18,8 @@ class RecipeProcessorTest extends BakeryFunctionalTestCase
 {
     public function testCreateFromRecipe()
     {
-        $this->markTestSkipped('This test is skipped until the redesign of the data fetching is done.');
-
-        $dataFetcherFactory = $this->getContainer()->get(DataFetcherFactory::class);
-        $instructionFactory = $this->getContainer()->get(InstructionFactory::class);
         $cookbookResourceType = $this->getContainer()->get(CookbookResourceType::class);
-
-        $mockedStylesRepository = $this->getMockedStylesRepository();
+        $recipeProcessorFactory = $this->getContainer()->get(RecipeProcessorFactory::class);
 
         $recipeDataBag = new RecipeWordDataBag();
         $recipeConfig = $this->config['recipes']['RecipeWithoutStyles'];
@@ -33,7 +29,7 @@ class RecipeProcessorTest extends BakeryFunctionalTestCase
             'Cookbook' => $cookbookResourceType
         ]);
 
-        $sut = new RecipeProcessor($dataFetcherFactory, $instructionFactory, $recipeDataBag, $mockedStylesRepository);
+        $sut = $recipeProcessorFactory->build($recipeDataBag);
         /** @var Word2007 $result */
         $result = $sut->createFromRecipe();
         // Actual Testing

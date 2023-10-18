@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use EDT\DqlQuerying\Contracts\ClauseFunctionInterface;
 use EDT\JsonApi\ResourceTypes\ReadableTypeInterface;
 use EDT\Querying\Contracts\FunctionInterface;
+use EDT\Querying\Contracts\PathsBasedInterface;
 use EDT\Querying\Pagination\PagePagination;
 use EDT\Wrapping\Contracts\AccessException;
 use EDT\Wrapping\WrapperFactories\WrapperObject;
@@ -17,9 +17,9 @@ class DataFetcher
     /**
      * @var array|FunctionInterface
      */
-    private $conditions = [];
+    private $conditions;
 
-    private $sort = [];
+    private $sort;
 
     private $paginationNumber = 1;
 
@@ -42,13 +42,18 @@ class DataFetcher
     private $resourceType;
 
     public function __construct(
-        array $query,
-        ClauseFunctionInterface $conditions
+        ReadableTypeInterface $resourceType,
+        PathsBasedInterface $filterConditions,
+        array $sortCondition,
+        int $paginationSize,
+        bool $isIterable
     ) {
-        $this->conditions = $conditions;
-        $this->resourceType = $query['resource_type'];
+        $this->conditions = $filterConditions;
+        $this->resourceType = $resourceType;
+        $this->paginationSize = $paginationSize;
+        $this->sort = $sortCondition;
         $this->loadNextChunkOfItems();
-        if (array_key_exists('iterable', $query) && true === $query['iterable']) {
+        if ($isIterable) {
             $this->setContinueLoading(true);
         }
         $this->setNextCurrentEntity();

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DemosEurope\DocumentBakery\Recipes;
 
 use DemosEurope\DocumentBakery\Data\DataFetcher;
-use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Data\RecipeWordDataBag;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Exceptions\StyleException;
@@ -38,13 +37,9 @@ class RecipeProcessor
      * @var DataFetcher[]
      */
     private $dataProviders = [];
-    /**
-     * @var DataFetcherFactory
-     */
-    private $dataFetcherFactory;
 
     public function __construct(
-        DataFetcherFactory $dataFetcherFactory,
+        array $dataProviders,
         InstructionFactory $instructionFactory,
         RecipeWordDataBag  $recipeDataBag,
         StylesRepository   $stylesRepository
@@ -53,7 +48,7 @@ class RecipeProcessor
         $this->recipeDataBag = $recipeDataBag;
         $this->instructionFactory = $instructionFactory;
         $this->stylesRepository = $stylesRepository;
-        $this->dataFetcherFactory = $dataFetcherFactory;
+        $this->dataProviders = $dataProviders;
     }
 
     /**
@@ -120,12 +115,11 @@ class RecipeProcessor
 
     /**
      * @param array<int, string> $instructionDataPath
-     * @throws AccessException|DocumentGenerationException
+     * @throws AccessException
      */
     private function setCurrentInstructionDataFromPath(array $instructionDataPath): void
     {
         $dataFetcherName = array_shift($instructionDataPath);
-        $this->createDataFetcherIfNotExists($dataFetcherName);
         if (0 !== count($instructionDataPath)) {
             $currentInstructionData = $this->dataProviders[$dataFetcherName]->getDataFromPath($instructionDataPath);
             $this->recipeDataBag->setCurrentInstructionData($currentInstructionData);
@@ -152,51 +146,6 @@ class RecipeProcessor
 
         // Now we need to map the attributes to the possible phpWord style sets
         return PhpWordStyleOptions::getMappedStyleOptions($styleContent);
-    }
-
-    /**
-     * @throws DocumentGenerationException
-     */
-    private function createDataFetcher(string $name): void
-    {
-        $query = $this->recipeDataBag->getQueryByName($name);
-        $parsedQuery = $this->parseQuery($query);
-        $dataFetcher = $this->dataFetcherFactory->build($parsedQuery);
-        $this->dataProviders[$name] = $dataFetcher;
-    }
-
-    /**
-     * @throws DocumentGenerationException
-     */
-    private function createDataFetcherIfNotExists(string $dataFetcherName): void
-    {
-        if (!array_key_exists($dataFetcherName, $this->dataProviders)) {
-            $this->createDataFetcher($dataFetcherName);
-        }
-    }
-
-    /**
-     * @param array<string, string> $query
-     * @return array<string, string>
-     * @throws DocumentGenerationException
-     */
-    private function parseQuery(array $query): array
-    {
-        foreach ($query as $key => $value) {
-            if (is_array($value)) {
-                $query[$key] = $this->parseQuery($value);
-            } elseif (is_string($value) && false !== strpos($value, '{{')) {
-                // check if placeholder is present and replace it
-                $trimmedPlaceholder = trim($value, '{}');
-                $queryVariables = $this->recipeDataBag->getQueryVariables();
-                if (!array_key_exists($trimmedPlaceholder, $queryVariables)) {
-                    throw DocumentGenerationException::noValueForPlaceholder($trimmedPlaceholder);
-                }
-                $query[$key] = $queryVariables[$trimmedPlaceholder];
-            }
-        }
-
-        return $query;
     }
 
 }

@@ -5,6 +5,9 @@ namespace DemosEurope\DocumentBakery\Tests\Data;
 use DemosEurope\DocumentBakery\Data\DataFetcher;
 use DemosEurope\DocumentBakery\Data\DataFetcherFactory;
 use DemosEurope\DocumentBakery\Tests\BakeryFunctionalTestCase;
+use EDT\DqlQuerying\ConditionFactories\DqlConditionFactory;
+use EDT\DqlQuerying\SortMethodFactories\SortMethodFactory;
+use EDT\Querying\ConditionParsers\Drupal\DrupalFilterParser;
 
 class DataFetcherFactoryTest extends BakeryFunctionalTestCase
 {
@@ -17,7 +20,11 @@ class DataFetcherFactoryTest extends BakeryFunctionalTestCase
     {
         parent::setUp();
 
-        $this->sut = new DataFetcherFactory();
+        $conditionFactory = $this->getContainer()->get(DqlConditionFactory::class);
+        $drupalFilterParser = $this->getContainer()->get(DrupalFilterParser::class);
+        $sortMethodFactory = $this->getContainer()->get(SortMethodFactory::class);
+
+        $this->sut = new DataFetcherFactory($conditionFactory, $drupalFilterParser, $sortMethodFactory);
     }
 
     public function testBuildWithError(): void
@@ -39,7 +46,7 @@ class DataFetcherFactoryTest extends BakeryFunctionalTestCase
             'filter' => []
         ];
 
-        $result = $this->sut->build($parsedQuery, $this->conditionFactory->true());
+        $result = $this->sut->build($parsedQuery);
         $flavour = $result->getDataFromPath(['flavour']);
         self::assertInstanceOf(DataFetcher::class, $result);
         self::assertNotTrue($result->isEmpty());

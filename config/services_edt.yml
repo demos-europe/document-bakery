@@ -249,9 +249,11 @@ services:
       $mainEntityClass: DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook
 
   EDT\JsonApi\ApiDocumentation\AttributeTypeResolver: ~
+  EDT\DqlQuerying\SortMethodFactories\SortMethodFactory: ~
 
   EDT\JsonApi\InputHandling\RepositoryInterface: '@DemosEurope\DocumentBakery\Tests\resources\Repository\CookbookRepository'
   EDT\ConditionFactory\PathsBasedConditionFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+  EDT\ConditionFactory\EDT\ConditionFactory\ConditionFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
   EDT\Querying\Contracts\ConditionParserInterface: '@EDT\Querying\ConditionParsers\Drupal\DrupalConditionParser'
   EDT\Querying\Contracts\PropertyAccessorInterface: '@EDT\Querying\PropertyAccessors\ReflectionPropertyAccessor'
   EDT\Wrapping\Utilities\AttributeTypeResolverInterface: '@EDT\JsonApi\ApiDocumentation\AttributeTypeResolver'
@@ -260,6 +262,9 @@ services:
   EDT\Wrapping\Contracts\Types\NamedTypeInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
   EDT\Querying\Contracts\EntityBasedInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
   EDT\Wrapping\Contracts\Types\FilteringTypeInterface: '@DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType'
+  EDT\Querying\Contracts\SortMethodFactoryInterface: '@EDT\DqlQuerying\SortMethodFactories\SortMethodFactory'
+  EDT\ConditionFactory\ConditionGroupFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
+  EDT\ConditionFactory\ConditionFactoryInterface&EDT\ConditionFactory\ConditionGroupFactoryInterface: '@EDT\DqlQuerying\ConditionFactories\DqlConditionFactory'
 
   DemosEurope\DocumentBakery\Tests\resources\Entity\Cookbook: ~
   DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType:

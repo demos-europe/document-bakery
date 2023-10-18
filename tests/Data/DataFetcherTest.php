@@ -18,7 +18,7 @@ class DataFetcherTest extends BakeryFunctionalTestCase
             'filter' => []
         ];
 
-        $this->sut = new DataFetcher($parsedQuery, $this->conditionFactory->true());
+        $this->sut = new DataFetcher($this->resourceType, $this->conditionFactory->true(), [], 5, true);
     }
 
     public function testSetNextCurrentEntity(): void

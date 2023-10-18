@@ -3,9 +3,13 @@ document_bakery:
     RecipeWithoutStyles:
       queries:
         cookbooks:
-          resource_type: "{{Cookbook}}"
-          filter: []
-          iterable: true
+          resource_type: "{{Cookbook}}" # Required as a placeholder for the class to be added in the parameters!
+          filter: [] # Optional
+          sort: # Optional
+            property: id
+            direction: asc
+          pagination_size: 5 # Optional
+          iterable: true # Optional
       format: # Not yet implemented
         name: A4LandscapeFormat
         options:
