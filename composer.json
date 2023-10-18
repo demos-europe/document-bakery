@@ -23,27 +23,22 @@
       "DemosEurope\\DocumentBakery\\Tests\\": "tests/"
     }
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://demos.repo.repman.demos-europe.eu"
-    }
-  ],
   "minimum-stability": "stable",
   "require": {
-    "php": ">=7.3",
-
-    "8-3/edt-bundle": "dev-main",
-    "phpoffice/phpspreadsheet": "~1.22",
+    "php": "^8.1 || ^8.2",
+    "demos-europe/edt-dql": "^0.23.0",
+    "demos-europe/edt-extra": "^0.23.0",
+    "demos-europe/edt-paths": "^0.23.0",
     "phpoffice/phpword": "~0.18",
     "symfony/config": "^4.4 || ^5.3 || ^6.0",
     "symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
     "symfony/http-kernel": "^4.4 || ^5.3",
     "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
-    "twig/twig": "^2.0 || ^3.3"
+    "twig/twig": "^2.0 || ^3.3",
+    "doctrine/annotations": "^2.0",
+    "symfony/translation": "^6.3"
   },
   "require-dev": {
-    "repman-io/composer-plugin": "^1.1",
     "phpstan/phpstan": "^0.12.99",
     "friendsofphp/php-cs-fixer": "^3.0",
     "phpunit/phpunit": "^9.5",
@@ -55,8 +50,7 @@
   },
   "config": {
     "allow-plugins": {
-      "composer/package-versions-deprecated": true,
-      "repman-io/composer-plugin": true
+      "composer/package-versions-deprecated": true
     }
   }
 }

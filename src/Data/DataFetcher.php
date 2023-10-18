@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace DemosEurope\DocumentBakery\Data;
 
-use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterException;
-use EightDashThree\Querying\ConditionParsers\Drupal\DrupalFilterParser;
-use EightDashThree\Querying\Contracts\FunctionInterface;
-use EightDashThree\Querying\ObjectProviders\TypeRestrictedEntityProvider;
-use EightDashThree\Wrapping\Contracts\AccessException;
-use EightDashThree\Wrapping\Contracts\Types\ReadableTypeInterface;
-use EightDashThree\Wrapping\Contracts\WrapperFactoryInterface;
-use EightDashThree\Wrapping\WrapperFactories\WrapperObject;
+use EDT\DqlQuerying\Contracts\ClauseFunctionInterface;
+use EDT\JsonApi\ResourceTypes\ReadableTypeInterface;
+use EDT\Querying\Contracts\FunctionInterface;
+use EDT\Querying\Pagination\PagePagination;
+use EDT\Wrapping\Contracts\AccessException;
+use EDT\Wrapping\WrapperFactories\WrapperObject;
+use Pagerfanta\Pagerfanta;
 
 class DataFetcher
 {
@@ -22,9 +21,9 @@ class DataFetcher
 
     private $sort = [];
 
-    private $offset = 0;
+    private $paginationNumber = 1;
 
-    private $limit = 5;
+    private $paginationSize = 5;
 
     private $items = [];
 
@@ -38,45 +37,27 @@ class DataFetcher
     private $currentIterationNumber = 0;
 
     /**
-     * @var TypeRestrictedEntityProvider
-     */
-    private $resourceProvider;
-
-    /**
      * @var ReadableTypeInterface|mixed
      */
     private $resourceType;
 
-    /**
-     * @var WrapperFactoryInterface
-     */
-    private $wrapperFactory;
-
     public function __construct(
         array $query,
-        TypeRestrictedEntityProvider $objectProvider,
-        WrapperFactoryInterface $wrapperFactory,
-        DrupalFilterParser $drupalFilterParser
+        ClauseFunctionInterface $conditions
     ) {
-        try {
-            $this->conditions = $drupalFilterParser->createRootFromArray($query['filter']);
-        } catch (DrupalFilterException $e) {
-            $this->conditions = [];
-        }
+        $this->conditions = $conditions;
         $this->resourceType = $query['resource_type'];
-        $this->resourceProvider = $objectProvider;
         $this->loadNextChunkOfItems();
         if (array_key_exists('iterable', $query) && true === $query['iterable']) {
             $this->setContinueLoading(true);
         }
-        $this->wrapperFactory = $wrapperFactory;
         $this->setNextCurrentEntity();
         $this->currentIterationNumber++;
     }
 
     private function getNextItem(): WrapperObject
     {
-        $currentEntity = $this->wrapperFactory->createWrapper(array_shift($this->items), $this->resourceType);
+        $currentEntity = new WrapperObject(array_shift($this->items), $this->resourceType);
         if ($this->continueLoading && 0 === count($this->items)) {
             $this->loadNextChunkOfItems();
         }
@@ -92,14 +73,16 @@ class DataFetcher
     private function loadNextChunkOfItems(): void
     {
         try {
-            $this->items = $this->resourceProvider->getObjects([$this->conditions], $this->sort, $this->offset, $this->limit);
+            /** @var Pagerfanta $paginatedResults */
+            $paginatedResults = $this->resourceType->getEntitiesForPage([$this->conditions], $this->sort, new PagePagination($this->paginationSize, $this->paginationNumber));
+            $this->items = iterator_to_array($paginatedResults->getCurrentPageResults(), true);
         } catch (\Exception $e) {
             $this->items = [];
         }
         // Always increase the offset to not load data twice
-        $this->offset += $this->limit;
+        $this->paginationNumber++;
         // If less items than the limit were loaded, it means we reached the end. So we don't need to load again
-        if (count($this->items) < $this->limit) {
+        if (count($this->items) < $this->paginationSize) {
             $this->setContinueLoading(false);
         }
     }

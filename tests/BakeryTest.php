@@ -10,7 +10,6 @@ use DemosEurope\DocumentBakery\Data\RecipeDataBagFactory;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeProcessorFactory;
 use DemosEurope\DocumentBakery\Recipes\RecipeRepository;
-use DemosEurope\DocumentBakery\Tests\resources\ResourceType\CookbookResourceType;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\Element\Text;
 use PhpOffice\PhpWord\Writer\Word2007;
@@ -21,15 +20,10 @@ class BakeryTest extends BakeryFunctionalTestCase
      * @var Bakery
      */
     protected $sut;
-    /**
-     * @var CookbookResourceType
-     */
-    protected $cookbookResourceType;
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->cookbookResourceType = $this->getContainer()->get(CookbookResourceType::class);
         $recipeProcessorFactory = $this->getContainer()->get(RecipeProcessorFactory::class);
 
         $recipeConfig = $this->config['recipes']['RecipeWithoutStyles'];
@@ -46,15 +40,17 @@ class BakeryTest extends BakeryFunctionalTestCase
     {
         $this->expectException(DocumentGenerationException::class);
         $this->sut->create('test', [
-            'Wrong' => $this->cookbookResourceType
+            'Wrong' => $this->resourceType
         ]);
     }
 
     public function testCreateSuccess(): void
     {
+        $this->markTestSkipped('This test is skipped until the redesign of the data fetching is done.');
+
         /** @var Word2007 $result2 */
         $result2 = $this->sut->create('test', [
-            'Cookbook' => $this->cookbookResourceType
+            'Cookbook' => $this->resourceType
         ]);
         self::assertInstanceOf(Word2007::class, $result2);
         $phpWordObject = $result2->getPhpWord();

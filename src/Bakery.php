@@ -7,7 +7,7 @@ namespace DemosEurope\DocumentBakery;
 use DemosEurope\DocumentBakery\Data\RecipeDataBagFactory;
 use DemosEurope\DocumentBakery\Exceptions\DocumentGenerationException;
 use DemosEurope\DocumentBakery\Recipes\RecipeProcessorFactory;
-use EightDashThree\Wrapping\Contracts\AccessException;
+use EDT\Wrapping\Contracts\AccessException;
 use PhpOffice\PhpWord\Writer\WriterInterface;
 
 class Bakery
