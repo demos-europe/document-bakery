@@ -1,8 +1,8 @@
 {
   "name": "demos-europe/document-bakery",
-  "description": "Compile documents (PDF, Word, Excel) from YAML descriptions.",
+  "description": "Compile Word documents from YAML descriptions.",
   "type": "symfony-bundle",
-  "license": "proprietary",
+  "license": "MIT",
   "authors": [
     {
       "name": "Alexander Meyer-Schlichtmann",
